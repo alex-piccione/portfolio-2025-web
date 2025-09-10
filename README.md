@@ -40,3 +40,9 @@ This will create a `dist` directory containing the production-ready files.
    ```bash
    yarn format
    ```
+
+## Deploy
+
+_Dockerfile_ defime the image to be deployed.  
+The final image is a _NGINX_ HTTP server for the static SPA builded with Vite.  
+No need of Nodejs server.  

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local TypeScript build info (spped up build)
+tsconfig.app.tsbuildinfo
