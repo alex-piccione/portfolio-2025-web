@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
 
+env:
+  IMAGE: portfolio
+  VERSION: 0.1.${{github.run_number}}
+  #SERVICE_PORT: 50300
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,17 +16,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: "yarn"
+      - name: Build Docker image
+        run: |          
+          docker image build -t $IMAGE --build-arg VERSION=$VERSION --build-arg CONFIGURATION_FILE=$CONFIGURATION_FILE -f ./Dockerfile .
+          docker image inspect $IMAGE | grep Size | awk '{print $2}'
+          #image_size=$(docker image inspect $IMAGE | grep Size | awk '{print $2}')
+          image_size=$(docker image inspect $IMAGE | grep Size | awk '{printf "%.2f MB", $2/1024/1024}')
+          echo "### Docker image size: $image_size" >> $GITHUB_STEP_SUMMARY
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      #- name: Setup Node
+      #  uses: actions/setup-node@v4
+      #  with:
+      #    node-version: 18
+      #    cache: "yarn"
 
-      - name: Build project
-        run: yarn build
+      #- name: Install dependencies
+      #  run: yarn install --frozen-lockfile
+
+      #- name: Build project
+      #  run: yarn build
 
       #- name: Deploy to Server
       #  uses: peaceiris/actions-gh-pages@v3
