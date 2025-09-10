@@ -1,10 +1,46 @@
 # portfolio-2025-web
+
 Web UI for Portfolio project
 
-It uses Vue.js with TypeScript, Vite, Yarn, Pinia, SASS.
+## Tech Stack
 
-# Vue 3 + TypeScript + Vite
+- [Vue.js](https://vuejs.org/) with [TypeScript](https://www.typescriptlang.org/)
+- [Vue Router](https://router.vuejs.org/) for navigation
+- [Vite](https://vitejs.dev/) as a build tool
+- [Yarn](https://yarnpkg.com/) as a package manager
+- [Pinia](https://pinia.vuejs.org/) for state management
+- [Axios](https://axios-http.com/) for API calls
+- [SASS](https://sass-lang.com/) for CSS pre-processing
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io/) for code formatting
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Usage
+
+Start the development server:
+``yarn dev``
+
+This will start the development server and open the application in your default browser.  You can usually access it at `http://localhost:5173/`.
+
+
+## Building for Production
+
+1.  Build the application for production:
+   ```bash
+   yarn build
+   ```
+
+   This will create a `dist` directory containing the production-ready files.
+
+
+## Linting and Formatting
+
+1.  Run ESLint to lint the code:
+   ```bash
+   yarn lint
+   ```
+
+2.  Run Prettier to format the code:
+   ```bash
+   yarn format
+   ```
