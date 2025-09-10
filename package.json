@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint src/**/*.{js,ts,vue}",
     "lint-fix": "eslint --fix src/**/*.{js,ts,vue}",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test-docker": "cd devop && bash ./test_local_Dockerfile.sh"
   },
   "dependencies": {
     "pinia": "^3.0.3",

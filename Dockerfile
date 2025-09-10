@@ -5,13 +5,13 @@ WORKDIR /app
 #RUN ls -l && echo "Listing of current directory:"
 #RUN echo -e $(ls)
 
-COPY package.json /
-COPY package-lock.json /
+# copy only files needed for install first (better cache) into /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-RUN yarn install
 
+# now copy the source and build
 COPY . .
-
 RUN yarn build
 
 # --
