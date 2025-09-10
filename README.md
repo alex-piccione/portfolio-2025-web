@@ -44,3 +44,8 @@ Run Prettier to format the code: ``yarn format``
 _Dockerfile_ defines the image to be deployed.  
 The final image is a _NGINX_ HTTP server for the static SPA builded with Vite.  
 No need of Nodejs server.  
+  
+Since this repository is public, I don't like to show internal details here, 
+so, a script on the server needs to be called in GitHub Action.  
+It is actually a symbolik link.  
+In order to do that the GitHub action uses SSH with a serect key saved in the repository secrets.  
