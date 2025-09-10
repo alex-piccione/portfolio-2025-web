@@ -17,20 +17,16 @@ Web UI for Portfolio project
 
 ## Usage
 
-Start the development server:
-``yarn dev``
-
+Start the development server: ``yarn dev``  
+  
 This will start the development server and open the application in your default browser.  You can usually access it at `http://localhost:5173/`.
 
 
 ## Building for Production
 
-1.  Build the application for production:
-   ```bash
-   yarn build
-   ```
-
-   This will create a `dist` directory containing the production-ready files.
+Build the application for production: ``yarn build``  
+  
+This will create a `dist` directory containing the production-ready files.
 
 
 ## Linting and Formatting
