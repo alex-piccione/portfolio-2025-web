@@ -16,19 +16,19 @@ env:
   #SERVICE_PORT: 50300
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  #build:
+  #  runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker image
-        run: |          
-          docker image build -t $IMAGE --build-arg VERSION=$VERSION .
-          #--build-arg CONFIGURATION_FILE=$CONFIGURATION_FILE -f ./Dockerfile .
-          docker image inspect $IMAGE | grep Size | awk '{print $2}'
-          #image_size=$(docker image inspect $IMAGE | grep Size | awk '{print $2}')
-          image_size=$(docker image inspect $IMAGE | grep Size | awk '{printf "%.2f MB", $2/1024/1024}')
-          echo "### Docker image size: $image_size" >> $GITHUB_STEP_SUMMARY
+  #  steps:
+  #    - uses: actions/checkout@v4
+  #    - name: Build Docker image
+  #      run: |          
+  #        docker image build -t $IMAGE --build-arg VERSION=$VERSION .
+  #        #--build-arg CONFIGURATION_FILE=$CONFIGURATION_FILE -f ./Dockerfile .
+  #        docker image inspect $IMAGE | grep Size | awk '{print $2}'
+  #        #image_size=$(docker image inspect $IMAGE | grep Size | awk '{print $2}')
+  #        image_size=$(docker image inspect $IMAGE | grep Size | awk '{printf "%.2f MB", $2/1024/1024}')
+  #        echo "### Docker image size: $image_size" >> $GITHUB_STEP_SUMMARY
 
 
   docker_image:
@@ -74,10 +74,10 @@ jobs:
 
   deploy:
     # disabled until script is ready on server
-    if: false 
+    #if: false 
     runs-on: ubuntu-alpine
     #runs-on: ubuntu-latest
-    needs: build
+    needs: docker_image
     steps:
       - name: Run server script
         run: |
@@ -86,7 +86,8 @@ jobs:
           echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{secrets.SERVER_IP}} > ~/.ssh/known_hosts          
           chmod 600 ~/.ssh/id_rsa          
-          ssh -i ~/.ssh/id_rsa ${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}} project-portfolio_deploy.sh
+          # call a symbolik link
+          ssh -i ~/.ssh/id_rsa ${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}} project-portfolio_deploy
           rm ~/.ssh/id_rsa
 
       #- name: Setup Node

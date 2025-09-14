@@ -1,0 +1,37 @@
+# Docker Compose file for prod
+# user that run this script should have permission to read the docker container registry
+
+
+###
+### THIS IS NO MORE USED IN PROD - Replaced by main NGINX pointing to Docker Swarm (left here for backup if new structure does not work fine)
+###
+
+version: "3.9"
+name: portfolio-website
+services:
+  website:
+    hostname: website
+    #container_name: don't use or scale does not work
+    image: <IMAGE>:latest
+    restart: on-failure
+    environment:
+      - aaa=not used
+    volumes:
+      - <VOLUMES_ROOT>/website/logs:/logs # used for logs
+    networks: [portfolio]
+
+  nginx:
+    depends_on: [website]
+    container_name: nginx
+    image: nginx:1.25.0
+    ports:
+      - 90:80
+    volumes:
+      - <VOLUMES_ROOT>/nginx/etc/nginx:/etc/nginx
+      - <VOLUMES_ROOT>/nginx/wwwroot:/wwwroot
+      - <VOLUMES_ROOT>/nginx/cert:/cert
+    networks: [portfolio]
+
+networks:
+  portfolio:
+    driver: bridge
