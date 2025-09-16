@@ -1,5 +1,5 @@
-# Docker Compose file for prod
-# user that run this script should have permission to read the docker container registry
+# Docker Compose file
+# The user that run this script should have permission to read the docker container registry
 
 
 ###
