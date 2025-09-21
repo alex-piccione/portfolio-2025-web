@@ -1,11 +1,18 @@
 <template>
-  <form @submit.prevent="handleLogin">
-    <input v-model="email" type="email" placeholder="Email" />
-    <input v-model="password" type="password" placeholder="Password" />
-    <button type="submit">Login</button>
-    <div v-if="loginError" class="error-message">{{ loginError }}</div>
+  <form @submit.prevent="handleLogin" class="login-form">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input v-model="email" type="email" id="email" placeholder="Email" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input v-model="password" type="password" id="password" placeholder="Password" />
+    </div>
+    <div class="button-group">
+      <button type="submit" class="login-button">Login</button>
+      <button type="button" class="return-button" @click="goBack">Return Back</button>
+    </div>
   </form>
-  <button @click="goBack">Return Back</button>
 </template>
 
 <script lang="ts">
@@ -51,5 +58,51 @@ export default defineComponent({
 <style scoped lang="scss">
 @use "/src/styles/_variables.scss";
 @use "/src/styles/_general.scss";
-</style>
 
+.login-form {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  .form-group {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &.login-button {
+        background-color: #007bff;
+        color: white;
+      }
+
+      &.return-button {
+        background-color: #6c757d;
+        color: white;
+      }
+    }
+  }
+}
+</style>
