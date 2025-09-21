@@ -1,0 +1,7 @@
+// src/styles/_variables.scss
+$error-color: red;
+
+//@forward "src/styles/_variables.scss" show $error-color;
+@mixin error-message {
+    color: $error-color;
+}

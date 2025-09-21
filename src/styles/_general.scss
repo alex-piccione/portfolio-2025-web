@@ -1,0 +1,8 @@
+// src/styles/_general.scss
+@use "_variables.scss" as v;
+
+.error-message {
+  @include v.error-message;
+  //color: v.error-color;
+  margin-top: 10px;
+}

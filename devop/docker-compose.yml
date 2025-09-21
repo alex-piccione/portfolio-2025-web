@@ -1,7 +1,6 @@
 # Docker Compose file
 # The user that run this script should have permission to read the docker container registry
 
-
 ###
 ### THIS IS NO MORE USED IN PROD - Replaced by main NGINX pointing to Docker Swarm (left here for backup if new structure does not work fine)
 ###

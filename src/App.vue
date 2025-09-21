@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue"
-import CurrencyList from "./components/CurrencyList.vue"
+
 </script>
 
 <template>
   <div>
     <img src="/logo.png" class="logo" alt="Portfolio logo" />
   </div>
-  <HelloWorld msg="Portfolio." />
-  <div>
-    <a href="/currencies">Currencies</a>
-    <CurrencyList />
-  </div>
+  
+  <router-view />
+
 </template>
 
 <style scoped>
