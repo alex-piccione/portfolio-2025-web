@@ -77,6 +77,7 @@ export default defineComponent({
 
     input {
       width: 100%;
+      box-sizing: border-box;
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 4px;

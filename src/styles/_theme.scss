@@ -1,0 +1,25 @@
+// src/styles/_theme.scss
+
+// Colors
+$primary-color: #004d99;
+$secondary_color: #6c757d;
+$accent_color: #28a745;
+$background_color: #f8f9fa;
+$text_color: #343a40;
+$error_color: #dc3545;
+
+// Fonts
+$primary_font: "Arial", sans-serif;
+$secondary_font: "Helvetica", sans-serif;
+
+// Spacing
+$default_margin: 10px;
+$default_padding: 10px;
+
+// Borders
+$border_radius: 5px;
+$border_color: #ccc;
+$border_style: solid;
+
+// Other
+$box_shadow: 0 0 5px rgba(0, 0, 0, 0.1);
