@@ -2,24 +2,40 @@
 
 // Colors
 $primary-color: #004d99;
-$secondary_color: #6c757d;
-$accent_color: #28a745;
-$background_color: #f8f9fa;
-$text_color: #343a40;
-$error_color: #dc3545;
+$secondary-color: #6c757d;
+$accent-color: #28a745;
+$background-color: rgb(33, 40, 48);
+$background-color-emphasis: #3d444d;
+$text-color: rgb(145, 152, 161);
+$text-color-focus: rgb(209, 215, 224);
+
+$ok-color: #35dc67;
+$error-color: #dc3545;
 
 // Fonts
-$primary_font: "Arial", sans-serif;
-$secondary_font: "Helvetica", sans-serif;
+$primary-font: "Arial", sans-serif;
+$secondary-font: "Helvetica", sans-serif;
 
 // Spacing
-$default_margin: 10px;
-$default_padding: 10px;
+$margin: 1rem;
+$margin-small: calc($margin / 2);
+$margin-big: calc($margin * 2);
+$padding: 1rem;
+$padding-small: calc($padding / 2);
+$padding-big: calc($padding * 2);
 
 // Borders
-$border_radius: 5px;
-$border_color: #ccc;
-$border_style: solid;
+$border-radius: 5px;
+$border-color: rgb(61, 68, 77);
+$border-style: solid;
 
 // Other
-$box_shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+$box-shadow_old: 0 0 5px rgba(0, 0, 0, 0.1);
+$box-shadow_2: rgba(1, 4, 9, 0.6) 0px 1px 1px 0px;
+$box-shadow: rgba(1, 4, 9, 0.6) 0px 1px 1px 0px, rgba(1, 4, 9, 0.6) 0px 1px 3px 0px;
+
+
+// Spaces
+$space: 0.5rem;
+$space-small: calc($space / 2);
+$space-big: calc($space * 2);

@@ -1,0 +1,60 @@
+// src/styles/_variables.scss
+@use "_theme.scss" as theme;
+
+//@forward "src/styles/_variables.scss" show $error-color;
+@mixin error-message {
+    color: theme.$error-color;
+}
+
+// button
+@mixin button {
+    padding: theme.$padding-small theme.$padding;
+    /*font-size: 1rem;*/
+    font-size: 115%;
+    font-weight: 500;
+    /*margin: theme.$margin;*/
+    border: thin solid theme.$border-color; // transparent ?
+    border-radius: 5px;
+    background-color: #1a1a1a; // todo
+    transition: border-color 0.25s;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #646cff; // todo
+    }
+
+    &:focus,
+    &:focus-visible { // todo
+        outline: 4px auto -webkit-focus-ring-color;
+    }
+
+    &.submit, &[type="submit"] {
+        background-color: #007bff;
+    }
+
+    &.cancel {
+        background-color: #6c757d;
+    }
+}
+
+// input 
+@mixin input {
+    background-color: theme.$background-color;
+    padding: theme.$padding-small;
+    border: thin solid theme.$border-color;
+    border-radius: theme.$space-small;
+    
+    &:focus {
+        outline: none; // Remove default focus outline
+        border-color: theme.$primary-color;
+        box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
+  }
+}
+
+// panel
+@mixin panel {
+    background-color: theme.$background-color;
+    border: thin solid theme.$border-color;
+    border-radius: calc(theme.$border-radius * 2);
+    box-shadow: theme.$box-shadow;
+}

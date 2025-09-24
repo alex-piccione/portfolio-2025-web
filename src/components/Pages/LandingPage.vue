@@ -35,16 +35,14 @@ const createAccount = () => {
 };
 </script>
 
-<style scoped >
+<style scoped lang="scss">
+@use "/src/styles/_mixins.scss" as mix;
+
 .custom-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin: 5px;
-  border: none;
-  border-radius: 5px;
-  background-color: #0000ff;
-  color: white;
-  cursor: pointer;
+  /*@include mix.button;*/
+  color: yellow;
+  /*background-color: $primary-color;*/
+  /*color: #f0f0f0;*/
 }
 </style>
 
