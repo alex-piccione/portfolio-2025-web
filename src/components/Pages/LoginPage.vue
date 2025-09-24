@@ -10,7 +10,7 @@
       <input v-model="password" type="password" id="password" placeholder="Password" />
     </div>
     <div class="button-group">
-      <button type="submit" class="submit">Login</button>
+      <button type="submit">Login</button>
       <button class="cancel" @click="goBack">Return Back</button>
     </div>
   </form>
@@ -61,6 +61,10 @@ export default defineComponent({
 @use "/src/styles/_theme.scss" as theme;
 @use "/src/styles/_mixins.scss" as mix;
 
+.panel {
+  box-shadow: theme.$secondary-color 0 0 20rem;
+}
+
 .login-form {
   width: 300px;
   margin: 0 auto;
@@ -70,7 +74,7 @@ export default defineComponent({
 
     label {
       display: block;
-      font-weight: bold;
+      font-weight: 500;
       margin-bottom: theme.$margin-small;
     }
 
@@ -80,6 +84,7 @@ export default defineComponent({
       margin-bottom: theme.$margin;
       text-align: center;
 
+      font-size: 110%;
       width: 100%;
       box-sizing: border-box;
     }

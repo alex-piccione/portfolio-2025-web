@@ -11,17 +11,16 @@
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "styles/theme" as theme;
+
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: 12rem;
+  padding: 1.5rem;
   will-change: filter;
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+  filter: drop-shadow(0 0 2rem theme.$primary-color);
 }
 </style>

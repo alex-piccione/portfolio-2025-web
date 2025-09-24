@@ -10,9 +10,9 @@
     time, including past operations.<br />
     Try the application with a pre-filled guest account to see how it works.<br />
   </p>
-  <button class="custom-button" @click="tryGuest">Try the application as a guest</button>
-  <button class="custom-button" @click="goToLogin">Log in with your account</button>
-  <button class="custom-button" @click="createAccount">Create an account</button>
+  <button @click="tryGuest">Try the application as a guest</button>
+  <button @click="goToLogin">Log in with your account</button>
+  <button @click="createAccount">Create an account</button>
 </template>
 
 <script setup lang="ts">
@@ -36,13 +36,19 @@ const createAccount = () => {
 </script>
 
 <style scoped lang="scss">
+@use "/src/styles/_theme.scss" as theme;
 @use "/src/styles/_mixins.scss" as mix;
 
-.custom-button {
-  /*@include mix.button;*/
+p {
+  font-size: 130%;
+}
+
+button {
+  margin: theme.$margin;
+}
+
+button:hover {
   color: yellow;
-  /*background-color: $primary-color;*/
-  /*color: #f0f0f0;*/
 }
 </style>
 

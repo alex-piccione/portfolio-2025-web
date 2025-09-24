@@ -15,31 +15,46 @@
     /*margin: theme.$margin;*/
     border: thin solid theme.$border-color; // transparent ?
     border-radius: 5px;
-    background-color: #1a1a1a; // todo
+    background-color: theme.$secondary-color; // default
     transition: border-color 0.25s;
     cursor: pointer;
 
     &:hover {
-        border-color: #646cff; // todo
+        border-color: lighten(theme.$secondary-color, 20%); 
     }
 
-    &:focus,
-    &:focus-visible { // todo
-        outline: 4px auto -webkit-focus-ring-color;
+    &:focus, &:focus-visible {
+        outline: .3rem auto -webkit-focus-ring-color;
     }
 
     &.submit, &[type="submit"] {
-        background-color: #007bff;
+        background-color: theme.$info-color;
+
+        &:hover {
+            border-color: lighten(theme.$info-color, 10%);
+        }
     }
 
     &.cancel {
-        background-color: #6c757d;
+        background-color: theme.$cancel-color;
+
+        &:hover {
+            border-color: lighten(theme.$cancel-color, 10%); 
+        }
+    }
+
+    &.ok {
+        background-color: theme.$ok-color;
+
+        &:hover {
+            border-color: lighten(theme.$ok-color, 10%); 
+        }    
     }
 }
 
 // input 
 @mixin input {
-    background-color: theme.$background-color;
+    background-color: theme.$secondary-color !important;
     padding: theme.$padding-small;
     border: thin solid theme.$border-color;
     border-radius: theme.$space-small;
