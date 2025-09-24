@@ -18,33 +18,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import AccountProvider from '../../providers/AccountProvider';
-import { useRouter } from 'vue-router';
+import { defineComponent, ref } from 'vue'
+import AccountProvider from '../../providers/AccountProvider'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Login',
   setup() {
-    const router = useRouter();
-    const email = ref<string>('');
-    const password = ref<string>('');
-    const loginError = ref<string | null>(null);
+    const router = useRouter()
+    const email = ref<string>('')
+    const password = ref<string>('')
+    const loginError = ref<string | null>(null)
 
     const handleLogin = async () => {
       try {
-        loginError.value = null;
-        await AccountProvider.login(email.value, password.value);
-        console.log('Login successful!');
-        router.push('/dashboard');
+        loginError.value = null
+        await AccountProvider.login(email.value, password.value)
+        router.push('/dashboard')
       } catch (error: any) {
-        console.error('Login failed:', error);
-        loginError.value = 'Invalid email or password.';
+        loginError.value = 'Invalid email or password.'
       }
-    };
+    }
 
     const goBack = () => {
       router.go(-1); // Navigate back to the previous page
-    };
+    }
 
     return {
       handleLogin,
@@ -52,9 +50,9 @@ export default defineComponent({
       password,
       loginError,
       goBack,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">
