@@ -1,5 +1,6 @@
 // src/styles/_variables.scss
 @use "_theme.scss" as theme;
+@use 'sass:color';
 
 //@forward "src/styles/_variables.scss" show $error-color;
 @mixin error-message {
@@ -20,7 +21,7 @@
     cursor: pointer;
 
     &:hover {
-        border-color: lighten(theme.$secondary-color, 20%); 
+        border-color: color.scale(theme.$secondary-color, $lightness: 20%); 
     }
 
     &:focus, &:focus-visible {
@@ -31,7 +32,7 @@
         background-color: theme.$info-color;
 
         &:hover {
-            border-color: lighten(theme.$info-color, 10%);
+            border-color: color.scale(theme.$info-color, $lightness: 20%);
         }
     }
 
@@ -39,7 +40,7 @@
         background-color: theme.$cancel-color;
 
         &:hover {
-            border-color: lighten(theme.$cancel-color, 10%); 
+            border-color: color.scale(theme.$cancel-color, $lightness: 20%); 
         }
     }
 
@@ -47,7 +48,7 @@
         background-color: theme.$ok-color;
 
         &:hover {
-            border-color: lighten(theme.$ok-color, 10%); 
+            border-color: color.scale(theme.$ok-color, $lightness: 10%); 
         }    
     }
 }

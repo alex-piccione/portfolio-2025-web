@@ -1,6 +1,7 @@
 // src/styles/_general.scss
 @use "_theme.scss" as theme;
 @use "_mixins.scss" as mix;
+@use 'sass:color';
 
 
 :root {
@@ -8,7 +9,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark light;
   color: theme.$text-color;
   background-color: theme.$background-color;
 
@@ -44,7 +45,7 @@ a {
   text-decoration: none;
 
   &:hover {
-    color: lighten(theme.$primary-color, 10%);
+    color: color.scale(theme.$primary-color, $lightness: 10%);
   }
 }
 
@@ -75,11 +76,10 @@ input {
   @include mix.error-message;
 }
 
-.card {
-  padding: 2em;
-}
-
-
 .panel {
   @include mix.panel;
+}
+
+.card {
+  padding: 2em;
 }

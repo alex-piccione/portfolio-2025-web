@@ -62,7 +62,7 @@ export default defineComponent({
 @use "/src/styles/_mixins.scss" as mix;
 
 .panel {
-  box-shadow: theme.$secondary-color 0 0 20rem;
+  box-shadow: theme.$box-shadow-diffuse;
 }
 
 .login-form {
