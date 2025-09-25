@@ -1,17 +1,37 @@
 import axios from "axios"
+import { success, failed, type Result } from "@/_result"
 
 const API_BASE_URL = "/api"
 
-class AccountProvider {
-  async login(email: string, password: string) {
+export type LoginSuccess = {
+  email: string,
+  authToken: string
+  authTokeExpiresAt: Date
+}
+
+export interface IAccountProvider {
+  login(email:string, password:string): Promise<Result<LoginSuccess>>
+}
+
+
+class AccountProvider implements IAccountProvider {
+  async login(email: string, password: string) : Promise<Result<LoginSuccess>> {
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, {
         email,
         password,
       })
-      return response.data
-    } catch (error: any) {
-      throw new Error("Invalid email or password")
+
+      // TODO: check response
+      //return success(response.data)
+
+      let date = new Date()
+      date = new Date(date.getTime() + (24 * 60 * 60 * 1000))
+
+      return success({email: email, authToken: "aaa", authTokeExpiresAt: date})      
+    } catch (error: any) {      
+      //throw new Error("Invalid email or password")
+      return failed(`Failed to login. ${error}`)
     }
   }
 

@@ -19,8 +19,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import AccountProvider from '../../providers/AccountProvider'
+import AccountProviderFake from '@/providers/AccountProviderFake'
 import { useRouter } from 'vue-router'
+import AuthUtils from '@/utils/auth.utils'
 
 export default defineComponent({
   name: 'Login',
@@ -33,8 +34,15 @@ export default defineComponent({
     const handleLogin = async () => {
       try {
         loginError.value = null
-        await AccountProvider.login(email.value, password.value)
-        router.push('/dashboard')
+        const result = await AccountProviderFake.login(email.value, password.value)
+        if(result.isSuccess) {
+          const {email, authToken, authTokeExpiresAt } = result.value
+          AuthUtils.onLogin(email, authToken, authTokeExpiresAt)
+          router.push('/dashboard')
+        }
+        else {
+          loginError.value = result.error
+        }        
       } catch (error: any) {
         loginError.value = 'Invalid email or password.'
       }

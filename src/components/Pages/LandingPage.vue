@@ -1,8 +1,7 @@
 // src/components/Pages/LandingPage.vue
 // This page is shown when no Account is found in the session
 <template>
-  <div class="container">
-  <p>
+ <p>
     <b>This website allows you to keep track of your money.</b><br /><br />
     It manages your Bank accounts, Crypto Exchanges, Pensions, and more.<br />
     It handles all fiat, crypto and stable currencies and displays their
@@ -11,7 +10,6 @@
     time, including past operations.<br />
     &dArr;&dArr; Try the application with a demo guest account to see how it works.<br />
   </p>
-  </div>
   <button @click="tryGuest" class="try">&star; Try the application as a guest &star;</button>
   <button @click="goToLogin" class="login">Log in with your account</button>
   <button @click="createAccount" class="signup">Create an account</button>
@@ -19,22 +17,33 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { goTo } from '@/router';
+import AuthUtils from '@/utils/auth.utils'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
-const goToLogin = () => {
-  router.push('/login');
-};
+onMounted(() => {
+  AuthUtils.getLoginStatus("Landing page")
+  .then(result => {
+    if(result.isLoggedIn) {
+      goTo("Dashboard")
+    }
+  })
+  .catch(error => { console.error(error) })
+})
+
+const goToLogin = () => goTo("Login")
 
 const tryGuest = () => {
   // Implement guest login logic here
-  console.log('Guest login clicked');
+  console.log('Guest login clicked')
 };
 
 const createAccount = () => {
   // Implement create account logic here
-  console.log('Create account clicked');
+  console.log('Create account clicked')
 };
 </script>
 
@@ -51,6 +60,7 @@ body {
 
 p {
   font-size: 130%;
+  filter: drop-shadow(0 0 2rem theme.$primary-color);
 }
 
 button {

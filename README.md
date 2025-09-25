@@ -16,6 +16,15 @@ Web UI for Portfolio project
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io/) for code formatting
 
+## Setup
+
+This project uses **Yarn** (`npm install yarn`).  
+`yarn install` will install all the libraries.
+
+## Configuration
+
+_src/configuration.ts_
+
 ## Usage
 
 Start the development server: `yarn dev`  
