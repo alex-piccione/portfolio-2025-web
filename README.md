@@ -15,6 +15,8 @@ Web UI for Portfolio project
 - [SASS](https://sass-lang.com/) for CSS pre-processing
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io/) for code formatting
+- [Material Design Icons](https://pictogrammers.com/docs/library/mdi/getting-started/vuejs/) for icons
+  + https://pictogrammers.com/library/mdi/
 
 ## Setup
 
