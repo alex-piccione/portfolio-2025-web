@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { nextTick } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 
-export type RouteNames = "Landing" | "Dashboard" | "Login"
+export type RouteNames = "Landing" | "Home" | "Login"
 export const goTo = (routeName: RouteNames) => router.push({ name: routeName })
 
 const routes = [
@@ -22,8 +22,8 @@ const routes = [
     component: () => import('@/components/Pages/Login.vue'),
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
+    path: '/home',
+    name: 'Home',
     component: () => import('@/components/Pages/Home.vue'),
     meta: { requiresAuth: true}
   },

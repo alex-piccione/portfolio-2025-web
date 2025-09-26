@@ -1,7 +1,7 @@
 // src/stores/auth.store.ts
 // Manages the application's authentication state. This is the single source of truth for whether the user is logged in, their username, roles, and any other relevant authentication-related information that the UI needs to know.
 import { defineStore } from "pinia"
-import { onMounted, ref } from "vue"
+import { ref } from "vue"
 import AuthService from "@/services/auth.service"
 import { Result } from "@/utils/result"
 import { goTo } from "@/utils/router"
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore(STORAGE_NAME, () => {
     return isLoggedIn.value ?
     { username } : null
   }
-    
+
   return { STORAGE_NAME, isLoggedIn, username, login, logout}
 }, 
 {

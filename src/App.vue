@@ -24,7 +24,7 @@ import { computed, onMounted, onUnmounted, provide } from 'vue'
 import { goTo } from './utils/router'
 import { useAuthStore } from './stores/auth.store'
 import Toolbar from './components/Toolbar.vue'
-import Landing from './components/Pages/Landing.vue'
+import { debug } from './utils/utils'
 
 /*
 const authService = new AuthService()
@@ -36,17 +36,16 @@ provide("authService", authService)
 const authStore = useAuthStore()
 const isLoggedIn = computed(() =>  authStore.isLoggedIn)
 
-
 const storageChangeHandler = (event: StorageEvent) => {
   if (event.key === authStore.STORAGE_NAME) {
     try {
       const newState = JSON.parse(event.newValue || '{}')
-      authStore.isLoggedIn = newState.isLoggedIn
+      authStore.$patch(newState)
+
+      debug(`auth event cathed. authStore.isLoggedIn:${authStore.isLoggedIn}, authStore.username:${authStore.username}.`)
       
-      if(authStore.isLoggedIn)
-        goTo('Dashboard')
-      else 
-        goTo("Landing")
+      if(authStore.isLoggedIn) goTo('Home')
+      else goTo("Landing")
 
     } catch (error) {
       console.error('Error parsing localStorage data:', error)
@@ -59,7 +58,7 @@ onMounted(async () => {
 
   // Check login status on app load
   if (authStore.isLoggedIn) {
-    goTo('Dashboard')
+    goTo('Home')
   }
 })
 

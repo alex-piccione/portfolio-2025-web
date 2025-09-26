@@ -38,7 +38,7 @@ const handleLogin = async () => {
   const result = await authStore.login(email.value, password.value)
   
   if(result.isSuccess) {
-    goTo("Dashboard")
+    goTo("Home")
   }
   else {
     loginError.value = result.error
