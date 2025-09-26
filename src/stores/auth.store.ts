@@ -4,6 +4,7 @@ import { defineStore } from "pinia"
 import { ref } from "vue"
 import AuthService from "@/services/auth.service"
 import { Result } from "@/utils/result"
+import { goTo } from "@/utils/router"
 
 export const useAuthStore = defineStore("auth", () => {
   const isLoggedIn = ref(false)
@@ -26,6 +27,8 @@ export const useAuthStore = defineStore("auth", () => {
   async function logout() {
     isLoggedIn.value = false
     username.value = undefined
+
+    goTo("Landing")
   }
 
   async function getLogin() {

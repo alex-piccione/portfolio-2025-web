@@ -14,17 +14,17 @@ const routes = [
   {
     path: '/landing',
     name: 'Landing',
-    component: () => import("@/components/Pages/LandingPage.vue"),
+    component: () => import("@/components/Pages/Landing.vue"),
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/components/Pages/LoginPage.vue'),
+    component: () => import('@/components/Pages/Login.vue'),
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/components/Pages/HomePage.vue'),
+    component: () => import('@/components/Pages/Home.vue'),
     meta: { requiresAuth: true}
   },
 ];

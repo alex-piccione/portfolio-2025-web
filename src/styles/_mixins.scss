@@ -15,8 +15,9 @@
     font-weight: 500;
     /*margin: theme.$margin;*/
     border: thin solid theme.$border-color; // transparent ?
-    border-radius: 5px;
-    background-color: theme.$secondary-color; // default
+    border-radius: theme.$border-radius;
+    color: theme.$text-color-emphasis; // default
+    background-color: theme.$secondary-color; // default    
     transition: border-color 0.25s;
     cursor: pointer;
 
@@ -27,6 +28,10 @@
     &:focus, &:focus-visible {
         outline: .3rem auto -webkit-focus-ring-color;
     }
+
+    /*&:active {
+
+    }*/
 
     &.submit, &[type="submit"] {
         background-color: theme.$info-color;
@@ -50,6 +55,17 @@
         &:hover {
             border-color: color.scale(theme.$ok-color, $lightness: 10%); 
         }    
+    }
+
+    &.delete {
+      background-color: #c0392b;
+      border-color: #a93226;
+
+      &:hover {
+        background-color: #e74c3c ;
+        border-color: #c0392b;
+        color: white;
+      }
     }
 }
 

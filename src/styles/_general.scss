@@ -21,7 +21,7 @@
 
 #app {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 50px auto 0;  // Add top margin to account for fixed toolbar
   text-align: center;
 }
 
