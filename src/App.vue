@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
   <div>
     <img src="/logo.png" class="logo" alt="Portfolio logo" />
@@ -24,3 +20,14 @@
   filter: drop-shadow(0 0 2rem theme.$primary-color);
 }
 </style>
+
+<script setup lang="ts">
+import { provide } from 'vue'
+import AuthService from '@/services/auth.service'
+
+const authService = new AuthService()
+
+// provide the service to all th descendant component
+provide("authService", authService)
+
+</script>

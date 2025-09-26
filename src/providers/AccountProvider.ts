@@ -1,5 +1,5 @@
+import { Result } from "@/utils/result"
 import axios from "axios"
-import { success, failed, type Result } from "@/_result"
 
 const API_BASE_URL = "/api"
 
@@ -28,10 +28,10 @@ class AccountProvider implements IAccountProvider {
       let date = new Date()
       date = new Date(date.getTime() + (24 * 60 * 60 * 1000))
 
-      return success({email: email, authToken: "aaa", authTokeExpiresAt: date})      
+      return Result.success({email: email, authToken: "aaa", authTokeExpiresAt: date})      
     } catch (error: any) {      
       //throw new Error("Invalid email or password")
-      return failed(`Failed to login. ${error}`)
+      return Result.failed(`Failed to login. ${error}`)
     }
   }
 

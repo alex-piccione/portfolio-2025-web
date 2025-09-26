@@ -1,7 +1,7 @@
 // src/components/Pages/LandingPage.vue
 // This page is shown when no Account is found in the session
 <template>
- <p>
+  <p>
     <b>This website allows you to keep track of your money.</b><br /><br />
     It manages your Bank accounts, Crypto Exchanges, Pensions, and more.<br />
     It handles all fiat, crypto and stable currencies and displays their
@@ -17,42 +17,20 @@
 </template>
 
 <script setup lang="ts">
-import { goTo } from '@/router';
-import AuthUtils from '@/utils/auth.utils'
-import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter();
-
-onMounted(() => {
-  AuthUtils.getLoginStatus("Landing page")
-  .then(result => {
-    if(result.isLoggedIn) {
-      goTo("Dashboard")
-    }
-  })
-  .catch(error => { console.error(error) })
-})
+import { goTo } from '@/utils/router'
 
 const goToLogin = () => goTo("Login")
 
 const tryGuest = () => {
-  // Implement guest login logic here
+  // TODO: Implement guest login logic here
   console.log('Guest login clicked')
-};
+}
 
 const createAccount = () => {
-  // Implement create account logic here
+  // TODO: Implement create account logic here
   console.log('Create account clicked')
-};
-</script>
-
-<style lang="scss">
-@use "/src/styles/_theme.scss" as theme;
-body {
-  /*background: radial-gradient(circle, rgba(230, 230, 230, .1) 20%, theme.$background-color) !important;*/
 }
-</style>
+</script>
 
 <style scoped lang="scss">
 @use "/src/styles/_theme.scss" as theme;
@@ -60,7 +38,7 @@ body {
 
 p {
   font-size: 130%;
-  filter: drop-shadow(0 0 2rem theme.$primary-color);
+  /*filter: drop-shadow(0 0 2rem #bbb);*/
 }
 
 button {
@@ -74,6 +52,5 @@ button.try {
 button:hover {
   color: yellow;
 }
-
 
 </style>

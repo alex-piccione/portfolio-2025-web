@@ -1,5 +1,5 @@
 // src/utils/cookie.utils.ts
-import { debug } from '@/utils'
+import { debug } from '@/utils/utils'
 
 type cookie = 'AuthToken' | 'RefreshToken' | 'Username'
 

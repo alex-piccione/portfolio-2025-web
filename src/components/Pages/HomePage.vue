@@ -9,29 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import { goTo } from '@/router';
-import AuthUtils from '@/utils/auth.utils';
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
 
 onMounted(() => {
 
-  AuthUtils.getLoginStatus("Home page")
-  .then(result => {
-    if (result.isLoggedIn === false) {
-      console.warn("user is not logged in")
-      goTo("Landing")
-    } 
-  })
-  .catch(error => {
-    console.error(error)
-    goTo("Landing")
-  })
 })
 </script>
 
 <style scoped>
 /* Add scoped styles here */
 </style>
-
-

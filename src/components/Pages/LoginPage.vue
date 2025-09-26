@@ -1,6 +1,6 @@
 <template>
   <div class="panel">
-  <form @submit.prevent="handleLogin" class="login-form">
+  <form class="login-form" onsubmit="return false;">
     <div class="form-group">
       <label for="email">Email:</label>
       <input v-model="email" type="email" id="email" placeholder="Email" />
@@ -10,57 +10,48 @@
       <input v-model="password" type="password" id="password" placeholder="Password" />
     </div>
     <div class="button-group">
-      <button type="submit">Login</button>
+      <button class="submit" @click="handleLogin">Login</button>
       <button class="cancel" @click="goBack">Return Back</button>
     </div>
+     <p v-if="loginError" class="error-message">{{ loginError }}</p>
   </form>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import AccountProviderFake from '@/providers/AccountProviderFake'
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
-import AuthUtils from '@/utils/auth.utils'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth.store'
+import { goTo } from '@/utils/router'
+import { debug } from '@/utils/utils'
 
-export default defineComponent({
-  name: 'Login',
-  setup() {
-    const router = useRouter()
-    const email = ref<string>('')
-    const password = ref<string>('')
-    const loginError = ref<string | null>(null)
+const router = useRouter()
+const email = ref<string>('')
+const password = ref<string>('')
+const loginError = ref<string | null>(null)
 
-    const handleLogin = async () => {
-      try {
-        loginError.value = null
-        const result = await AccountProviderFake.login(email.value, password.value)
-        if(result.isSuccess) {
-          const {email, authToken, authTokeExpiresAt } = result.value
-          AuthUtils.onLogin(email, authToken, authTokeExpiresAt)
-          router.push('/dashboard')
-        }
-        else {
-          loginError.value = result.error
-        }        
-      } catch (error: any) {
-        loginError.value = 'Invalid email or password.'
-      }
-    }
+const authStore = useAuthStore()
 
-    const goBack = () => {
-      router.go(-1); // Navigate back to the previous page
-    }
+const handleLogin = async () => {
+  
+  debug("handleLogin")
 
-    return {
-      handleLogin,
-      email,
-      password,
-      loginError,
-      goBack,
-    }
-  },
-})
+  loginError.value = null
+
+  const result = await authStore.login(email.value, password.value)
+  
+  if(result.isSuccess) {
+    goTo("Dashboard")
+  }
+  else {
+    loginError.value = result.error
+  }  
+}
+
+const goBack = () => {
+  router.go(-1); // Navigate back to the previous page
+}
+
 </script>
 
 <style scoped lang="scss">
