@@ -1,6 +1,6 @@
 <template>
   <div class="panel">
-  <form class="login-form" onsubmit="return false;">
+  <form class="login-form" @submit.prevent="handleLogin">
     <div class="form-group">
       <label for="email">Email:</label>
       <input v-model="email" type="email" id="email" placeholder="Email" />
@@ -10,8 +10,8 @@
       <input v-model="password" type="password" id="password" placeholder="Password" />
     </div>
     <div class="button-group">
-      <button class="submit" @click="handleLogin">Login</button>
-      <button class="cancel" @click="goBack">Return Back</button>
+      <button type="submit" class="submit">Login</button>
+      <button type="button" class="cancel" @click="goBack">Return Back</button>
     </div>
      <p v-if="loginError" class="error-message">{{ loginError }}</p>
   </form>
@@ -32,12 +32,9 @@ const loginError = ref<string | null>(null)
 
 const authStore = useAuthStore()
 
-const handleLogin = async () => {
-  
+const handleLogin = async () => {  
   debug("handleLogin")
-
   loginError.value = null
-
   const result = await authStore.login(email.value, password.value)
   
   if(result.isSuccess) {

@@ -18,7 +18,7 @@
       </button>
       -->
       <div class="toolbar-user">       
-        <span class="toolbar-username"><Icon name="account" /> {{ username }}</span>
+        <Icon name="account" /> {{ username }}
       </div>
       <button class="toolbar-button delete" @click="handleLogout">
         Logout
@@ -125,11 +125,6 @@ const handleNotifications = (): void => {
     height: 25px;
     background-color: theme.$background-color-emphasis;
     border-radius: theme.$border-radius;
-  }
-
-  &-username {
-    font-size: 100%;
-    font-weight: 500;
   }
 }
 
