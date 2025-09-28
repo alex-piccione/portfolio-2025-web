@@ -8,7 +8,7 @@ import { computed } from 'vue'
 import bellIcon from '@/assets/icons/bell.svg?raw'
 import accountIcon from '@/assets/icons/account.svg?raw'
 import accountBoxIcon from '@/assets/icons/account-box.svg?raw'
-import helpIcon from '@/assets/icons/Help.svg?raw'
+import helpIcon from '@/assets/icons/help.svg?raw'
 import tableLarge from '@/assets/icons/table-large.svg?raw'
 
 
