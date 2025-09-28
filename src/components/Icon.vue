@@ -9,7 +9,7 @@ import bellIcon from '@/assets/icons/bell.svg?raw'
 import accountIcon from '@/assets/icons/account.svg?raw'
 import accountBoxIcon from '@/assets/icons/account-box.svg?raw'
 import helpIcon from '@/assets/icons/help.svg?raw'
-import tableLarge from '@/assets/icons/table-large.svg?raw'
+import tableLargeIcon from '@/assets/icons/table-large.svg?raw'
 
 
 type Icons = "bell" | "account" | "account_box" | "help" | "tableLarge"
@@ -24,7 +24,7 @@ const iconMap = {
   account: accountIcon,
   account_box: accountBoxIcon,  
   help: helpIcon,
-  tableLarge: tableLarge
+  tableLarge: tableLargeIcon
 }
 
 const iconContent = computed(() => iconMap[props.name])
