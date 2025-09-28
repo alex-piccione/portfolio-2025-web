@@ -22,8 +22,4 @@ export default class AuthService {
         }
     }
 
-  static getLoggedIn() {
-
-  }
-
 }

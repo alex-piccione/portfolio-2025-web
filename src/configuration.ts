@@ -1,3 +1,5 @@
 export default {
-    debug: true
+    environment: "Local",
+    debug: true,
+    apiUrl: "http://localhost:3000"
 }

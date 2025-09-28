@@ -7,7 +7,6 @@
     <!-- Add more dashboard content here -->
 
     <Icon name="bell" size="small"/>
-
     <Icon name="account" />
   </div>
 </template>
@@ -15,8 +14,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import Icon from '@/components/Icon.vue'
+import CurrencyService from '@/services/currency.service'
 
-onMounted(() => {
+onMounted(async () => {
+
+  const currencies = await CurrencyService.list()
 
 })
 </script>

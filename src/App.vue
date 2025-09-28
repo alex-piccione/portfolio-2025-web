@@ -26,12 +26,6 @@ import { useAuthStore } from './stores/auth.store'
 import Toolbar from './components/Toolbar.vue'
 import { debug } from './utils/utils'
 
-/*
-const authService = new AuthService()
-
-// provide the service to all th descendant component
-provide("authService", authService)
-*/
 
 const authStore = useAuthStore()
 const isLoggedIn = computed(() =>  authStore.isLoggedIn)
