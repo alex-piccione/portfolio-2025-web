@@ -22,7 +22,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # required for SPA fallback
-COPY --from=build nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
