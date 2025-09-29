@@ -30,6 +30,8 @@ import { debug } from './utils/utils'
 const authStore = useAuthStore()
 const isLoggedIn = computed(() =>  authStore.isLoggedIn)
 
+const ui_version = import.meta.env.VITE_UI_VERSION
+
 const storageChangeHandler = (event: StorageEvent) => {
   if (event.key === authStore.STORAGE_NAME) {
     try {

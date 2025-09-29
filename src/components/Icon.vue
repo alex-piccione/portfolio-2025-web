@@ -19,6 +19,9 @@ const props = withDefaults(
   defineProps<{name:Icons, size?:Sizes}>(), 
   { size: "small"})
 
+// requires v 3.10 of Vite
+//const {name, size="small"} = defineProps<{name:Icons, size?:Sizes}>()
+
 const iconMap = {
   bell: bellIcon,
   account: accountIcon,

@@ -1,6 +1,7 @@
 # portfolio-2025-web
 
-Web UI for Portfolio project
+Web UI for Portfolio project.  
+[![Deploy](https://github.com/alex-piccione/portfolio-2025-web/actions/workflows/deploy.yml/badge.svg)](https://github.com/alex-piccione/portfolio-2025-web/actions/workflows/deploy.yml)
 
 ## Tech Stack
 
