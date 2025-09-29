@@ -9,6 +9,7 @@ RUN yarn install --frozen-lockfile
 # both ARG + ENV are required to have the environment variable set in the container. Docker rubbish logic.
 ARG VERSION 
 ENV VITE_UI_VERSION=$VERSION
+RUN echo "VITE_UI_VERSION=$VITE_UI_VERSION"
 
 # now copy the source and build
 COPY . .

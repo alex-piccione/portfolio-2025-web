@@ -33,7 +33,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import Icon from '@/components/Icon.vue'
 
-const ui_version = import.meta.env.VITE_UI_VERSION
+const ui_version = import.meta.env.VITE_UI_VERSION || "unknown version"
 
 const authStore = useAuthStore()
 
