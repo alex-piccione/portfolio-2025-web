@@ -17,7 +17,7 @@ It will run a script that requires docker, and maybe other operations, so use on
 
 ```sh
 KEY=$(cat deploy_key.pub)
-SCRIPT_PATH="/usr/local/bin/project-portfolio_deploy"
+SCRIPT_PATH="/usr/local/bin/project-portfolio_deploy-website"
 echo "command=\"$SCRIPT_PATH\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $KEY" >> ~/.ssh/authorized_keys
 ```
 
@@ -26,3 +26,21 @@ echo "command=\"$SCRIPT_PATH\",no-port-forwarding,no-X11-forwarding,no-agent-for
 
 5. Clean up
    `rm deploy_key && rm deploy_key.pub`
+
+
+## Investigate deploy failure
+
+When thge deploy script fails it is possible to look at the Docker container log to see why it fails to start.  
+```sh
+# get the id of the failed stack
+docker stack ps portfolio-web
+stack_id=$(docker stack ps portfolio-web --format "{{.ID}} {{.CurrentState}} {{.Error}}" | grep Failed | awk '{print $1}')
+echo "stack_id=$stack_id"
+
+container_id=$(docker inspect $stack_id --format '{{.Status.ContainerStatus.ContainerID}}')
+echo "container_id=$container_id"
+
+docker logs $container_id
+
+#docker inspect -it $container_id sh
+```
