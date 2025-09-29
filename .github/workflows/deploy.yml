@@ -88,4 +88,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa          
           # call a symbolik link
           ssh -i ~/.ssh/id_rsa ${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}} project-portfolio_deploy-website
+          STATUS=$?
+          if [ $STATUS -ne 0 ]; then
+            echo "ERROR: Remote deploy script failed with exit code $STATUS"
+            exit $STATUS
+          fi
           rm ~/.ssh/id_rsa
