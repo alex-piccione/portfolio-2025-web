@@ -2,7 +2,7 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <!-- logo here -->
-      <h1 class="toolbar-title">Portfolius ({{ ui_version }})</h1>
+      <h1 class="toolbar-title">Portfolius (v{{ ui_version.value }})</h1>
       <nav class="toolbar-nav">
         <!--
         <router-link to="/settings" class="toolbar-nav-item">Settings</router-link>
@@ -33,7 +33,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import Icon from '@/components/Icon.vue'
 
-const ui_version = import.meta.env.VITE_UI_VERSION || "unknown version"
+const ui_version = ref(import.meta.env.VITE_UI_VERSION || "unknown version")
 
 const authStore = useAuthStore()
 
