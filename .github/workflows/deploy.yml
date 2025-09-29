@@ -59,6 +59,8 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ env.VERSION }}
+          build-args: |
+            VERSION=${{ env.VERSION }}
           # Use the GitHub Actions cache for loading previous layers
           cache-from: type=gha
           # Save the new layers to the GitHub Actions cache
