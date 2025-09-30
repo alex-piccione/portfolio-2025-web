@@ -7,7 +7,9 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # both ARG + ENV are required to have the environment variable set in the container. Docker rubbish logic.
+ARG CONFIGURATION_FILE
 ARG VERSION 
+ENV VITE_CONFIGURATION_FILE=$CONFIGURATION_FILE
 ENV VITE_UI_VERSION=$VERSION
 #RUN echo "VITE_UI_VERSION=$VITE_UI_VERSION"
 
@@ -23,6 +25,9 @@ COPY --from=build /app/dist /usr/share/nginx/html
 
 # required for SPA fallback
 COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
+
+# required for local development
+COPY --from=build /app/configuration_local.json /usr/share/nginx/html
 
 EXPOSE 80
 

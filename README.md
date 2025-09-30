@@ -26,7 +26,9 @@ This project uses **Yarn** (`npm install yarn`).
 
 ## Configuration
 
-_src/configuration.ts_
+Configuration is loaded at runtime reading a JSON file.  
+Local development use a default "configuration_local.json" file while for production an environment variable with the path is used.  
+_src/utils/configuration.ts_ contains the logic to read the file.  
 
 ## Usage
 

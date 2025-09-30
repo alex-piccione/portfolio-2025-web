@@ -1,8 +1,10 @@
 import axios from "axios"
-import configuration from "@/configuration"
+
 import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
+import ConfigurationProvider from "@/utils/configuration"
 
+const configuration = await ConfigurationProvider.getInstance()
 debug(`apiUrl: ${configuration.apiUrl}`)
 
 // Create a centralized axios instance
