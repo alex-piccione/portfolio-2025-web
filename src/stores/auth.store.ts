@@ -12,17 +12,21 @@ export const useAuthStore = defineStore(STORAGE_NAME, () => {
   const isLoggedIn = ref(false)
   const username = ref<string | undefined>(undefined)
 
-  async function login(email: string, password: string): Promise<Result<boolean>> {
+  async function login(username_: string, password: string): Promise<Result<boolean>> {
     try {
-      const result = await AuthService.login(email, password) 
-      isLoggedIn.value = true
-      username.value = result.email  // use the email for now      
+      const result = await AuthService.login(username_, password) 
+      if (result.isSuccess) {
+        isLoggedIn.value = true
+        username.value = result.value.username // use the email for now      
       return Result.success(true)
+      } else {
+        return Result.failed(result.error)
+      }
     } catch (error: any) {
       console.warn("login error")
       isLoggedIn.value = false
       username.value = undefined
-      return Result.failed(error)
+      return Result.failed(error || "Login failed")
     }
   }
 

@@ -1,9 +1,7 @@
-# ./test_local_Dockerfile.sh
-
 # move where Dockerfile and source code is
 cd ..
 CONFIGURATION_FILE=configuration_local.json
-VERSION=test-0.1.0
+VERSION=local-1
 docker build   \
     -t portfolio-website:$VERSION \
     --build-arg CONFIGURATION_FILE=$CONFIGURATION_FILE \

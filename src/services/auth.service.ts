@@ -2,23 +2,24 @@
 
 import CookieUtils from "@/utils/cookie.utils"
 import AuthApi from "./api/auth.api"
+import { Result } from "@/utils/result"
 
 const api = new AuthApi()
 export default class AuthService {
 
-    static async login(email: string, password: string): Promise<{ email: string }> {
+    static async login(username: string, password: string): Promise<Result<{ username: string }>> {
         try {
-            const result = await AuthApi.login(email, password)
+            const result = await AuthApi.login(username, password)
 
             if (result.isSuccess) {
                 CookieUtils.setCookie("AuthToken", result.value.authToken, result.value.authTokenExpiresAt) 
-                return { email } 
+                return Result.success( { username } )
             } else {
-                throw new Error(result.error || "Login failed")
+                return Result.failed(result.error)
             }
         } catch (error: any) {
             // TODO logger.error("Login failed.", error)
-            throw new Error("Login failed") 
+            throw new Error(`Login failed 2 ${error}`) 
         }
     }
 

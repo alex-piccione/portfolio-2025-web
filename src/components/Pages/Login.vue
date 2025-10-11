@@ -2,8 +2,8 @@
   <div class="panel">
   <form class="login-form" @submit.prevent="handleLogin">
     <div class="form-group">
-      <label for="email">Email:</label>
-      <input v-model="email" type="email" id="email" placeholder="Email" />
+      <label for="username">Username:</label>
+      <input v-model="email" type="text" id="username" placeholder="Username" />
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -33,7 +33,6 @@ const loginError = ref<string | null>(null)
 const authStore = useAuthStore()
 
 const handleLogin = async () => {  
-  debug("handleLogin")
   loginError.value = null
   const result = await authStore.login(email.value, password.value)
   
