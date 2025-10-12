@@ -1,7 +1,7 @@
 // src/router.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import { nextTick } from 'vue'
-import { useAuthStore } from '@/stores/auth.store'
+import AuthService from '@/services/auth.service'
 
 export type RouteNames = "Landing" | "Home" | "Login"
 export const goTo = (routeName: RouteNames) => router.push({ name: routeName })
@@ -35,16 +35,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, _from, next) => {
-  if (to.meta.requiresAuth) {
-    const authStore = useAuthStore()
-    if (!authStore.isLoggedIn) {
-      console.warn(`Missing Auth for access ${to}`)
-      // Delay navigation until authStore is initialized to prevent race condition
-      await nextTick()
-      next({name: "Landing"})
-    }
+  if (to.meta.requiresAuth && !(await AuthService.isAuthenticated())) {
+    return { name: 'Login' } // Redirect to login if not authenticated
   }
-
   next()
 })
 

@@ -1,10 +1,9 @@
 // src/stores/auth.store.ts
-// Manages the application's authentication state. This is the single source of truth for whether the user is logged in, their username, roles, and any other relevant authentication-related information that the UI needs to know.
+// Pure state management for authentication
+// No business logic - just state getters and setters
+
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import AuthService from "@/services/auth.service"
-import { Result } from "@/utils/result"
-import { goTo } from "@/utils/router"
 
 const STORAGE_NAME = "auth"
 
@@ -12,38 +11,42 @@ export const useAuthStore = defineStore(STORAGE_NAME, () => {
   const isLoggedIn = ref(false)
   const username = ref<string | undefined>(undefined)
 
-  async function login(username_: string, password: string): Promise<Result<boolean>> {
-    try {
-      const result = await AuthService.login(username_, password) 
-      if (result.isSuccess) {
-        isLoggedIn.value = true
-        username.value = result.value.username // use the email for now      
-      return Result.success(true)
-      } else {
-        return Result.failed(result.error)
-      }
-    } catch (error: any) {
-      console.warn("login error")
-      isLoggedIn.value = false
-      username.value = undefined
-      return Result.failed(error || "Login failed")
+  /**
+   * Set user as authenticated with username
+   */
+  function setAuthenticated(user: string) {
+    isLoggedIn.value = true
+    username.value = user
+  }
+
+  /**
+   * Clear authentication state
+   */
+  function clearAuthentication() {
+    isLoggedIn.value = false
+    username.value = undefined
+  }
+
+  /**
+   * Get current authentication state
+   */
+  function getAuthState() {
+    return {
+      isLoggedIn: isLoggedIn.value,
+      username: username.value
     }
   }
 
-  async function logout() {
-    isLoggedIn.value = false
-    username.value = undefined
-
-    goTo("Landing")
+  return { 
+    // State
+    isLoggedIn, 
+    username, 
+    // Actions
+    setAuthenticated, 
+    clearAuthentication, 
+    getAuthState 
   }
-
-  async function getLogin() {
-    return isLoggedIn.value ?
-    { username } : null
-  }
-
-  return { STORAGE_NAME, isLoggedIn, username, login, logout}
 }, 
 {
-  persist: true // by default it use localStorage that is shared across browser tabs (not sessionStorage)
+  persist: true // by default it uses localStorage that is shared across browser tabs (not sessionStorage)
 })

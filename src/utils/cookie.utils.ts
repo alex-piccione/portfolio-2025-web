@@ -4,13 +4,12 @@ import { debug } from '@/utils/utils'
 type cookie = 'AuthToken' | 'RefreshToken' | 'Username'
 
 export default class CookieUtils {
-  static readCookie = (name: cookie, caller: string) => {
+  static getCookie = (name: cookie) => {
     // Read all values of cookie and return first
     const cookies = document.cookie.split('; ')
     const cookie = cookies.find((c) => c.startsWith(`${name}=`))
     const encodedValue = cookie?.split('=')[1] || null
     const decodedValue = encodedValue && decodeURIComponent(encodedValue)
-    debug(`readCookie "${name}" (for ${caller}): ${decodedValue}`)
     return decodedValue
   }
 
@@ -24,9 +23,11 @@ export default class CookieUtils {
     document.cookie = cookie
   }
 
-  static removeCookie = (name: cookie) => {
+  static deleteCookie = (name: cookie) => {
     debug(`remove cookie "${name}"`)
-    let cookie = `${name}=; expires=${new Date().toUTCString()}; path=/; SameSite=Strict;`
+    // Use a past date to ensure cookie is deleted
+    const pastDate = new Date(0).toUTCString()
+    let cookie = `${name}=; expires=${pastDate}; path=/; SameSite=Strict;`
     if (window.location.protocol === 'https:') cookie += 'secure; '
     document.cookie = cookie
   }

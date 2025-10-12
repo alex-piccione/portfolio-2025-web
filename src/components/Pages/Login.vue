@@ -10,7 +10,9 @@
       <input v-model="password" type="password" id="password" placeholder="Password" />
     </div>
     <div class="button-group">
-      <button type="submit" class="submit">Login</button>
+      <button type="submit" class="submit" :disabled="isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
       <button type="button" class="cancel" @click="goBack">Return Back</button>
     </div>
      <p v-if="loginError" class="error-message">{{ loginError }}</p>
@@ -21,27 +23,34 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth.store'
+import AuthService from '@/services/auth.service'
 import { goTo } from '@/utils/router'
-import { debug } from '@/utils/utils'
 
 const router = useRouter()
 const email = ref<string>('')
 const password = ref<string>('')
 const loginError = ref<string | null>(null)
-
-const authStore = useAuthStore()
+const isLoading = ref<boolean>(false)
 
 const handleLogin = async () => {  
   loginError.value = null
-  const result = await authStore.login(email.value, password.value)
-  
-  if(result.isSuccess) {
-    goTo("Home")
+  isLoading.value = true
+
+  try {
+    const result = await AuthService.login(email.value, password.value)
+    
+    if (result.isSuccess) {
+      // Service handles navigation, so we don't need to do it here
+      // But we can do it anyway for explicit control
+      goTo("Home")
+    } else {
+      loginError.value = result.error
+    }
+  } catch (error: any) {
+    loginError.value = error?.message || "An unexpected error occurred"
+  } finally {
+    isLoading.value = false
   }
-  else {
-    loginError.value = result.error
-  }  
 }
 
 const goBack = () => {
@@ -87,6 +96,11 @@ const goBack = () => {
     margin-top: theme.$margin;
     display: flex;
     justify-content: space-between;
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
 }
 </style>
