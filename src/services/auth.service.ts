@@ -12,14 +12,14 @@ export default class AuthService {
             const result = await AuthApi.login(username, password)
 
             if (result.isSuccess) {
-                CookieUtils.setCookie("AuthToken", result.value.authToken, result.value.authTokenExpiresAt) 
+                CookieUtils.setCookie("AuthToken", result.value.accessToken, new Date(result.value.accessTokenExpiresAt)) 
                 return Result.success( { username } )
             } else {
                 return Result.failed(result.error)
             }
         } catch (error: any) {
             // TODO logger.error("Login failed.", error)
-            throw new Error(`Login failed 2 ${error}`) 
+            throw new Error(`Unexpected error.  ${error}`) 
         }
     }
 

@@ -3,6 +3,7 @@ import axios from "axios"
 import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
 import ConfigurationProvider from "@/utils/configuration"
+import { parseErrorResponse } from "./api/helper"
 
 const configuration = await ConfigurationProvider.getInstance()
 debug(`apiUrl: ${configuration.apiUrl}`)
@@ -56,4 +57,4 @@ export function deserialize<T>(item: any) {
     }
 }
 
-export default apiClient
+export default {client: apiClient, parseError:parseErrorResponse , deserialize}

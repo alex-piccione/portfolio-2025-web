@@ -1,51 +1,37 @@
 // src/services/api/auth.api.ts
 
 import { Result } from "@/utils/result"
-import apiClient from "../apiClient"
+import api from "../apiClient"
 import { debug } from "@/utils/utils"
 import axios from "axios"
+import { login } from "./schemas/auth.schema"
 
-export interface LoginResponse {
-  authToken: string,
-  authTokenExpiresAt: Date,
-  refreshToken: string,
-  refreshTokenExpiresAt: Date
-}
-
-const parseErrorResponse = (response: any) => {
-  return {
-    status: response?.status ?? 0,
-    message: response?.data?.error ?? 'An unknown error occurred',
-    code: response?.data?.code
-  }
-}
 
 export default class AuthApi {
-  static async login(username:string, password: string) : Promise<Result<LoginResponse>> {
-    try {
-      const response = await apiClient.post('/login', { username, password }) // TODO: update server to be /auth/login
-      debug(`Login response: ${response.status}`)
+    static async login(username:string, password: string) : Promise<Result<login.Response>> {
+        try {
+            const response = await api.client.post('/auth/login', { username, password })
+            debug(`Login response: ${response.status}`)
 
-      const { authToken, authTokenExpiresAt, refreshToken, refreshTokenExpiresAt} = response.data
-      
-      return Promise.resolve(Result.success( { authToken, authTokenExpiresAt, refreshToken, refreshTokenExpiresAt }))
-    } catch (error) {
-      debug(`axios.isAxiosError(error): ${axios.isAxiosError(error)}`)
-      if (axios.isAxiosError(error)) {
-        const errorData = parseErrorResponse(error.response)
-        //debug(`errorData.status: ${errorData.status}`)
-        //debug(`errorData.message: ${errorData.message}`)
-        //debug(`errorData.code: ${errorData.code}`)
-        if (errorData.status === 401) {          
-          return Promise.resolve(Result.failed(errorData.message))
+            const parseResult = login.ResponseSchema.safeParse(response.data)
+            if (!parseResult.success) {
+                debug(`Response validation failed (parseResponse.error.message): ${parseResult.error.message}`)
+
+                const errorMessages = parseResult.error.issues
+                    .map(issue => `${issue.path.join('.')}: ${issue.message}`)
+                    .join('; ')
+
+                return Result.failed(`Response validation failed: ${errorMessages}`)
+            }
+
+            return Result.success(parseResult.data)
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const errorData = api.parseError(error)
+                return Result.failed(errorData.message)
+            }    
+            
+            return Result.failed(`Unexpected error. ${error}`)
         }
-      }
-
-       const message = axios.isAxiosError(error) 
-        ? error.response?.data?.message || 'Login failed'
-        : 'An unexpected error occurred'; 
-       debug(`Login error: ${message}`)
-       return Promise.resolve(Result.failed(message))
     }
-  }
 }
