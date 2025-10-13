@@ -9,12 +9,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
-import { CurrencyProvider } from "../providers/currency.provider"
-import type Currency from "../entities/Currency"
+import type Currency from "@/entities/Currency"
+import CurrencyService from "@/services/currency.service"
 
 const currencies = ref<Currency[]>([])
 
 onMounted(async () => {
-  currencies.value = await CurrencyProvider.list()
+  currencies.value = await CurrencyService.list()
 })
 </script>

@@ -17,7 +17,7 @@ const apiClient = axios.create({
 // Add request interceptor to automatically include auth token
 apiClient.interceptors.request.use(
     (config) => {
-        const authToken = CookieUtils.readCookie('AuthToken', 'ApiService')
+        const authToken = CookieUtils.getCookie('AuthToken')
         if (authToken) config.headers['X-Auth-Token'] = authToken
         debug(`API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`)
         return config

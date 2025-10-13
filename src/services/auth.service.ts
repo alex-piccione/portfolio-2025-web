@@ -33,8 +33,8 @@ export default class AuthService {
                 )
 
                 // Update store state
-                const authStore = useAuthStore()
-                authStore.setAuthenticated(username)
+                const authStore = useAuthStore()                
+                authStore.setAuthenticated(apiResult.value.user)
 
                 return Result.success(true)
             } else {

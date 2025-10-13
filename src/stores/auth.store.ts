@@ -9,14 +9,16 @@ const STORAGE_NAME = "auth"
 
 export const useAuthStore = defineStore(STORAGE_NAME, () => {
   const isLoggedIn = ref(false)
+  const id = ref<string | undefined>(undefined)
   const username = ref<string | undefined>(undefined)
 
   /**
    * Set user as authenticated with username
    */
-  function setAuthenticated(user: string) {
+  function setAuthenticated(user:{id: string, username: string}) {
     isLoggedIn.value = true
-    username.value = user
+    id.value = user.id
+    username.value = user.username
   }
 
   /**
@@ -24,6 +26,7 @@ export const useAuthStore = defineStore(STORAGE_NAME, () => {
    */
   function clearAuthentication() {
     isLoggedIn.value = false
+    id.value = undefined
     username.value = undefined
   }
 
@@ -33,13 +36,16 @@ export const useAuthStore = defineStore(STORAGE_NAME, () => {
   function getAuthState() {
     return {
       isLoggedIn: isLoggedIn.value,
+      id: id.value,
       username: username.value
     }
   }
 
   return { 
+    STORAGE_NAME,
     // State
     isLoggedIn, 
+    id,
     username, 
     // Actions
     setAuthenticated, 

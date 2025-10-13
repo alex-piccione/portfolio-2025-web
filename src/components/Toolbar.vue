@@ -32,6 +32,7 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import Icon from '@/components/Icon.vue'
+import AuthService from '@/services/auth.service'
 
 const ui_version = import.meta.env.VITE_UI_VERSION || "unknown version"
 
@@ -45,7 +46,7 @@ onMounted(() => {
 });
 
 // Methods
-const handleLogout = async () => await authStore.logout()
+const handleLogout = async () => await AuthService.logout()
 
 const handleNotifications = (): void => {
   console.log('Notifications clicked')
