@@ -1,0 +1,30 @@
+/* src/assets/styles/_table.scss */
+
+@import '@/styles/theme';
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: $padding;
+  /*font-family: $primary-font;*/
+
+  th, td {
+    border: 1px solid $border-color;
+    padding: 2px $padding-small;
+    text-align: left;
+  }
+
+  th {
+    background-color: $background-color-emphasis;
+    font-weight: bold;
+    color: $text-color-emphasis;
+  }
+
+  tr:nth-child(even) {
+    background-color: $background-color;
+  }
+
+  tr:hover {
+    background-color: lighten($background-color, 5%);
+  }
+}

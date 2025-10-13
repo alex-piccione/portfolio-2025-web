@@ -23,8 +23,6 @@
   </table>
 </template>
 
-<Aaaa />
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import HoldingService from '@/services/holding.service'
@@ -47,5 +45,6 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-/* Add scoped styles here */
+@use "/src/styles/_table.scss";
+
 </style>
