@@ -6,7 +6,12 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: $padding;
-  /*font-family: $primary-font;*/
+  border-radius: $border-radius;
+  overflow: hidden; // This is important for border-radius to work correctly with collapsed borders
+
+  thead {
+    border-radius: $border-radius;
+  }
 
   th, td {
     border: 1px solid $border-color;
