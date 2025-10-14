@@ -1,0 +1,5 @@
+- Prefer @use to @import
+- Do not use deprecated SASS functions such as `lighten()` or `darken()`.
+- Use CSS custom properties and `color-mix()` for color adjustments.
+- Follow the BEM naming convention for classes.
+- Prefer SCSS modules when possible.
