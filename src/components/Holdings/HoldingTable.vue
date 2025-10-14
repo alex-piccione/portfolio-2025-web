@@ -1,5 +1,6 @@
+<!-- src/components/Holdings/HoldingTable.vue -->
 <template>
-    <div>
+  <div>
     <button @click="onAddNewHolding" class="add-holding-button">Add New Holding</button>
     <table>
       <thead>
@@ -23,7 +24,16 @@
         </tr>
       </tbody>
     </table>
-    </div>
+  </div>
+
+  <Modal :is-open="showAddHoldingModal" title="Add New Holding" @close="showAddHoldingModal = false">
+    <p>This is where your new holding form would go!</p>
+    <!-- <AddNewHoldingForm @saved="handleSaved" @cancel="showAddHoldingModal = false" /> -->
+    <template #footer>
+      <button @click="showAddHoldingModal = false">Cancel</button>
+      <button>Save</button>
+    </template>
+  </Modal>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +42,7 @@ import HoldingService from '@/services/holding.service'
 import type Holding from '@/entities/Holding'
 import { useAuthStore } from '@/stores/auth.store'
 import { formatDate } from '../format.helper'
+import Modal from '@/components/Modal.vue'
 
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
@@ -47,12 +58,19 @@ onMounted(async () => {
     holdings.value = await holdingService.listforUser(authStore.id!)
 })
 
-const onAddNewHolding = () => {
-  console.log("Add New Holding button clicked!");
-  // TODO: In a real application, you would navigate to a form
-  //       or open a modal here to create a new holding.
+const showAddHoldingModal = ref(false)
+
+const onAddNewHolding = () => showAddHoldingModal.value = true
+const handleSaved = () => {
+  showAddHoldingModal.value = false
+  // Refresh the holdings list after adding a new holding
+  // This could be optimized to just add the new holding to the list
+  // if the API returns it directly
+  //onMounted()
 }
+
 </script>
+
 
 <style scoped lang="scss">
 @use "@/styles/table";
