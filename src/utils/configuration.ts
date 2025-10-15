@@ -20,7 +20,7 @@ export class ConfigurationProvider {
     private static isLoading = false    
     private static loadPromise: Promise<Configuration> | null = null
 
-    static async getInstance(): Promise<Configuration> {
+    static async _getInstance(): Promise<Configuration> {
         // Return existing promise if already loading
         if (this.loadPromise) {
             return this.loadPromise
@@ -55,14 +55,16 @@ export class ConfigurationProvider {
             return this.configuration
         } catch (error) {
             console.error(`Failed to load configuration (retry: ${retryCount}). ${error}`)
-            if (response)
-                console.error(`HTTP Status: ${response.status}, Status Text: ${response.statusText}`)
+            if (response) {
+                const htmlText = await response.text()
+                console.error(`HTTP Status: ${response.status}, Status Text: ${response.statusText}, Body: ${htmlText.substring(0, 200)}...`)
+            }
             
             console.error('Error details:', error)
 
             //if (error.status)
             //    console.error(`Status: ${error.status}, ${error.statusText}`)
-            if(retryCount > MAX_RETRY) throw new Error(`Failed to load configuration. ${error}`)
+            if(retryCount >= MAX_RETRY) throw new Error(`Failed to load configuration after ${MAX_RETRY} retries. LAst error: ${error}`)
             else return this.load(retryCount+1)
         } finally {
             this.isLoading = false
