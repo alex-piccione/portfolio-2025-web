@@ -44,12 +44,19 @@ export class ConfigurationProvider {
             if(!path) throw new Error("CONFIGURATION_FILE environment variable is missed")
             console.log(`configuration file: ${path}`)
             const response = await fetch(path)
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status}, StatusText: ${response.statusText}, Body: ${errorText.substring(0, 200)}...`);
+            }
+            
             this.configuration = await response.json()
 
             return this.configuration
         } catch (error) {
             //this._loadPromise = null // Reset promise on error to allow retry
             console.error(`Failed to load configuration (retry: ${retryCount}). ${error}`)
+            //if (error.status)
+            //    console.error(`Status: ${error.status}, ${error.statusText}`)
             if(retryCount > MAX_RETRY) throw new Error(`Failed to load configuration. ${error}`)
             else return this.load(retryCount+1)
         } finally {
