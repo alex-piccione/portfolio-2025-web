@@ -1,35 +1,35 @@
 /* src/assets/styles/_table.scss */
 
-@import '@/styles/theme';
+@use '@/styles/theme';
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: $padding;
-  border-radius: $border-radius;
-  overflow: hidden; // This is important for border-radius to work correctly with collapsed borders
+  margin-top: theme.$padding;
+  border-radius: theme.$border-radius;
+  overflow: hidden;  // This is important for border-radius to work correctly with collapsed borders
 
   thead {
-    border-radius: $border-radius;
+    border-radius: theme.$border-radius;
   }
 
   th, td {
-    border: 1px solid $border-color;
-    padding: 2px $padding-small;
+    border: 1px solid theme.$border-color;
+    padding: 2px theme.$padding-small;
     text-align: left;
   }
 
   th {
-    background-color: $background-color-emphasis;
+    background-color: theme.$background-color-emphasis;
     font-weight: bold;
-    color: $text-color-emphasis;
+    color: theme.$text-color-emphasis;
   }
 
   tr:nth-child(even) {
-    background-color: $background-color;
+    background-color: theme.$background-color;
   }
 
   tr:hover {
-    background-color: lighten($background-color, 5%);
+    background-color: lighten(theme.$background-color, 5%);
   }
 }
