@@ -4,8 +4,6 @@
     apiUrl: "http://localhost:3000"
 }*/
 
-import { debug } from "./utils"
-
 interface Configuration {
     environment: String,
     debug: boolean,
@@ -20,7 +18,7 @@ export class ConfigurationProvider {
     private static isLoading = false    
     private static loadPromise: Promise<Configuration> | null = null
 
-    static async _getInstance(): Promise<Configuration> {
+    static async getInstance(): Promise<Configuration> {
         // Return existing promise if already loading
         if (this.loadPromise) {
             return this.loadPromise
@@ -31,11 +29,12 @@ export class ConfigurationProvider {
             return this.configuration
         }
 
-        // Read from file
+        // Assign the promise to loadPromise and return it
+        this.loadPromise = this.load()
         return this.load()
     }
 
-    static async load(retryCount:number = 0): Promise<Configuration> {
+    private static async load(retryCount:number = 0): Promise<Configuration> {
         this.isLoading = true
         let response: Response | undefined // Declare response here to be accessible in finally or catch
 
@@ -62,8 +61,6 @@ export class ConfigurationProvider {
             
             console.error('Error details:', error)
 
-            //if (error.status)
-            //    console.error(`Status: ${error.status}, ${error.statusText}`)
             if(retryCount >= MAX_RETRY) throw new Error(`Failed to load configuration after ${MAX_RETRY} retries. LAst error: ${error}`)
             else return this.load(retryCount+1)
         } finally {

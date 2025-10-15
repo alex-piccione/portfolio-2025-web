@@ -1,6 +1,6 @@
 /* src/assets/styles/_table.scss */
-
 @use '@/styles/theme';
+@use 'sass:color';
 
 table {
   width: 100%;
@@ -30,6 +30,6 @@ table {
   }
 
   tr:hover {
-    background-color: lighten(theme.$background-color, 5%);
+    background-color: color.scale(theme.$background-color, $lightness: 5%); 
   }
 }

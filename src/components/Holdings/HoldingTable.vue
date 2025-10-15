@@ -1,7 +1,7 @@
 <!-- src/components/Holdings/HoldingTable.vue -->
 <template>
   <div>
-    <button @click="onAddNewHolding" class="add-holding-button">Add New Holding</button>
+    <button @click="onAddNewHolding" class="ok add-holding-button">Add New Holding</button>
     <table>
       <thead>
         <tr>
@@ -75,21 +75,11 @@ const handleSaved = () => {
 <style scoped lang="scss">
 @use "@/styles/table";
 @use "@/styles/theme";
+@use "@/styles/mixins";
 
 .add-holding-button {
-  background-color: theme.$accent-color;
-  color: theme.$text-color-emphasis; // Assuming emphasis text color works well on accent background
-  padding: theme.$padding-small theme.$padding;
-  border: none;
-  border-radius: theme.$border-radius;
-  cursor: pointer;
+  @include mixins.button;
   margin-bottom: theme.$padding;
-  font-size: 1rem; // Or use a theme font size variable if available
-  font-family: theme.$primary-font;
-  transition: background-color 0.2s ease; // Smooth transition for hover effect
 }
 
-.add-holding-button:hover {
-  background-color: color-mix(in srgb, theme.$accent-color 85%, black);
-}
 </style>
