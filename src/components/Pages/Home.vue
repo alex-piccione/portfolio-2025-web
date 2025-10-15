@@ -1,15 +1,13 @@
 // src/components/Pages/Home.vue
 <template>
   <div>
-    <h1>Dashboard</h1>
-    <p>Welcome to your dashboard!</p>
+    <h1>Holdings</h1>
+    <HoldingTable />
 
+<!--
     <Icon name="bell" size="small"/>
     <Icon name="account" />
-
-    <hr />
-
-    <HoldingTable />
+-->   
 
   </div>
 </template>
@@ -27,6 +25,3 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped lang="scss">
-/* Add scoped styles here */
-</style>

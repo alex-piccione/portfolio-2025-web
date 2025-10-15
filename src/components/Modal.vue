@@ -1,7 +1,7 @@
 <!-- src/components/Modal.vue -->
 <template>
   <teleport to="body">
-    <div v-if="isOpen" class="modal-backdrop" @click="closeModal">
+    <div v-if="isOpen" class="modal-backdrop" @click="closeModal">      
       <div class="modal-content" @click.stop>
         <header class="modal-header">
           <h3>{{ title }}</h3>
@@ -48,11 +48,11 @@ const closeModal = () => emit('close')
 }
 
 .modal-content {
-  background-color: theme.$background-color-emphasis;
+  background-color: theme.$background-color;
   color: theme.$text-color;
-  padding: theme.$padding;
+  border: 1px solid theme.$border-color;
   border-radius: theme.$border-radius;
-  box-shadow: theme.$box-shadow;
+  box-shadow: theme.$box-shadow-modal;
   min-width: 300px;
   max-width: 90%;
   max-height: 90%;
@@ -64,8 +64,8 @@ const closeModal = () => emit('close')
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: theme.$padding-small;
-
+  padding: theme.$padding;
+  
   h3 {
     margin: 0;
     color: theme.$text-color-emphasis;
@@ -86,6 +86,14 @@ const closeModal = () => emit('close')
 }
 
 .modal-body {
-  margin-bottom: theme.$padding-small;
+  border-top: 1px solid theme.$border-color;
+  border-bottom: 1px solid theme.$border-color;
+  padding: theme.$padding;
+}
+
+.modal-footer {
+  padding: theme.$padding;
+  display: flex;
+  gap: theme.$padding;
 }
 </style>

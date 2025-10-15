@@ -30,8 +30,8 @@
     <p>This is where your new holding form would go!</p>
     <!-- <AddNewHoldingForm @saved="handleSaved" @cancel="showAddHoldingModal = false" /> -->
     <template #footer>
-      <button @click="showAddHoldingModal = false">Cancel</button>
-      <button>Save</button>
+      <button class="cancel" @click="showAddHoldingModal = false">Cancel</button>
+      <button class="ok">Save</button>
     </template>
   </Modal>
 </template>
@@ -71,15 +71,8 @@ const handleSaved = () => {
 
 </script>
 
-
 <style scoped lang="scss">
 @use "@/styles/table";
-@use "@/styles/theme";
-@use "@/styles/mixins";
 
-.add-holding-button {
-  @include mixins.button;
-  margin-bottom: theme.$padding;
-}
 
 </style>
