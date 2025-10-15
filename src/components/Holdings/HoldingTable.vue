@@ -74,5 +74,4 @@ const handleSaved = () => {
 <style scoped lang="scss">
 @use "@/styles/table";
 
-
 </style>
