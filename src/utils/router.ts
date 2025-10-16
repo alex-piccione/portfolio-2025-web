@@ -34,11 +34,10 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to, _from, next) => {
-  if (to.meta.requiresAuth && !(await AuthService.isAuthenticated())) {
+router.beforeEach(async (to, _from) => {
+  if (to.meta.requiresAuth && !AuthService.isAuthenticated()) {
     return { name: 'Login' } // Redirect to login if not authenticated
   }
-  next()
 })
 
 export default router

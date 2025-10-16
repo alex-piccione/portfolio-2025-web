@@ -4,6 +4,8 @@
     apiUrl: "http://localhost:3000"
 }*/
 
+import { debug } from "./utils"
+
 interface Configuration {
     environment: String,
     debug: boolean,
@@ -31,10 +33,11 @@ export class ConfigurationProvider {
 
         // Assign the promise to loadPromise and return it
         this.loadPromise = this.load()
-        return this.load()
+        return this.loadPromise
     }
 
     private static async load(retryCount:number = 0): Promise<Configuration> {
+        debug(`called load configuration, retryCount=${retryCount}`)
         this.isLoading = true
         let response: Response | undefined // Declare response here to be accessible in finally or catch
 
