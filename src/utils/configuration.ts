@@ -35,7 +35,7 @@ export class ConfigurationProvider {
     }
 
     private static async load(retryCount:number = 0): Promise<Configuration> {
-        dconsole.log(`called load configuration, retryCount=${retryCount}`)
+        console.log(`called load configuration, retryCount=${retryCount}`)
         this.isLoading = true
         let response: Response | undefined // Declare response here to be accessible in finally or catch
 
