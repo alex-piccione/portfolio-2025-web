@@ -10,7 +10,6 @@ $background-color-active: #3d444d;
 $text-color: rgb(173, 178, 185);
 $text-color-emphasis: rgb(209, 215, 224);
 
-
 $ok-color: #28a745; // #35dc67;
 $warn-color: orange;
 $error-color: #dc3545;
@@ -22,30 +21,31 @@ $cancel-color: #555;
 $primary-font: "Arial", sans-serif;
 $secondary-font: "Helvetica", sans-serif;
 
+
 // Spacing
+
+$space: 0.5rem;
+$space-small: calc($space / 2);
+$space-big: calc($space * 2);
+
 $margin: 1rem;
 $margin-small: calc($margin / 2);
 $margin-big: calc($margin * 2);
+
 $padding: 1rem;
 $padding-small: calc($padding / 2);
 $padding-big: calc($padding * 2);
+
 
 // Borders
 $border-radius: 5px;
 $border-color: $secondary-color;
 $border-style: solid;
 
-// Other
+
+// Shadows
 $box-shadow_old: 0 0 5px rgba(0, 0, 0, 0.1);
 $box-shadow_2: rgba(1, 4, 9, 0.6) 0px 1px 1px 0px;
 $box-shadow: rgba(1, 4, 9, 0.6) 0px 1px 1px 0px, rgba(1, 4, 9, 0.6) 0px 1px 3px 0px;
 $box-shadow-modal: 0px 6px 12px -3px $background-color, 0px 6px 18px 0px $background-color-emphasis;
-$box-shadow-modal_1: 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
 $box-shadow-diffuse: $secondary-color 0 0 5rem;
-
-
-
-// Spaces
-$space: 0.5rem;
-$space-small: calc($space / 2);
-$space-big: calc($space * 2);

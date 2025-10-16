@@ -69,19 +69,57 @@
     }
 }
 
+$controls-border-color: color.scale(theme.$secondary-color, $lightness: 25%);
+
+@mixin control-border {
+    border: thin theme.$border-style $controls-border-color;
+    border-radius: theme.$border-radius
+}
+
 // input 
 @mixin input {
+    @include control-border;
     background-color: theme.$secondary-color !important;
     padding: theme.$padding-small;
-    border: thin solid theme.$border-color;
-    border-radius: theme.$space-small;
+    _border: thin theme.$border-style color.scale(theme.$border-color, $lightness: 20%);
+    _border-radius: theme.$space-small;
     
     &:focus {
         outline: none; // Remove default focus outline
         border-color: theme.$primary-color;
         box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
-  }
+    }
 }
+
+// select
+@mixin select {
+    @include control-border;
+    background-color: theme.$secondary-color !important;
+    padding: theme.$padding-small;
+    _border: thin solid theme.$border-color;
+    _border-radius: theme.$space-small;  
+
+    &:focus {
+        outline: none; // Remove default focus outline
+        border-color: theme.$primary-color;
+        box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
+    }
+}   
+
+@mixin textarea {
+    @include control-border;
+    background-color: theme.$secondary-color !important;
+    padding: theme.$padding-small;
+    _border: thin solid theme.$border-color;
+    _border-radius: theme.$space-small;  
+
+    &:focus {
+        outline: none; // Remove default focus outline
+        border-color: theme.$primary-color;
+        box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
+    }
+}   
+
 
 // panel
 @mixin panel {

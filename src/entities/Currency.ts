@@ -11,6 +11,6 @@ export default interface Currency {
     symbol: String,
     name: String,
     kind: String,
-    is_active: boolean,
+    isActive: boolean,
     precision: number,
 }

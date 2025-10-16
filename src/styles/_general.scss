@@ -63,7 +63,6 @@ h1 {
 }
 
 
-
 button {
   @include mix.button;
 }
@@ -71,6 +70,15 @@ button {
 input {
   @include mix.input;
 }
+
+select {
+  @include mix.select;
+}
+
+textarea {
+  @include mix.textarea;
+}
+
 
 .error-message {
   @include mix.error-message;

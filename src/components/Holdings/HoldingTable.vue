@@ -27,8 +27,7 @@
   </div>
 
   <Modal :is-open="showAddHoldingModal" title="Add New Holding" @close="showAddHoldingModal = false">
-    <p>This is where your new holding form would go!</p>
-    <!-- <AddNewHoldingForm @saved="handleSaved" @cancel="showAddHoldingModal = false" /> -->
+    <AddNewHoldingForm ref="addNewHoldingForm" @saved="handleSaved" @cancel="showAddHoldingModal = false" />
     <template #footer>
       <button class="cancel" @click="showAddHoldingModal = false">Cancel</button>
       <button class="ok">Save</button>
@@ -43,6 +42,7 @@ import type Holding from '@/entities/Holding'
 import { useAuthStore } from '@/stores/auth.store'
 import { formatDate } from '../format.helper'
 import Modal from '@/components/Modal.vue'
+import AddNewHoldingForm from './AddNewHoldingForm.vue'
 
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
