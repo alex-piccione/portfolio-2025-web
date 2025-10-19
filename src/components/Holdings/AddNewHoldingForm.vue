@@ -57,11 +57,13 @@ import CustodianService from '@/services/custodian.service'
 //import CustodianService from '@/services/custodian.service'
 import HoldingService from '@/services/holding.service'
 import { useAuthStore } from '@/stores/auth.store'
+import { useCurrencyStore } from '@/stores/currency.store'
 
-
+const authStore = useAuthStore()
+const currencyStore = useCurrencyStore()
 const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
-const authStore = useAuthStore()
+
 
 const emit = defineEmits(['saved', 'cancel'])
 
@@ -76,7 +78,8 @@ const formData = ref({
 
 onMounted(async () => {
   //const currencyService = new CurrencyService()
-  currencies.value = await CurrencyService.list()
+  await currencyStore.fetchCurrencies()
+  currencies.value = currencyStore.currencies
   custodians.value = await CustodianService.list()
 })
 
