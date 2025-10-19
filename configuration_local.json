@@ -1,8 +1,8 @@
 {
-    "environment": "Local",
-    "debug": true,
-    "apiUrl_local": "http://localhost:3000",
-    "apiUrl_docker": "http://localhost:50301",
-    "apiUrl_prod": "https://mydomain.com/api",
-    "apiUrl": "http://localhost:50301"
+  "environment": "Local",
+  "debug": true,
+  "apiUrl_local": "http://localhost:3000",
+  "apiUrl_docker": "http://localhost:50301",
+  "apiUrl_prod": "https://mydomain.com/api",
+  "apiUrl": "http://localhost:50301"
 }

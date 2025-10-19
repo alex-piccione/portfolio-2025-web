@@ -4,11 +4,12 @@
 
 Deploy is executed with a GitHub action that launch a script on a private server.  
 The script execution is allowed by a SSH Restricted permission key.  
-The description and the procedure is not part of this project.  
+The description and the procedure is not part of this project.
 
 ## Investigate deploy failure
 
-When thge deploy script fails it is possible to look at the Docker container log to see why it fails to start.  
+When thge deploy script fails it is possible to look at the Docker container log to see why it fails to start.
+
 ```sh
 # get the id of the failed stack
 docker stack ps portfolio-website

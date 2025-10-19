@@ -1,7 +1,11 @@
 <template>
   <h1>Currencies</h1>
   <ul class="currency-list">
-    <li v-for="currency in currencyStore.currencies" :key="currency.id" class="currency-list__item">
+    <li
+      v-for="currency in currencyStore.currencies"
+      :key="currency.id"
+      class="currency-list__item"
+    >
       {{ currency.name }} ({{ currency.symbol }})
     </li>
 
@@ -25,7 +29,6 @@ const currencies = ref<Currency[]>([])
 
 const currencyStore = useCurrencyStore()
 
-
 onMounted(async () => {
   currencies.value = await CurrencyService.list()
   if (!currencyStore.currencies.length) {
@@ -39,8 +42,11 @@ onMounted(async () => {
 
 .currency-list {
   /*&__item {  }*/
-  &__loading { color: gray; }
-  &__error { color: red; }
+  &__loading {
+    color: gray;
+  }
+  &__error {
+    color: red;
+  }
 }
-
 </style>

@@ -10,51 +10,58 @@ debug(`apiUrl: ${configuration.apiUrl}`)
 
 // Create a centralized axios instance
 const apiClient = axios.create({
-    baseURL: configuration.apiUrl,
-    timeout: 10000, // 10 seconds timeout
+  baseURL: configuration.apiUrl,
+  timeout: 10000, // 10 seconds timeout
 })
 
 // Add request interceptor to automatically include auth token
 apiClient.interceptors.request.use(
-    (config) => {
-        const authToken = CookieUtils.getCookie('AuthToken')
-        if (authToken) config.headers['X-Auth-Token'] = authToken
-        debug(`API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`)
-        return config
-    },
-    (error) => {
-        debug(`API Request Error: ${error}`)
-        return Promise.reject(error)
-    }
+  (config) => {
+    const authToken = CookieUtils.getCookie("AuthToken")
+    if (authToken) config.headers["X-Auth-Token"] = authToken
+    debug(
+      `API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`,
+    )
+    return config
+  },
+  (error) => {
+    debug(`API Request Error: ${error}`)
+    return Promise.reject(error)
+  },
 )
 
 // Add response interceptor for global error handling (optional but useful)
 apiClient.interceptors.response.use(
-    (response) => {
-        debug(`API Response: ${response.status} ${response.config.url}`)
-        return response
-    },
-    (error) => {
-        debug(`API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message}`)
-        
-        // Handle common errors globally
-        if (error.response?.status === 401) {
-            // Token expired or invalid - could trigger logout
-            debug('Unauthorized request - token may be invalid')
-        }
-        
-        return Promise.reject(error)
+  (response) => {
+    debug(`API Response: ${response.status} ${response.config.url}`)
+    return response
+  },
+  (error) => {
+    debug(
+      `API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message}`,
+    )
+
+    // Handle common errors globally
+    if (error.response?.status === 401) {
+      // Token expired or invalid - could trigger logout
+      debug("Unauthorized request - token may be invalid")
     }
+
+    return Promise.reject(error)
+  },
 )
 
-export function deserialize<T>(item: any) {
-    try {
-        return item as T
-    } 
-    catch (error) {
-        //const t = generic
-        throw new Error(`Failed to deserialize data to {T}. ${error}`)
-    }
+export function deserialize<T>(item: unknown) {
+  try {
+    return item as T
+  } catch (error) {
+    //const t = generic
+    throw new Error(`Failed to deserialize data to {T}. ${error}`)
+  }
 }
 
-export default {client: apiClient, parseError:parseErrorResponse , deserialize}
+export default {
+  client: apiClient,
+  parseError: parseErrorResponse,
+  deserialize,
+}

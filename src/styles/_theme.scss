@@ -2,7 +2,7 @@
 
 // Colors
 $primary-color: rgb(0, 77, 153);
-$secondary-color:  rgb(61, 68, 77); //#6c757d
+$secondary-color: rgb(61, 68, 77); //#6c757d
 //$accent-color: #28a745;
 $background-color: rgb(33, 40, 48);
 $background-color-emphasis: #3d444d;
@@ -13,14 +13,12 @@ $text-color-emphasis: rgb(209, 215, 224);
 $ok-color: #28a745; // #35dc67;
 $warn-color: orange;
 $error-color: #dc3545;
-$info-color: #007BFF;
+$info-color: #007bff;
 $cancel-color: #555;
-
 
 // Fonts
 $primary-font: "Arial", sans-serif;
 $secondary-font: "Helvetica", sans-serif;
-
 
 // Spacing
 
@@ -36,16 +34,18 @@ $padding: 1rem;
 $padding-small: calc($padding / 2);
 $padding-big: calc($padding * 2);
 
-
 // Borders
 $border-radius: 5px;
 $border-color: $secondary-color;
 $border-style: solid;
 
-
 // Shadows
 $box-shadow_old: 0 0 5px rgba(0, 0, 0, 0.1);
 $box-shadow_2: rgba(1, 4, 9, 0.6) 0px 1px 1px 0px;
-$box-shadow: rgba(1, 4, 9, 0.6) 0px 1px 1px 0px, rgba(1, 4, 9, 0.6) 0px 1px 3px 0px;
-$box-shadow-modal: 0px 6px 12px -3px $background-color, 0px 6px 18px 0px $background-color-emphasis;
+$box-shadow:
+  rgba(1, 4, 9, 0.6) 0px 1px 1px 0px,
+  rgba(1, 4, 9, 0.6) 0px 1px 3px 0px;
+$box-shadow-modal:
+  0px 6px 12px -3px $background-color,
+  0px 6px 18px 0px $background-color-emphasis;
 $box-shadow-diffuse: $secondary-color 0 0 5rem;

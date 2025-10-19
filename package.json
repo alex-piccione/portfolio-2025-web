@@ -15,11 +15,6 @@
     "test-docker": "cd devop && bash ./test_local_Dockerfile.sh",
     "prepare": "husky"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn check-build"
-    }
-  },
   "dependencies": {
     "axios": "^1.12.2",
     "pinia": "^3.0.3",

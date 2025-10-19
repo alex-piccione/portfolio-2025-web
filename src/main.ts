@@ -5,7 +5,7 @@ import "@/styles/_general.scss"
 import "@/styles/_form.scss"
 import "@/styles/_table.scss"
 import App from "@/App.vue"
-import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
+import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedState)

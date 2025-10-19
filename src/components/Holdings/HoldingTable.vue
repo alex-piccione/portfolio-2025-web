@@ -1,7 +1,9 @@
 <!-- src/components/Holdings/HoldingTable.vue -->
 <template>
   <div>
-    <button @click="onAddNewHolding" class="ok add-holding-button">Add New Holding</button>
+    <button @click="onAddNewHolding" class="ok add-holding-button">
+      Add New Holding
+    </button>
     <table>
       <thead>
         <tr>
@@ -26,41 +28,51 @@
     </table>
   </div>
 
-  <Modal :is-open="showAddHoldingModal" title="Add New Holding" @close="showAddHoldingModal = false">
-    <AddNewHoldingForm ref="addNewHoldingForm" @saved="handleSaved" @cancel="showAddHoldingModal = false" />
+  <AppModal
+    :is-open="showAddHoldingModal"
+    title="Add New Holding"
+    @close="showAddHoldingModal = false"
+  >
+    <AddNewHoldingForm
+      ref="addNewHoldingForm"
+      @saved="handleSaved"
+      @cancel="showAddHoldingModal = false"
+    />
     <template #footer>
-      <button class="cancel" @click="showAddHoldingModal = false">Cancel</button>
+      <button class="cancel" @click="showAddHoldingModal = false">
+        Cancel
+      </button>
       <button class="ok">Save</button>
     </template>
-  </Modal>
+  </AppModal>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import HoldingService from '@/services/holding.service'
-import type Holding from '@/entities/Holding'
-import { useAuthStore } from '@/stores/auth.store'
-import { formatDate } from '../format.helper'
-import Modal from '@/components/Modal.vue'
-import AddNewHoldingForm from './AddNewHoldingForm.vue'
+import { onMounted, ref } from "vue"
+import HoldingService from "@/services/holding.service"
+import type Holding from "@/entities/Holding"
+import { useAuthStore } from "@/stores/auth.store"
+import { formatDate } from "../format.helper"
+import AppModal from "@/components/AppModal.vue"
+import AddNewHoldingForm from "./AddNewHoldingForm.vue"
 
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
 
 onMounted(async () => {
-    // ... existing code ...
-    if(authStore.isLoggedIn === false) {
-        console.warn("User not authenticated. Cannot fetch holdings.")
-        return;
-    }
+  // ... existing code ...
+  if (authStore.isLoggedIn === false) {
+    console.warn("User not authenticated. Cannot fetch holdings.")
+    return
+  }
 
-    const holdingService = new HoldingService()
-    holdings.value = await holdingService.listforUser(authStore.id!)
+  const holdingService = new HoldingService()
+  holdings.value = await holdingService.listforUser(authStore.id!)
 })
 
 const showAddHoldingModal = ref(false)
 
-const onAddNewHolding = () => showAddHoldingModal.value = true
+const onAddNewHolding = () => (showAddHoldingModal.value = true)
 const handleSaved = () => {
   showAddHoldingModal.value = false
   // Refresh the holdings list after adding a new holding
@@ -68,10 +80,8 @@ const handleSaved = () => {
   // if the API returns it directly
   //onMounted()
 }
-
 </script>
 
 <style scoped lang="scss">
 @use "@/styles/table";
-
 </style>

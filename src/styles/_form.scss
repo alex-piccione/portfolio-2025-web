@@ -1,24 +1,23 @@
 @use "mixins" as mix;
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .form-horizontal {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    label {
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
 }
-

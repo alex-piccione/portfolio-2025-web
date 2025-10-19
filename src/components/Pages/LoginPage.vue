@@ -1,44 +1,56 @@
 <template>
   <div class="panel">
-  <form class="login-form" @submit.prevent="handleLogin">
-    <div class="form-group">
-      <label for="username">Username:</label>
-      <input v-model="email" type="text" id="username" placeholder="Username" />
-    </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input v-model="password" type="password" id="password" placeholder="Password" />
-    </div>
-    <div class="button-group">
-      <button type="submit" class="submit" :disabled="isLoading">
-        {{ isLoading ? 'Logging in...' : 'Login' }}
-      </button>
-      <button type="button" class="cancel" @click="goBack">Return Back</button>
-    </div>
-     <p v-if="loginError" class="error-message">{{ loginError }}</p>
-  </form>
+    <form class="login-form" @submit.prevent="handleLogin">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input
+          v-model="email"
+          type="text"
+          id="username"
+          placeholder="Username"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          v-model="password"
+          type="password"
+          id="password"
+          placeholder="Password"
+        />
+      </div>
+      <div class="button-group">
+        <button type="submit" class="submit" :disabled="isLoading">
+          {{ isLoading ? "Logging in..." : "Login" }}
+        </button>
+        <button type="button" class="cancel" @click="goBack">
+          Return Back
+        </button>
+      </div>
+      <p v-if="loginError" class="error-message">{{ loginError }}</p>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-import AuthService from '@/services/auth.service'
-import { goTo } from '@/utils/router'
+import { useRouter } from "vue-router"
+import { ref } from "vue"
+import AuthService from "@/services/auth.service"
+import { goTo } from "@/utils/router"
 
 const router = useRouter()
-const email = ref<string>('')
-const password = ref<string>('')
+const email = ref<string>("")
+const password = ref<string>("")
 const loginError = ref<string | null>(null)
 const isLoading = ref<boolean>(false)
 
-const handleLogin = async () => {  
+const handleLogin = async () => {
   loginError.value = null
   isLoading.value = true
 
   try {
     const result = await AuthService.login(email.value, password.value)
-    
+
     if (result.isSuccess) {
       // Service handles navigation, so we don't need to do it here
       // But we can do it anyway for explicit control
@@ -46,17 +58,16 @@ const handleLogin = async () => {
     } else {
       loginError.value = result.error
     }
-  } catch (error: any) {
-    loginError.value = error?.message || "An unexpected error occurred"
+  } catch (error: unknown) {
+    loginError.value =  error instanceof Error ? error.message : "An unexpected error occurred"
   } finally {
     isLoading.value = false
   }
 }
 
 const goBack = () => {
-  router.go(-1); // Navigate back to the previous page
+  router.go(-1) // Navigate back to the previous page
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -73,7 +84,6 @@ const goBack = () => {
   padding: theme.$padding-big;
 
   .form-group {
-
     label {
       display: block;
       font-weight: 500;
@@ -96,7 +106,7 @@ const goBack = () => {
     margin-top: theme.$margin;
     display: flex;
     justify-content: space-between;
-    
+
     button:disabled {
       opacity: 0.6;
       cursor: not-allowed;

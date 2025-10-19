@@ -6,4 +6,3 @@ alwaysApply: false
 ---
 
 Omit semicolons at the end of statements unless they are syntactically required (e.g., in 'for' loops, or when returning null).
-

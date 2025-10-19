@@ -41,5 +41,4 @@ slashCommands:
         - Vite
         - vue-router
 
-
 defaultSlashCommand: /vue-exper

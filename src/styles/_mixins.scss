@@ -1,130 +1,132 @@
 // src/styles/_variables.scss
 @use "_theme.scss" as theme;
-@use 'sass:color';
+@use "sass:color";
 
 //@forward "src/styles/_variables.scss" show $error-color;
 @mixin error-message {
-    color: theme.$error-color;
+  color: theme.$error-color;
 }
 
 // button
 @mixin button {
-    padding: theme.$padding-small theme.$padding;
-    /*font-size: 1rem;*/
-    font-size: 115%;
-    font-weight: 500;
-    /*margin: theme.$margin;*/
-    border: thin solid theme.$border-color; // transparent ?
-    border-radius: theme.$border-radius;
-    color: theme.$text-color-emphasis; // default
-    background-color: theme.$secondary-color; // default    
-    transition: border-color 0.25s;
-    cursor: pointer;
+  padding: theme.$padding-small theme.$padding;
+  /*font-size: 1rem;*/
+  font-size: 115%;
+  font-weight: 500;
+  /*margin: theme.$margin;*/
+  border: thin solid theme.$border-color; // transparent ?
+  border-radius: theme.$border-radius;
+  color: theme.$text-color-emphasis; // default
+  background-color: theme.$secondary-color; // default
+  transition: border-color 0.25s;
+  cursor: pointer;
 
-    &:hover {
-        border-color: color.scale(theme.$secondary-color, $lightness: 20%); 
-    }
+  &:hover {
+    border-color: color.scale(theme.$secondary-color, $lightness: 20%);
+  }
 
-    &:focus, &:focus-visible {
-        outline: .3rem auto -webkit-focus-ring-color;
-    }
+  &:focus,
+  &:focus-visible {
+    outline: 0.3rem auto -webkit-focus-ring-color;
+  }
 
-    /*&:active {
+  /*&:active {
 
     }*/
 
-    &.submit, &[type="submit"] {
-        background-color: theme.$info-color;
+  &.submit,
+  &[type="submit"] {
+    background-color: theme.$info-color;
 
-        &:hover {
-            border-color: color.scale(theme.$info-color, $lightness: 20%);
-        }
+    &:hover {
+      border-color: color.scale(theme.$info-color, $lightness: 20%);
     }
+  }
 
-    &.cancel {
-        background-color: theme.$cancel-color;
+  &.cancel {
+    background-color: theme.$cancel-color;
 
-        &:hover {
-            border-color: color.scale(theme.$cancel-color, $lightness: 20%); 
-        }
+    &:hover {
+      border-color: color.scale(theme.$cancel-color, $lightness: 20%);
     }
+  }
 
-    &.ok {
-        background-color: theme.$ok-color;
+  &.ok {
+    background-color: theme.$ok-color;
 
-        &:hover {
-            border-color: color.scale(theme.$ok-color, $lightness: 10%); 
-        }    
+    &:hover {
+      border-color: color.scale(theme.$ok-color, $lightness: 10%);
     }
+  }
 
-    &.delete {
-      background-color: #c0392b;
-      border-color: #a93226;
+  &.delete {
+    background-color: #c0392b;
+    border-color: #a93226;
 
-      &:hover {
-        background-color: #e74c3c ;
-        border-color: #c0392b;
-        color: white;
-      }
+    &:hover {
+      background-color: #e74c3c;
+      border-color: #c0392b;
+      color: white;
     }
+  }
 }
 
 $controls-border-color: color.scale(theme.$secondary-color, $lightness: 25%);
 
 @mixin control-border {
-    border: thin theme.$border-style $controls-border-color;
-    border-radius: theme.$border-radius
+  border: thin theme.$border-style $controls-border-color;
+  border-radius: theme.$border-radius;
 }
 
-// input 
+// input
 @mixin input {
-    @include control-border;
-    background-color: theme.$secondary-color !important;
-    padding: theme.$padding-small;
-    _border: thin theme.$border-style color.scale(theme.$border-color, $lightness: 20%);
-    _border-radius: theme.$space-small;
-    
-    &:focus {
-        outline: none; // Remove default focus outline
-        border-color: theme.$primary-color;
-        box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
-    }
+  @include control-border;
+  background-color: theme.$secondary-color !important;
+  padding: theme.$padding-small;
+  _border: thin theme.$border-style
+    color.scale(theme.$border-color, $lightness: 20%);
+  _border-radius: theme.$space-small;
+
+  &:focus {
+    outline: none; // Remove default focus outline
+    border-color: theme.$primary-color;
+    box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
+  }
 }
 
 // select
 @mixin select {
-    @include control-border;
-    background-color: theme.$secondary-color !important;
-    padding: theme.$padding-small;
-    _border: thin solid theme.$border-color;
-    _border-radius: theme.$space-small;  
+  @include control-border;
+  background-color: theme.$secondary-color !important;
+  padding: theme.$padding-small;
+  _border: thin solid theme.$border-color;
+  _border-radius: theme.$space-small;
 
-    &:focus {
-        outline: none; // Remove default focus outline
-        border-color: theme.$primary-color;
-        box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
-    }
-}   
+  &:focus {
+    outline: none; // Remove default focus outline
+    border-color: theme.$primary-color;
+    box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
+  }
+}
 
 @mixin textarea {
-    @include control-border;
-    background-color: theme.$secondary-color !important;
-    padding: theme.$padding-small;
-    _border: thin solid theme.$border-color;
-    _border-radius: theme.$space-small;  
+  @include control-border;
+  background-color: theme.$secondary-color !important;
+  padding: theme.$padding-small;
+  _border: thin solid theme.$border-color;
+  _border-radius: theme.$space-small;
 
-    &:focus {
-        outline: none; // Remove default focus outline
-        border-color: theme.$primary-color;
-        box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
-    }
-}   
-
+  &:focus {
+    outline: none; // Remove default focus outline
+    border-color: theme.$primary-color;
+    box-shadow: 0 0 5px rgba(theme.$primary-color, 0.5);
+  }
+}
 
 // panel
 @mixin panel {
-    background-color: theme.$background-color;
-    border: thin solid theme.$border-color;
-    border-radius: calc(theme.$border-radius * 2);
-    box-shadow: theme.$box-shadow;
+  background-color: theme.$background-color;
+  border: thin solid theme.$border-color;
+  border-radius: calc(theme.$border-radius * 2);
+  box-shadow: theme.$box-shadow;
 }

@@ -17,7 +17,7 @@ Web UI for Portfolio project.
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io/) for code formatting
 - [Material Design Icons](https://pictogrammers.com/docs/library/mdi/getting-started/vuejs/) for icons
-  + https://pictogrammers.com/library/mdi/
+  - https://pictogrammers.com/library/mdi/
 
 ## Setup
 
@@ -27,8 +27,8 @@ This project uses **Yarn** (`npm install yarn`).
 ## Configuration
 
 Configuration is loaded at runtime reading a JSON file.  
-Local development use a default "configuration_local.json" file while for production an environment variable with the path is used.  
-_src/utils/configuration.ts_ contains the logic to read the file.  
+Local development use a default "configuration*local.json" file while for production an environment variable with the path is used.  
+\_src/utils/configuration.ts* contains the logic to read the file.
 
 ## Usage
 

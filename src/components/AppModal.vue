@@ -1,51 +1,56 @@
 <!-- src/components/Modal.vue -->
 <template>
   <teleport to="body">
-  <transition name="modal-fade">
-    <div v-if="isOpen" class="modal-backdrop" @click="closeModal">      
-      <div class="modal-content" @click.stop role="dialog" aria-modal="true" aria-labelledby="model-header">
-        <header class="modal-header">
-          <h3>{{ title }}</h3>
-          <button @click="closeModal" class="close-button">&times;</button>
-        </header>
-        <div class="modal-body">
-          <slot> <!-- Custom content --> </slot> 
+    <transition name="modal-fade">
+      <div v-if="isOpen" class="modal-backdrop" @click="closeModal">
+        <div
+          class="modal-content"
+          @click.stop
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="model-header"
+        >
+          <header class="modal-header">
+            <h3>{{ title }}</h3>
+            <button @click="closeModal" class="close-button">&times;</button>
+          </header>
+          <div class="modal-body">
+            <slot> <!-- Custom content --> </slot>
+          </div>
+          <footer class="modal-footer">
+            <slot name="footer"></slot>
+          </footer>
         </div>
-        <footer class="modal-footer">
-          <slot name="footer"></slot>
-        </footer>
       </div>
-    </div>
     </transition>
   </teleport>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from "vue"
 
 const props = defineProps<{
   isOpen: boolean
   title: string
 }>()
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(["close"])
 
-const closeModal = () => emit('close')
+const closeModal = () => emit("close")
 
 const handleKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && props.isOpen) {
+  if (e.key === "Escape" && props.isOpen) {
     closeModal()
   }
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown)
+  window.addEventListener("keydown", handleKeydown)
 })
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
+  document.removeEventListener("keydown", handleKeydown)
 })
-
 </script>
 
 <style scoped lang="scss">
@@ -82,7 +87,7 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: theme.$padding;
-  
+
   h3 {
     margin: 0;
     color: theme.$text-color-emphasis;
@@ -124,5 +129,4 @@ onUnmounted(() => {
 .modal-fade-leave-to {
   opacity: 0;
 }
-
 </style>

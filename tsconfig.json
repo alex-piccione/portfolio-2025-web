@@ -7,7 +7,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]  // "@/aaa" points to "src/aaa"
+      "@/*": ["src/*"] // "@/aaa" points to "src/aaa"
     }
   }
 }

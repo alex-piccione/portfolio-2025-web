@@ -9,7 +9,7 @@
         -->
       </nav>
     </div>
-    
+
     <div class="toolbar-right">
       <!--
       <button class="toolbar-button" @click="handleNotifications">
@@ -17,9 +17,7 @@
         Notifications
       </button>
       -->
-      <div class="toolbar-user">       
-        <Icon name="account" /> {{ username }}
-      </div>
+      <div class="toolbar-user"><AppIcon name="account" /> {{ username }}</div>
       <button class="toolbar-button delete" @click="handleLogout">
         Logout
       </button>
@@ -27,32 +25,30 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth.store'
-import Icon from '@/components/Icon.vue'
-import AuthService from '@/services/auth.service'
+import { ref, onMounted } from "vue"
+import { useAuthStore } from "@/stores/auth.store"
+import AppIcon from "@/components/AppIcon.vue"
+import AuthService from "@/services/auth.service"
 
 const ui_version = import.meta.env.VITE_UI_VERSION || "unknown version"
 
 const authStore = useAuthStore()
 
 // Reactive data
-const username = ref<string|undefined>(undefined)
+const username = ref<string | undefined>(undefined)
 
 onMounted(() => {
-  username.value = authStore.username;
-});
+  username.value = authStore.username
+})
 
 // Methods
 const handleLogout = async () => await AuthService.logout()
 
-const handleNotifications = (): void => {
-  console.log('Notifications clicked')
+/*const handleNotifications = (): void => {
+  console.log("Notifications clicked")
   // Add your notification logic here
-}
-
+}*/
 </script>
 
 <style lang="scss" scoped>
@@ -99,7 +95,7 @@ const handleNotifications = (): void => {
       /*padding: 8px 12px;*/
       border-radius: theme.$border-radius;
       transition: all 0.3s ease;
-/*
+      /*
       &:hover {
         color: #ecf0f1;
         background-color: theme;
@@ -171,7 +167,6 @@ const handleNotifications = (): void => {
     &-user {
       padding: 2px 8px;
     }
-
   }
 }
 </style>
