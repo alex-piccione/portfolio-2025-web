@@ -7,11 +7,18 @@
     "dev": "vite",
     "build_old": "vue-tsc --noEmit && vite build",
     "build": "vue-tsc -b --noEmit && vite build",
+    "check-build": "vue-tsc -b --noEmit",
     "preview": "vite preview",
     "lint": "eslint src/**/*.{js,ts,vue}",
     "lint-fix": "eslint --fix src/**/*.{js,ts,vue}",
     "format": "prettier --write .",
-    "test-docker": "cd devop && bash ./test_local_Dockerfile.sh"
+    "test-docker": "cd devop && bash ./test_local_Dockerfile.sh",
+    "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn check-build"
+    }
   },
   "dependencies": {
     "axios": "^1.12.2",
@@ -29,6 +36,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.4.0",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
     "jiti": "^2.5.1",
     "prettier": "^3.6.2",
     "sass": "^1.92.1",
