@@ -45,7 +45,9 @@ export default class AuthService {
     } catch (error: unknown) {
       // TODO: logger.error("Login failed.", error)
       console.warn("Login error:", error)
-      return Result.failed( error instanceof Error ? error.message || "Login failed" : `${error}`)
+      return Result.failed(
+        error instanceof Error ? error.message || "Login failed" : `${error}`,
+      )
     }
   }
 

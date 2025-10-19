@@ -25,7 +25,8 @@ export const useCurrencyStore = defineStore(
         const list = await CurrencyService.list()
         currencies.value = list
       } catch (e: unknown) {
-        error.value = e instanceof Error ? e.message : "Failed to load currencies"
+        error.value =
+          e instanceof Error ? e.message : "Failed to load currencies"
       } finally {
         isLoading.value = false
       }

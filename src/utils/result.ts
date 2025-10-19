@@ -9,9 +9,10 @@ export const Result = {
     isSuccess: true,
     value,
   }),
-  failed: (
-    error: string,
-  ): { isSuccess: false; error: string } => ({ isSuccess: false, error })
+  failed: (error: string): { isSuccess: false; error: string } => ({
+    isSuccess: false,
+    error,
+  }),
 }
 
 // ref 1: https://www.webdevtutor.net/blog/typescript-result-option

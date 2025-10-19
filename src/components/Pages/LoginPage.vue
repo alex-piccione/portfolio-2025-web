@@ -59,7 +59,8 @@ const handleLogin = async () => {
       loginError.value = result.error
     }
   } catch (error: unknown) {
-    loginError.value =  error instanceof Error ? error.message : "An unexpected error occurred"
+    loginError.value =
+      error instanceof Error ? error.message : "An unexpected error occurred"
   } finally {
     isLoading.value = false
   }
