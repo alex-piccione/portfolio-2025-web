@@ -1,19 +1,29 @@
 <template>
   <div
+    v-if="error"
     role="alert"
     class="error-notification"
-    v-if="props.error"
+    :class="[`position-${position}`]"
   >
-    {{ props.error }}
+    {{ error }}
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  error: String
-})
-</script>
+<script setup lang="ts">
+import { toRefs } from "vue"
 
+const props = withDefaults(
+  defineProps<{
+    error: string | null
+    position?: "initial" | "center"
+  }>(),
+  {
+    position: "initial",
+  },
+)
+
+const { error, position } = toRefs(props)
+</script>
 
 <style scoped lang="scss">
 @use "@/styles/theme" as *;
@@ -25,5 +35,14 @@ const props = defineProps({
   border-radius: $border-radius;
   background: color-mix(in srgb, $error-color, transparent 90%);
   color: $error-color !important;
+  text-align: center;
+
+  &.position-initial {
+    text-align: initial;
+  }
+
+  &.position-center {
+    text-align: center;
+  }
 }
 </style>

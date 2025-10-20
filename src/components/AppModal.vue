@@ -75,7 +75,7 @@ onUnmounted(() => {
   border: 1px solid theme.$border-color;
   border-radius: theme.$border-radius;
   box-shadow: theme.$box-shadow-modal;
-  min-width: 300px;
+  min-width: 350px;
   max-width: 90%;
   max-height: 90%;
   overflow-y: auto;

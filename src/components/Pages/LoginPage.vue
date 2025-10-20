@@ -27,7 +27,7 @@
           Return Back
         </button>
       </div>
-      <p v-if="loginError" class="error-message">{{ loginError }}</p>
+      <InlineError :error="loginError" position="center" />
     </form>
   </div>
 </template>
@@ -37,6 +37,7 @@ import { useRouter } from "vue-router"
 import { ref } from "vue"
 import AuthService from "@/services/auth.service"
 import { goTo } from "@/utils/router"
+import InlineError from "@/components/InlineError.vue"
 
 const router = useRouter()
 const email = ref<string>("")
@@ -49,7 +50,11 @@ const handleLogin = async () => {
   isLoading.value = true
 
   try {
-    const result = await AuthService.login(email.value, password.value)
+    const [result] = await Promise.all([
+      AuthService.login(email.value, password.value),
+      new Promise((resolve) => setTimeout(resolve, 500)), // Minimum 500ms
+    ])
+    //const result = await AuthService.login(email.value, password.value)
 
     if (result.isSuccess) {
       // Service handles navigation, so we don't need to do it here

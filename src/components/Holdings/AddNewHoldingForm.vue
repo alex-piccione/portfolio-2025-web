@@ -13,8 +13,7 @@
         <option>Balance</option>
         <!--<option>Add</option>
         <option>Remove</option>
-      -->
-      </select>
+      --></select>
     </div>
 
     <div class="form-group">
@@ -73,11 +72,12 @@ import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
 import InlineError from "@/components/InlineError.vue" // Import the InlineError component
+import { goTo } from "@/utils/router"
 const authStore = useAuthStore()
 const currencyStore = useCurrencyStore()
 const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
-const error = ref<string|null>(null)
+const error = ref<string | null>(null)
 
 const emit = defineEmits(["saved", "cancel"])
 
@@ -91,7 +91,6 @@ const formData = ref({
 })
 
 onMounted(async () => {
-
   await currencyStore.fetchCurrencies()
   if (currencyStore.error) {
     console.error("Error fetching currencies (onMount):", currencyStore.error)
@@ -105,13 +104,15 @@ onMounted(async () => {
 const submitForm = async () => {
   if (!authStore.id) {
     console.error("User not authenticated")
-    return
+    goTo("Login")
   }
+
+  const { date, currencyId } = formData.value
+
   const holdingService = new HoldingService()
-  const { currencyId, ...rest } = formData.value
 
   const holdingData = {
-    ...rest,
+    date,
     currency: { id: parseInt(currencyId) },
     user: { id: authStore.id },
   }
@@ -119,9 +120,9 @@ const submitForm = async () => {
   try {
     await holdingService.create(holdingData)
     emit("saved")
-  } catch (error) {
-    console.error("Error creating holding:", error)
-    // Here you could add some user-facing error handling
+  } catch (err) {
+    console.error("Error creating holding:", err)
+    error.value = "Failed to save holding. Please try again."
   }
 }
 
