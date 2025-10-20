@@ -118,5 +118,4 @@ onUnmounted(() => {
   display: flex;
   gap: theme.$padding;
 }
-
 </style>

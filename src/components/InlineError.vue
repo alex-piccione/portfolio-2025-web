@@ -1,13 +1,13 @@
 <template>
-    <transition name="slide-fade">
-  <div
-    v-if="error"
-    role="alert"
-    class="error-notification"
-    :class="[`position-${position}`]"
-  >
-    {{ error }}
-  </div>
+  <transition name="slide-fade">
+    <div
+      v-if="error"
+      role="alert"
+      class="error-notification"
+      :class="[`position-${position}`]"
+    >
+      {{ error }}
+    </div>
   </transition>
 </template>
 
