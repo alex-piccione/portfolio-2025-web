@@ -1,7 +1,7 @@
 <!-- src/components/Modal.vue -->
 <template>
   <teleport to="body">
-    <transition name="modal-fade">
+    <transition name="fade">
       <div v-if="isOpen" class="modal-backdrop" @click="closeModal">
         <div
           class="modal-content"
@@ -119,14 +119,4 @@ onUnmounted(() => {
   gap: theme.$padding;
 }
 
-/* -------------- Transitions -------------- */
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-fade-enter-from,
-.modal-fade-leave-to {
-  opacity: 0;
-}
 </style>

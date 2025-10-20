@@ -1,4 +1,5 @@
 <template>
+    <transition name="slide-fade">
   <div
     v-if="error"
     role="alert"
@@ -7,6 +8,7 @@
   >
     {{ error }}
   </div>
+  </transition>
 </template>
 
 <script setup lang="ts">
