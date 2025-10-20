@@ -1,6 +1,7 @@
 <!-- src/components/Holdings/AddNewHoldingForm.vue -->
 <template>
   <form @submit.prevent="submitForm">
+    <InlineError :error="error" />
     <div class="form-group">
       <label for="date">Date</label>
       <input type="date" id="date" v-model="formData.date" required />
@@ -10,8 +11,9 @@
       <label for="action">Action</label>
       <select id="action" v-model="formData.action" required>
         <option>Balance</option>
-        <option>Add</option>
+        <!--<option>Add</option>
         <option>Remove</option>
+      -->
       </select>
     </div>
 
@@ -26,6 +28,7 @@
         >
           {{ custodian.name }}
         </option>
+        <option>Add new</option>
       </select>
     </div>
 
@@ -69,11 +72,12 @@ import CustodianService from "@/services/custodian.service"
 import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
-
+import InlineError from "@/components/InlineError.vue" // Import the InlineError component
 const authStore = useAuthStore()
 const currencyStore = useCurrencyStore()
 const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
+const error = ref<string|null>(null)
 
 const emit = defineEmits(["saved", "cancel"])
 
@@ -87,8 +91,13 @@ const formData = ref({
 })
 
 onMounted(async () => {
-  //const currencyService = new CurrencyService()
+
   await currencyStore.fetchCurrencies()
+  if (currencyStore.error) {
+    console.error("Error fetching currencies (onMount):", currencyStore.error)
+    error.value = "Failed to read currencies"
+  }
+
   currencies.value = currencyStore.currencies
   custodians.value = await CustodianService.list()
 })
