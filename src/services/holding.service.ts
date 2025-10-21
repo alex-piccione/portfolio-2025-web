@@ -1,11 +1,9 @@
-//import Hol from '@/entities/Holding.ts'
-
 import type Currency from "@/entities/Currency"
 import type Holding from "@/entities/Holding"
 
 class HoldingService {
     async listforUser(userId: string): Promise<Holding[]> {
-        console.log(userId)
+        console.log("userId: " + userId)
         const currencies: Currency[] = [
             {
                 id: 1,

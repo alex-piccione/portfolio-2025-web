@@ -99,19 +99,25 @@ const formData = ref({
 })
 
 onMounted(async () => {
-    if (!authStore.checkSessionValidity()) return
+    try {
+        if (await authStore.checkSessionValidity() !== "SessionExpired") 
+            return;
 
-    await currencyStore.fetchCurrencies()
-    if (currencyStore.error) {
-        console.error(
-            "Error fetching currencies (onMount):",
-            currencyStore.error,
-        )
-        error.value = "Failed to read currencies"
+        //console.info("AddNewHoldingForm - onMounted | currencyStore.fetchCurrencies()")
+        await currencyStore.fetchCurrencies()
+        if (currencyStore.error) {
+            console.error(
+                "Error fetching currencies (onMount):",
+                currencyStore.error,
+            )
+            error.value = "Failed to read currencies"
+        }
+
+        currencies.value = currencyStore.currencies
+        custodians.value = await CustodianService.list()
+    } catch (error: unknown) {
+        console.error("AddNewHoldingForm - onMounted", error)
     }
-
-    currencies.value = currencyStore.currencies
-    custodians.value = await CustodianService.list()
 })
 
 const submitForm = async () => {

@@ -5,8 +5,8 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import AuthService from "@/services/auth.service"
-import { Result } from "@/utils/result"
 import { goTo } from "@/utils/router"
+import { debug } from "@/utils/utils"
 
 const STORAGE_NAME = "auth"
 
@@ -50,24 +50,31 @@ export const useAuthStore = defineStore(
          * Checks session validity and updates state
          * @returns {Promise<boolean>} True if session is valid
          */
-        async function checkSessionValidity(): Promise<Result<boolean>> {
+        async function checkSessionValidity(): Promise<"SessionOk" | "SessionCheckFailed" | "SessionExpired"> {
             if (!isLoggedIn.value) {
+                //clearAuthentication()
                 await goTo("Login") // not logged in
-                return Result.success(false)
+                return "SessionExpired"
             }
 
             const checkSessionrResult = await AuthService.checkSessionValidity()
             if (!checkSessionrResult.isSuccess) {
+                debug(`checkSessionValidity: Failed to check ${checkSessionrResult.error}`)
+                clearAuthentication()
+
                 await goTo("Login") // failed to check
-                return Result.success(false)
+                return "SessionCheckFailed"
             }
 
             if (!checkSessionrResult.value) {
+                debug(`checkSessionValidity: session expired`)
+                clearAuthentication()
+
                 await goTo("Login") // session expired
-                return Result.success(false)
+                return "SessionExpired"
             }
 
-            return Result.success(true)
+            return "SessionOk"
         }
 
         return {
