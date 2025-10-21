@@ -18,7 +18,7 @@
 
     <div class="form-group">
       <label for="custodian">Custodian</label>
-      <BaseSelect id="custodian" v-model="formData.custodianId" required >
+      <BaseSelect id="custodian" v-model="formData.custodianId" required>
         <!--<option value="" >Please select one</option>-->
         <option
           v-for="custodian in custodians"
@@ -92,11 +92,8 @@ const formData = ref({
   note: "",
 })
 
-
 onMounted(async () => {
-
-  if (!authStore.checkSessionValidity())
-    return;
+  if (!authStore.checkSessionValidity()) return
 
   await currencyStore.fetchCurrencies()
   if (currencyStore.error) {
@@ -112,7 +109,7 @@ const submitForm = async () => {
   if (!authStore.userId) {
     console.error("User not authenticated")
     await goTo("Login")
-    return;
+    return
   }
 
   const { date, currencyId } = formData.value

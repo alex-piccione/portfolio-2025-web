@@ -22,7 +22,6 @@ form {
   }
 }
 
-
 /* Add contrast for placeholder-selected state */
 :deep(select.placeholder-selected) {
   color: var(--text-color);
@@ -33,7 +32,7 @@ form {
 :deep(select option:disabled) {
   color: var(--text-color);
   opacity: 0.85;
-  
+
   &:hover {
     opacity: 1;
   }

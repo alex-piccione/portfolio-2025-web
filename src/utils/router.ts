@@ -11,7 +11,7 @@ export const goToLogin = async () => {
   } catch (error) {
     console.error("Error navigating to login page:", error)
   }
-} 
+}
 
 const routes = [
   {
@@ -46,7 +46,7 @@ router.beforeEach(async (to) => {
 
   // Redirect to login if not authenticated
   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-    return { name: "Login" } 
+    return { name: "Login" }
   }
 })
 

@@ -17,9 +17,8 @@ export const login = {
 
 export type LoginResponse = z.infer<typeof login.ResponseSchema>
 
-
 export const refresh = {
-    ResponseSchema: z.object({
+  ResponseSchema: z.object({
     accessToken: z.string().min(1),
     accessTokenExpiresAt: as_date(),
     refreshToken: z.string().min(1),

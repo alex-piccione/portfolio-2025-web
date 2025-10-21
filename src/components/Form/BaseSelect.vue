@@ -3,7 +3,7 @@
     ref="select"
     :value="modelValue"
     @change="handleChange"
-    :class="{ 'placeholder-selected': !modelValue }"    
+    :class="{ 'placeholder-selected': !modelValue }"
     v-bind="$attrs"
   >
     <slot></slot>
@@ -11,11 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, useAttrs } from 'vue'
+import { onMounted, useAttrs } from "vue"
 
 const props = defineProps<{
-  modelValue: string,
-  id: string,
+  modelValue: string
+  id: string
   required: boolean
 }>()
 
@@ -28,12 +28,12 @@ defineOptions({
 const $attrs = useAttrs()
 
 const emit = defineEmits<{
-    // this is a special event detected by Vue
-    "update:modelValue": [value: string]
+  // this is a special event detected by Vue
+  "update:modelValue": [value: string]
 }>()
 
 const handleChange = (event: Event) => {
-    emit("update:modelValue", (event.target as HTMLSelectElement).value)
+  emit("update:modelValue", (event.target as HTMLSelectElement).value)
 }
 
 /*computed(() => {
@@ -41,18 +41,16 @@ const handleChange = (event: Event) => {
 })*/
 
 onMounted(() => {
-    if(props.required) {
+  if (props.required) {
     // add the empty options <option disabled value="">Please select one</option>
-    }
+  }
 })
-
 </script>
 
 <style scoped lang="scss">
 @use "@/styles/_form";
 
 select.placeholder-selected > *::disabled {
-    color: green !important;
+  color: green !important;
 }
-
 </style>

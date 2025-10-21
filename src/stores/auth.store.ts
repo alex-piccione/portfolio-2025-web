@@ -11,80 +11,79 @@ import { goTo } from "@/utils/router"
 const STORAGE_NAME = "auth"
 
 export const useAuthStore = defineStore(
-  STORAGE_NAME,
-  () => {
-    const isLoggedIn = ref(false)
-    const userId = ref<string | undefined>(undefined)
-    const username = ref<string | undefined>(undefined)
+    STORAGE_NAME,
+    () => {
+        const isLoggedIn = ref(false)
+        const userId = ref<string | undefined>(undefined)
+        const username = ref<string | undefined>(undefined)
 
-    /**
-     * Set user as authenticated with username
-     */
-    function setAuthenticated(user: { id: string; username: string }) {
-      isLoggedIn.value = true
-      userId.value = user.id
-      username.value = user.username
-    }
+        /**
+         * Set user as authenticated with username
+         */
+        function setAuthenticated(user: { id: string; username: string }) {
+            isLoggedIn.value = true
+            userId.value = user.id
+            username.value = user.username
+        }
 
-    /**
-     * Clear authentication state
-     */
-    function clearAuthentication() {
-      isLoggedIn.value = false
-      userId.value = undefined
-      username.value = undefined
-    }
+        /**
+         * Clear authentication state
+         */
+        function clearAuthentication() {
+            isLoggedIn.value = false
+            userId.value = undefined
+            username.value = undefined
+        }
 
-    /**
-     * Get current authentication state
-     */
-    function getAuthState() {
-      return {
-        isLoggedIn: isLoggedIn.value,
-        userId: userId.value,
-        username: username.value,
-      }
-    }
+        /**
+         * Get current authentication state
+         */
+        function getAuthState() {
+            return {
+                isLoggedIn: isLoggedIn.value,
+                userId: userId.value,
+                username: username.value,
+            }
+        }
 
-    /**
-     * Checks session validity and updates state
-     * @returns {Promise<boolean>} True if session is valid
-     */
-    async function checkSessionValidity(): Promise<Result<boolean>> {
-      
-      if (!isLoggedIn.value) {
-        await goTo("Login") // not logged in
-        return Result.success(false)
-      }
-      
-      const checkSessionrResult = await AuthService.checkSessionValidity()
-      if(!checkSessionrResult.isSuccess) {
-        await goTo("Login") // failed to check
-        return Result.success(false)
-      }
+        /**
+         * Checks session validity and updates state
+         * @returns {Promise<boolean>} True if session is valid
+         */
+        async function checkSessionValidity(): Promise<Result<boolean>> {
+            if (!isLoggedIn.value) {
+                await goTo("Login") // not logged in
+                return Result.success(false)
+            }
 
-      if(!checkSessionrResult.value) {
-        await goTo("Login") // session expired
-        return Result.success(false)
-      }
+            const checkSessionrResult = await AuthService.checkSessionValidity()
+            if (!checkSessionrResult.isSuccess) {
+                await goTo("Login") // failed to check
+                return Result.success(false)
+            }
 
-      return Result.success(true)
-    }
+            if (!checkSessionrResult.value) {
+                await goTo("Login") // session expired
+                return Result.success(false)
+            }
 
-    return {
-      STORAGE_NAME,
-      // State
-      isLoggedIn,
-      userId,
-      username,
-      // Actions
-      setAuthenticated,
-      clearAuthentication,
-      getAuthState,
-      checkSessionValidity,
-    }
-  },
-  {
-    persist: true, // by default it uses localStorage that is shared across browser tabs (not sessionStorage)
-  },
+            return Result.success(true)
+        }
+
+        return {
+            STORAGE_NAME,
+            // State
+            isLoggedIn,
+            userId,
+            username,
+            // Actions
+            setAuthenticated,
+            clearAuthentication,
+            getAuthState,
+            checkSessionValidity,
+        }
+    },
+    {
+        persist: true, // by default it uses localStorage that is shared across browser tabs (not sessionStorage)
+    },
 )
