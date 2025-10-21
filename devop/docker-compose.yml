@@ -8,29 +8,29 @@
 version: "3.9"
 name: portfolio-website
 services:
-  website:
-    hostname: website
-    #image: <IMAGE>:latest
-    build: ../Dockerfile
-    restart: on-failure
-    environment:
-      - aaa=not used
-    volumes:
-      - <VOLUMES_ROOT>/website/logs:/logs # used for logs
-    networks: [portfolio]
+    website:
+        hostname: website
+        #image: <IMAGE>:latest
+        build: ../Dockerfile
+        restart: on-failure
+        environment:
+            - aaa=not used
+        volumes:
+            - <VOLUMES_ROOT>/website/logs:/logs # used for logs
+        networks: [portfolio]
 
-  nginx:
-    depends_on: [website]
-    container_name: nginx
-    image: nginx:1.29.0
-    ports:
-      - 90:80
-    volumes:
-      - <VOLUMES_ROOT>/nginx/etc/nginx:/etc/nginx
-      - <VOLUMES_ROOT>/nginx/wwwroot:/wwwroot
-      - <VOLUMES_ROOT>/nginx/cert:/cert
-    networks: [portfolio]
+    nginx:
+        depends_on: [website]
+        container_name: nginx
+        image: nginx:1.29.0
+        ports:
+            - 90:80
+        volumes:
+            - <VOLUMES_ROOT>/nginx/etc/nginx:/etc/nginx
+            - <VOLUMES_ROOT>/nginx/wwwroot:/wwwroot
+            - <VOLUMES_ROOT>/nginx/cert:/cert
+        networks: [portfolio]
 
 networks:
-  portfolio:
-    driver: bridge
+    portfolio:
+        driver: bridge

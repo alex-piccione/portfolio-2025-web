@@ -3,34 +3,34 @@
 @use "sass:color";
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: theme.$padding;
-  border-radius: theme.$border-radius;
-  overflow: hidden; // This is important for border-radius to work correctly with collapsed borders
-
-  thead {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: theme.$padding;
     border-radius: theme.$border-radius;
-  }
+    overflow: hidden; // This is important for border-radius to work correctly with collapsed borders
 
-  th,
-  td {
-    border: 1px solid theme.$border-color;
-    padding: 2px theme.$padding-small;
-    text-align: left;
-  }
+    thead {
+        border-radius: theme.$border-radius;
+    }
 
-  th {
-    background-color: theme.$background-color-emphasis;
-    font-weight: 600;
-    color: theme.$text-color-emphasis;
-  }
+    th,
+    td {
+        border: 1px solid theme.$border-color;
+        padding: 2px theme.$padding-small;
+        text-align: left;
+    }
 
-  tr:nth-child(even) {
-    background-color: theme.$background-color;
-  }
+    th {
+        background-color: theme.$background-color-emphasis;
+        font-weight: 600;
+        color: theme.$text-color-emphasis;
+    }
 
-  tr:hover {
-    background-color: color.scale(theme.$background-color, $lightness: 5%);
-  }
+    tr:nth-child(even) {
+        background-color: theme.$background-color;
+    }
+
+    tr:hover {
+        background-color: color.scale(theme.$background-color, $lightness: 5%);
+    }
 }

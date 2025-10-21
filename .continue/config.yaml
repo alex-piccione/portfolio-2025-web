@@ -3,7 +3,7 @@ version: 0.0.1
 schema: v1
 
 rules:
-  - .continue/rules/Vue.md
-  - .continue/rules/TypeScript.md
-  - .continue/rules/SASS.md
-  - .continue/rules/no-unnecessary-semicolons.md
+    - .continue/rules/Vue.md
+    - .continue/rules/TypeScript.md
+    - .continue/rules/SASS.md
+    - .continue/rules/no-unnecessary-semicolons.md

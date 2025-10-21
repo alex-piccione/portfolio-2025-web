@@ -11,7 +11,9 @@ import { debug } from "@/utils/utils"
 
 const resultFailed = (operation: string, error: unknown) =>
     Result.failed(
-        operation + ". " + (error instanceof Error ? error.message : `${error}`),
+        operation +
+            ". " +
+            (error instanceof Error ? error.message : `${error}`),
     )
 
 /*async function execute<T> (action: () => Promise<Result<T>>): Promise<Result<T>> {
@@ -38,15 +40,15 @@ export default class AuthService {
             if (apiResult.isSuccess) {
                 // Store tokens
                 CookieUtils.setCookie(
-                "AuthToken",
-                apiResult.value.accessToken,
-                apiResult.value.accessTokenExpiresAt,
+                    "AuthToken",
+                    apiResult.value.accessToken,
+                    apiResult.value.accessTokenExpiresAt,
                 )
 
                 CookieUtils.setCookie(
-                "RefreshToken",
-                apiResult.value.refreshToken,
-                apiResult.value.refreshTokenExpiresAt,
+                    "RefreshToken",
+                    apiResult.value.refreshToken,
+                    apiResult.value.refreshTokenExpiresAt,
                 )
 
                 // Update store state
@@ -61,7 +63,9 @@ export default class AuthService {
             // TODO: logger.error("Login failed.", error)
             console.warn("Login error:", error)
             return Result.failed(
-                error instanceof Error ? error.message || "Login failed" : `${error}`,
+                error instanceof Error
+                    ? error.message || "Login failed"
+                    : `${error}`,
             )
         }
     }
@@ -71,11 +75,11 @@ export default class AuthService {
      */
     static async logout(): Promise<void> {
         try {
-        // Clear token
-        CookieUtils.deleteCookie("AuthToken")
+            // Clear token
+            CookieUtils.deleteCookie("AuthToken")
         } catch (error: unknown) {
-        // TODO: logger.error("Logout failed.", error)
-        console.warn("Logout error:", error)
+            // TODO: logger.error("Logout failed.", error)
+            console.warn("Logout error:", error)
         }
 
         // Clear store state
@@ -120,7 +124,8 @@ export default class AuthService {
             }
 
             const refreshResult = await AuthApi.refreshToken(refreshToken)
-            if (!refreshResult.isSuccess) return Result.failed(refreshResult.error)
+            if (!refreshResult.isSuccess)
+                return Result.failed(refreshResult.error)
         }
 
         return Result.success(true)
@@ -129,21 +134,22 @@ export default class AuthService {
     static async refreshToken(): Promise<Result<boolean>> {
         try {
             const refreshToken = CookieUtils.getCookie("RefreshToken")
-            if (!refreshToken) return Result.failed("No refresh token available")
+            if (!refreshToken)
+                return Result.failed("No refresh token available")
 
             const apiResult = await AuthApi.refreshToken(refreshToken)
 
             if (apiResult.isSuccess) {
                 // Update tokens and expiration dates
                 CookieUtils.setCookie(
-                "AuthToken",
-                apiResult.value.accessToken,
-                apiResult.value.accessTokenExpiresAt,
+                    "AuthToken",
+                    apiResult.value.accessToken,
+                    apiResult.value.accessTokenExpiresAt,
                 )
                 CookieUtils.setCookie(
-                "RefreshToken",
-                apiResult.value.refreshToken,
-                apiResult.value.refreshTokenExpiresAt,
+                    "RefreshToken",
+                    apiResult.value.refreshToken,
+                    apiResult.value.refreshTokenExpiresAt,
                 )
 
                 return Result.success(true)
@@ -175,14 +181,14 @@ export default class AuthService {
                 const authStore = useAuthStore()
                 // If store has persisted data and token exists, we're good
                 if (!authStore.isLoggedIn) {
-                // Token exists but store is not logged in - clear invalid state
-                this.logout()
+                    // Token exists but store is not logged in - clear invalid state
+                    this.logout()
                 }
             } else {
                 // No token, ensure store is cleared
                 const authStore = useAuthStore()
                 if (authStore.isLoggedIn) {
-                authStore.clearAuthentication()
+                    authStore.clearAuthentication()
                 }
             }
         } catch (error: unknown) {

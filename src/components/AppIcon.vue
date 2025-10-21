@@ -1,5 +1,5 @@
 <template>
-  <span class="icon" :class="sizeClass" v-html="iconContent"></span>
+    <span class="icon" :class="sizeClass" v-html="iconContent"></span>
 </template>
 
 <script lang="ts" setup>
@@ -15,18 +15,18 @@ type Icons = "bell" | "account" | "account_box" | "help" | "tableLarge"
 type Sizes = "small" | "big"
 
 const props = withDefaults(defineProps<{ name: Icons; size?: Sizes }>(), {
-  size: "small",
+    size: "small",
 })
 
 // requires v 3.10 of Vite
 //const {name, size="small"} = defineProps<{name:Icons, size?:Sizes}>()
 
 const iconMap = {
-  bell: bellIcon,
-  account: accountIcon,
-  account_box: accountBoxIcon,
-  help: helpIcon,
-  tableLarge: tableLargeIcon,
+    bell: bellIcon,
+    account: accountIcon,
+    account_box: accountBoxIcon,
+    help: helpIcon,
+    tableLarge: tableLargeIcon,
 }
 
 const iconContent = computed(() => iconMap[props.name])
@@ -37,21 +37,21 @@ const sizeClass = computed(() => props.size)
 @use "@/styles/_theme.scss" as theme;
 
 .icon {
-  display: inline-block;
-  vertical-align: -0.15rem; /* TODO: adjust as need */
+    display: inline-block;
+    vertical-align: -0.15rem; /* TODO: adjust as need */
 
-  :deep(svg) {
-    fill: theme.$text-color; // Use fill instead of color
-  }
+    :deep(svg) {
+        fill: theme.$text-color; // Use fill instead of color
+    }
 
-  &.small {
-    width: 1rem;
-    height: 1rem;
-  }
+    &.small {
+        width: 1rem;
+        height: 1rem;
+    }
 
-  &.big {
-    width: 2rem;
-    height: 2rem;
-  }
+    &.big {
+        width: 2rem;
+        height: 2rem;
+    }
 }
 </style>

@@ -1,7 +1,7 @@
 ---
 globs: "**/*.js,**/*.ts,**/*.vue"
 description: This rule discourages the use of unnecessary semicolons in
-  JavaScript and TypeScript code, promoting a cleaner and more concise style.
+    JavaScript and TypeScript code, promoting a cleaner and more concise style.
 alwaysApply: false
 ---
 

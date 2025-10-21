@@ -1,21 +1,21 @@
 <template>
-  <img v-if="!isLoggedIn" src="/logo.png" class="logo" alt="Portfolio logo" />
-  <AppToolbar v-if="isLoggedIn" />
-  <router-view />
+    <img v-if="!isLoggedIn" src="/logo.png" class="logo" alt="Portfolio logo" />
+    <AppToolbar v-if="isLoggedIn" />
+    <router-view />
 </template>
 
 <style scoped lang="scss">
 @use "styles/theme" as theme;
 
 .logo {
-  height: 12rem;
-  padding: 1.5rem;
-  will-change: filter;
-  transition: filter 300ms;
+    height: 12rem;
+    padding: 1.5rem;
+    will-change: filter;
+    transition: filter 300ms;
 
-  &:hover {
-    filter: drop-shadow(0 0 2rem theme.$primary-color);
-  }
+    &:hover {
+        filter: drop-shadow(0 0 2rem theme.$primary-color);
+    }
 }
 </style>
 
@@ -32,33 +32,33 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
 //const ui_version = import.meta.env.VITE_UI_VERSION
 
 const storageChangeHandler = (event: StorageEvent) => {
-  if (event.key === authStore.STORAGE_NAME) {
-    try {
-      const newState = JSON.parse(event.newValue || "{}")
-      authStore.$patch(newState)
+    if (event.key === authStore.STORAGE_NAME) {
+        try {
+            const newState = JSON.parse(event.newValue || "{}")
+            authStore.$patch(newState)
 
-      debug(
-        `auth event cathed. authStore.isLoggedIn:${authStore.isLoggedIn}, authStore.username:${authStore.username}.`,
-      )
+            debug(
+                `auth event cathed. authStore.isLoggedIn:${authStore.isLoggedIn}, authStore.username:${authStore.username}.`,
+            )
 
-      if (authStore.isLoggedIn) goTo("Home")
-      else goTo("Landing")
-    } catch (error) {
-      console.error("Error parsing localStorage data:", error)
+            if (authStore.isLoggedIn) goTo("Home")
+            else goTo("Landing")
+        } catch (error) {
+            console.error("Error parsing localStorage data:", error)
+        }
     }
-  }
 }
 
 onMounted(async () => {
-  window.addEventListener("storage", storageChangeHandler)
+    window.addEventListener("storage", storageChangeHandler)
 
-  // Check login status on app load
-  if (authStore.isLoggedIn) {
-    goTo("Home")
-  }
+    // Check login status on app load
+    if (authStore.isLoggedIn) {
+        goTo("Home")
+    }
 })
 
 onUnmounted(() => {
-  window.removeEventListener("storage", storageChangeHandler)
+    window.removeEventListener("storage", storageChangeHandler)
 })
 </script>

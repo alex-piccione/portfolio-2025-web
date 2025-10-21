@@ -1,66 +1,72 @@
 <!-- src/components/Holdings/AddNewHoldingForm.vue -->
 <template>
-  <form @submit.prevent="submitForm">
-    <InlineError :error="error" />
-    <div class="form-group">
-      <label for="date">Date</label>
-      <input type="date" id="date" v-model="formData.date" required />
-    </div>
+    <form @submit.prevent="submitForm">
+        <InlineError :error="error" />
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" v-model="formData.date" required />
+        </div>
 
-    <div class="form-group">
-      <label for="action">Action</label>
-      <select id="action" v-model="formData.action" required>
-        <option>Balance</option>
-        <!--<option>Add</option>
+        <div class="form-group">
+            <label for="action">Action</label>
+            <select id="action" v-model="formData.action" required>
+                <option>Balance</option>
+                <!--<option>Add</option>
         <option>Remove</option>
-      --></select>
-    </div>
+      -->
+            </select>
+        </div>
 
-    <div class="form-group">
-      <label for="custodian">Custodian</label>
-      <BaseSelect id="custodian" v-model="formData.custodianId" required>
-        <!--<option value="" >Please select one</option>-->
-        <option
-          v-for="custodian in custodians"
-          :key="custodian.id"
-          :value="custodian.id"
-        >
-          {{ custodian.name }}
-        </option>
-        <option>Add new</option>
-      </BaseSelect>
-    </div>
+        <div class="form-group">
+            <label for="custodian">Custodian</label>
+            <BaseSelect id="custodian" v-model="formData.custodianId" required>
+                <!--<option value="" >Please select one</option>-->
+                <option
+                    v-for="custodian in custodians"
+                    :key="custodian.id"
+                    :value="custodian.id"
+                >
+                    {{ custodian.name }}
+                </option>
+                <option>Add new</option>
+            </BaseSelect>
+        </div>
 
-    <div class="form-group">
-      <label for="currency">Currency</label>
-      <BaseSelect id="currencyId" v-model="formData.currencyId" required>
-        <option disabled value="">Please select one</option>
-        <option
-          v-for="currency in currencies"
-          :key="currency.id"
-          :value="currency.id"
-        >
-          {{ currency.name }} ({{ currency.symbol }})
-        </option>
-      </BaseSelect>
-    </div>
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <BaseSelect id="currencyId" v-model="formData.currencyId" required>
+                <option disabled value="">Please select one</option>
+                <option
+                    v-for="currency in currencies"
+                    :key="currency.id"
+                    :value="currency.id"
+                >
+                    {{ currency.name }} ({{ currency.symbol }})
+                </option>
+            </BaseSelect>
+        </div>
 
-    <div class="form-group">
-      <label for="amount">Amount</label>
-      <input
-        type="number"
-        id="amount"
-        v-model.number="formData.amount"
-        required
-        step="any"
-      />
-    </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input
+                type="number"
+                id="amount"
+                v-model.number="formData.amount"
+                required
+                step="any"
+            />
+        </div>
 
-    <div class="form-group">
-      <label for="note">Note</label>
-      <textarea rows="5" cols="30" id="note" v-model="formData.note"></textarea>
-    </div>
-  </form>
+        <div class="form-group">
+            <label for="note">Note</label>
+            <textarea
+                rows="5"
+                cols="30"
+                id="note"
+                v-model="formData.note"
+            ></textarea>
+        </div>
+    </form>
 </template>
 
 <script setup lang="ts">
@@ -84,56 +90,59 @@ const error = ref<string | null>(null)
 const emit = defineEmits(["saved", "cancel"])
 
 const formData = ref({
-  date: new Date().toISOString().split("T")[0],
-  custodianId: "",
-  action: "Balance",
-  currencyId: "",
-  amount: 0,
-  note: "",
+    date: new Date().toISOString().split("T")[0],
+    custodianId: "",
+    action: "Balance",
+    currencyId: "",
+    amount: 0,
+    note: "",
 })
 
 onMounted(async () => {
-  if (!authStore.checkSessionValidity()) return
+    if (!authStore.checkSessionValidity()) return
 
-  await currencyStore.fetchCurrencies()
-  if (currencyStore.error) {
-    console.error("Error fetching currencies (onMount):", currencyStore.error)
-    error.value = "Failed to read currencies"
-  }
+    await currencyStore.fetchCurrencies()
+    if (currencyStore.error) {
+        console.error(
+            "Error fetching currencies (onMount):",
+            currencyStore.error,
+        )
+        error.value = "Failed to read currencies"
+    }
 
-  currencies.value = currencyStore.currencies
-  custodians.value = await CustodianService.list()
+    currencies.value = currencyStore.currencies
+    custodians.value = await CustodianService.list()
 })
 
 const submitForm = async () => {
-  if (!authStore.userId) {
-    console.error("User not authenticated")
-    await goTo("Login")
-    return
-  }
+    if (!authStore.userId) {
+        console.error("User not authenticated")
+        await goTo("Login")
+        return
+    }
 
-  const { date, currencyId } = formData.value
+    const { date, currencyId } = formData.value
 
-  const holdingService = new HoldingService()
+    const holdingService = new HoldingService()
 
-  const holdingData = {
-    date,
-    currency: { id: parseInt(currencyId) },
-    user: { id: authStore.userId },
-  }
+    const holdingData = {
+        date,
+        currency: { id: parseInt(currencyId) },
+        user: { id: authStore.userId },
+    }
 
-  try {
-    await holdingService.create(holdingData)
-    emit("saved")
-  } catch (err) {
-    console.error("Error creating holding:", err)
-    error.value = "Failed to save holding. Please try again."
-  }
+    try {
+        await holdingService.create(holdingData)
+        emit("saved")
+    } catch (err) {
+        console.error("Error creating holding:", err)
+        error.value = "Failed to save holding. Please try again."
+    }
 }
 
 // Expose submitForm to be called from the parent where the "Save" button is located
 defineExpose({
-  submitForm,
+    submitForm,
 })
 </script>
 

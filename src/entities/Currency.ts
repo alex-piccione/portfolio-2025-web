@@ -6,10 +6,10 @@
 }*/
 
 export default interface Currency {
-  id: number
-  symbol: string
-  name: string
-  kind: string
-  isActive: boolean
-  precision: number
+    id: number
+    symbol: string
+    name: string
+    kind: string
+    isActive: boolean
+    precision: number
 }

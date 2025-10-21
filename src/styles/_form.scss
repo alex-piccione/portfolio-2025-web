@@ -1,39 +1,39 @@
 @use "mixins" as mix;
 
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .form-horizontal {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  label {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
+    label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
 }
 
 /* Add contrast for placeholder-selected state */
 :deep(select.placeholder-selected) {
-  color: var(--text-color);
-  opacity: 0.9;
+    color: var(--text-color);
+    opacity: 0.9;
 }
 
 /* Specifically target disabled options for better contrast in dropdown */
 :deep(select option:disabled) {
-  color: var(--text-color);
-  opacity: 0.85;
+    color: var(--text-color);
+    opacity: 0.85;
 
-  &:hover {
-    opacity: 1;
-  }
+    &:hover {
+        opacity: 1;
+    }
 }
