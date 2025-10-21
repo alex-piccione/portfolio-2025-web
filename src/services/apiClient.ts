@@ -49,8 +49,7 @@ apiClient.interceptors.response.use(
             debug(
                 `API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message} (${error})`,
             )
-        else
-            debug(`API Response Error: ${error}`)
+        else debug(`API Response Error: ${error}`)
 
         if (error.response?.status === 401) {
             debug("Unauthorized request - token may be invalid")

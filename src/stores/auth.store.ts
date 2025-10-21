@@ -50,7 +50,9 @@ export const useAuthStore = defineStore(
          * Checks session validity and updates state
          * @returns {Promise<boolean>} True if session is valid
          */
-        async function checkSessionValidity(): Promise<"SessionOk" | "SessionCheckFailed" | "SessionExpired"> {
+        async function checkSessionValidity(): Promise<
+            "SessionOk" | "SessionCheckFailed" | "SessionExpired"
+        > {
             if (!isLoggedIn.value) {
                 //clearAuthentication()
                 await goTo("Login") // not logged in
@@ -59,7 +61,9 @@ export const useAuthStore = defineStore(
 
             const checkSessionrResult = await AuthService.checkSessionValidity()
             if (!checkSessionrResult.isSuccess) {
-                debug(`checkSessionValidity: Failed to check ${checkSessionrResult.error}`)
+                debug(
+                    `checkSessionValidity: Failed to check ${checkSessionrResult.error}`,
+                )
                 clearAuthentication()
 
                 await goTo("Login") // failed to check

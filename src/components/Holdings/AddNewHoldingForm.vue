@@ -100,8 +100,8 @@ const formData = ref({
 
 onMounted(async () => {
     try {
-        if (await authStore.checkSessionValidity() !== "SessionExpired") 
-            return;
+        if ((await authStore.checkSessionValidity()) !== "SessionExpired")
+            return
 
         //console.info("AddNewHoldingForm - onMounted | currencyStore.fetchCurrencies()")
         await currencyStore.fetchCurrencies()
