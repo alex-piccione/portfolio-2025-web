@@ -7,6 +7,19 @@ import AuthApi from "./api/auth.api"
 import { Result } from "@/utils/result"
 import { useAuthStore } from "@/stores/auth.store"
 import { goTo } from "@/utils/router"
+import { debug } from "@/utils/utils"
+
+const resultFailed = (operation:string, error: unknown) => 
+    Result.failed(operation + ". " + (error instanceof Error ? error.message : `${error}`))
+
+/*async function execute<T> (action: () => Promise<Result<T>>): Promise<Result<T>> {
+    try {
+        return await action()
+    }
+    catch(error: unknown) {
+        return Result.failed(error instanceof Error ? error.message : `${error}`)
+    }
+}*/
 
 export default class AuthService {
     /**
@@ -72,6 +85,47 @@ export default class AuthService {
     }
 
 
+    /*
+    static checkSessionValidity = () => execute(async () => {
+        // check Auth token
+        const authToken = CookieUtils.getCookie("AuthToken")
+        if (!authToken) {
+            // try to refrsh
+            const refreshToken = CookieUtils.getCookie("RefreshToken")
+            if (!refreshToken)
+                return Result.failed("Session is expired")
+
+            const refreshResult = await AuthApi.refreshToken(refreshToken) 
+        }
+
+        return Result.success(null)
+    })
+    */
+
+    /**
+     * Check if current Access Token is still valid. 
+     * If not try to refresh it using the Refresh token.
+     * @returns boolean saying if session is stil valid or not (requires new login)
+     */
+    static async checkSessionValidity(): Promise<Result<boolean>> {
+        // check Auth token
+        const authToken = CookieUtils.getCookie("AuthToken")
+        if (!authToken) {
+            // try to refresh
+            const refreshToken = CookieUtils.getCookie("RefreshToken")
+            if (!refreshToken) {
+                debug("Session is expired")
+                return Result.success(false)
+            }
+
+            const refreshResult = await AuthApi.refreshToken(refreshToken) 
+            if (!refreshResult.isSuccess) 
+                return Result.failed(refreshResult.error)
+        }
+
+        return Result.success(true)
+    }
+
     static async refreshToken(): Promise<Result<boolean>> {
         try {
             const refreshToken = CookieUtils.getCookie("RefreshToken")
@@ -97,18 +151,9 @@ export default class AuthService {
             } else {
                 return Result.failed(apiResult.error);
             }
-        } catch (error: any) {
-            console.warn("Refresh token error:", error);
-            return Result.failed(error?.message || "Failed to refresh token");
+        } catch (error: unknown) {
+            return resultFailed("Failed to refresh token", error)
         }
-    }
-
-    /**
-     * Check if user is currently authenticated
-     */
-    static isAuthenticated(): boolean {
-        const authStore = useAuthStore()
-        return authStore.isLoggedIn
     }
 
     /**
@@ -119,9 +164,9 @@ export default class AuthService {
         return authStore.isLoggedIn ? { username: authStore.username } : null
     }
 
-   /**
-   * Initialize authentication state (e.g., on app startup)
-   */
+    /**
+     * Initialize authentication state (e.g., on app startup)
+     */
     static async initializeAuth(): Promise<void> {
         try {
             const token = CookieUtils.getCookie("AuthToken")

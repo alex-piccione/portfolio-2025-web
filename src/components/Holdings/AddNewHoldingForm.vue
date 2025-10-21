@@ -18,8 +18,8 @@
 
     <div class="form-group">
       <label for="custodian">Custodian</label>
-      <select id="custodian" v-model="formData.custodianId" required>
-        <option disabled value="">Please select one</option>
+      <BaseSelect id="custodian" v-model="formData.custodianId" required >
+        <!--<option value="" >Please select one</option>-->
         <option
           v-for="custodian in custodians"
           :key="custodian.id"
@@ -28,12 +28,12 @@
           {{ custodian.name }}
         </option>
         <option>Add new</option>
-      </select>
+      </BaseSelect>
     </div>
 
     <div class="form-group">
       <label for="currency">Currency</label>
-      <select id="currency" v-model="formData.currencyId" required>
+      <BaseSelect id="currencyId" v-model="formData.currencyId" required>
         <option disabled value="">Please select one</option>
         <option
           v-for="currency in currencies"
@@ -42,7 +42,7 @@
         >
           {{ currency.name }} ({{ currency.symbol }})
         </option>
-      </select>
+      </BaseSelect>
     </div>
 
     <div class="form-group">
@@ -71,8 +71,10 @@ import CustodianService from "@/services/custodian.service"
 import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
-import InlineError from "@/components/InlineError.vue" // Import the InlineError component
+import InlineError from "@/components/InlineError.vue"
 import { goTo } from "@/utils/router"
+import BaseSelect from "../Form/BaseSelect.vue"
+
 const authStore = useAuthStore()
 const currencyStore = useCurrencyStore()
 const custodians = ref<Custodian[]>([])
@@ -90,7 +92,12 @@ const formData = ref({
   note: "",
 })
 
+
 onMounted(async () => {
+
+  if (!authStore.checkSessionValidity())
+    return;
+
   await currencyStore.fetchCurrencies()
   if (currencyStore.error) {
     console.error("Error fetching currencies (onMount):", currencyStore.error)
@@ -102,9 +109,10 @@ onMounted(async () => {
 })
 
 const submitForm = async () => {
-  if (!authStore.id) {
+  if (!authStore.userId) {
     console.error("User not authenticated")
-    goTo("Login")
+    await goTo("Login")
+    return;
   }
 
   const { date, currencyId } = formData.value
@@ -114,7 +122,7 @@ const submitForm = async () => {
   const holdingData = {
     date,
     currency: { id: parseInt(currencyId) },
-    user: { id: authStore.id },
+    user: { id: authStore.userId },
   }
 
   try {

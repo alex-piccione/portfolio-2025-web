@@ -4,6 +4,9 @@
 
 import { defineStore } from "pinia"
 import { ref } from "vue"
+import AuthService from "@/services/auth.service"
+import { Result } from "@/utils/result"
+import { goTo } from "@/utils/router"
 
 const STORAGE_NAME = "auth"
 
@@ -11,7 +14,7 @@ export const useAuthStore = defineStore(
   STORAGE_NAME,
   () => {
     const isLoggedIn = ref(false)
-    const id = ref<string | undefined>(undefined)
+    const userId = ref<string | undefined>(undefined)
     const username = ref<string | undefined>(undefined)
 
     /**
@@ -19,7 +22,7 @@ export const useAuthStore = defineStore(
      */
     function setAuthenticated(user: { id: string; username: string }) {
       isLoggedIn.value = true
-      id.value = user.id
+      userId.value = user.id
       username.value = user.username
     }
 
@@ -28,7 +31,7 @@ export const useAuthStore = defineStore(
      */
     function clearAuthentication() {
       isLoggedIn.value = false
-      id.value = undefined
+      userId.value = undefined
       username.value = undefined
     }
 
@@ -38,21 +41,47 @@ export const useAuthStore = defineStore(
     function getAuthState() {
       return {
         isLoggedIn: isLoggedIn.value,
-        id: id.value,
+        userId: userId.value,
         username: username.value,
       }
+    }
+
+    /**
+     * Checks session validity and updates state
+     * @returns {Promise<boolean>} True if session is valid
+     */
+    async function checkSessionValidity(): Promise<Result<boolean>> {
+      
+      if (!isLoggedIn.value) {
+        await goTo("Login") // not logged in
+        return Result.success(false)
+      }
+      
+      const checkSessionrResult = await AuthService.checkSessionValidity()
+      if(!checkSessionrResult.isSuccess) {
+        await goTo("Login") // failed to check
+        return Result.success(false)
+      }
+
+      if(!checkSessionrResult.value) {
+        await goTo("Login") // session expired
+        return Result.success(false)
+      }
+
+      return Result.success(true)
     }
 
     return {
       STORAGE_NAME,
       // State
       isLoggedIn,
-      id,
+      userId,
       username,
       // Actions
       setAuthenticated,
       clearAuthentication,
       getAuthState,
+      checkSessionValidity,
     }
   },
   {

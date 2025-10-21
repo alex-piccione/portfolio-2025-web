@@ -67,7 +67,7 @@ onMounted(async () => {
   }
 
   const holdingService = new HoldingService()
-  holdings.value = await holdingService.listforUser(authStore.id!)
+  holdings.value = await holdingService.listforUser(authStore.userId!)
 })
 
 const showAddHoldingModal = ref(false)

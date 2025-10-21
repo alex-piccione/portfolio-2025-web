@@ -12,7 +12,7 @@ export default class AuthApi {
         password: string,
     ): Promise<Result<LoginResponse>> {
         try {
-            const response = await api.client.post("/auth/login", {
+            const response = await api.publicClient.post("/auth/login", {
                 username,
                 password,
             })
@@ -44,7 +44,7 @@ export default class AuthApi {
 
     static async refreshToken(token: string): Promise<Result<RefreshResponse>> {
         try {
-            const response = await api.client.post("/auth/refresh", { token })
+            const response = await api.publicClient.post("/auth/refresh", { token })
             //debug(`Refresh response: ${response.status}`)
 
             const parseResult = refresh.ResponseSchema.safeParse(response.data)

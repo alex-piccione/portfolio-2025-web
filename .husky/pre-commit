@@ -1,3 +1,6 @@
+#echo "call check-build"
 yarn check-build
-yarn format
+#echo "call yarn lint"
 yarn lint
+#echo "call yarn format"
+yarn format

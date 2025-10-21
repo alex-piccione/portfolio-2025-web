@@ -21,3 +21,20 @@ form {
     font-weight: bold;
   }
 }
+
+
+/* Add contrast for placeholder-selected state */
+:deep(select.placeholder-selected) {
+  color: var(--text-color);
+  opacity: 0.9;
+}
+
+/* Specifically target disabled options for better contrast in dropdown */
+:deep(select option:disabled) {
+  color: var(--text-color);
+  opacity: 0.85;
+  
+  &:hover {
+    opacity: 1;
+  }
+}

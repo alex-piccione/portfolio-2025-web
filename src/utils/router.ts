@@ -1,9 +1,17 @@
 // src/router.ts
 import { createRouter, createWebHistory } from "vue-router"
-import AuthService from "@/services/auth.service"
+import { useAuthStore } from "@/stores/auth.store"
 
 export type RouteNames = "Landing" | "Home" | "Login"
 export const goTo = (routeName: RouteNames) => router.push({ name: routeName })
+
+export const goToLogin = async () => {
+  try {
+    await goTo("Login")
+  } catch (error) {
+    console.error("Error navigating to login page:", error)
+  }
+} 
 
 const routes = [
   {
@@ -34,8 +42,11 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  if (to.meta.requiresAuth && !AuthService.isAuthenticated()) {
-    return { name: "Login" } // Redirect to login if not authenticated
+  const authStore = useAuthStore()
+
+  // Redirect to login if not authenticated
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    return { name: "Login" } 
   }
 })
 
