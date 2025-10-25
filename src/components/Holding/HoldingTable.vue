@@ -1,9 +1,7 @@
 <!-- src/components/Holdings/HoldingTable.vue -->
 <template>
     <div>
-        <button @click="onAddNewHolding" class="ok add-holding-button">
-            Add New Holding
-        </button>
+        <button @click="showAddHoldingModal = true" class="ok">Add New Holding</button>
         <table>
             <thead>
                 <tr>
@@ -28,23 +26,11 @@
         </table>
     </div>
 
-    <AppModal
-        :is-open="showAddHoldingModal"
-        title="Add New Holding"
-        @close="showAddHoldingModal = false"
-    >
-        <AddNewHoldingForm
-            ref="addNewHoldingForm"
-            @saved="handleSaved"
-            @cancel="showAddHoldingModal = false"
-        />
-        <template #footer>
-            <button class="cancel" @click="showAddHoldingModal = false">
-                Cancel
-            </button>
-            <button class="ok">Save</button>
-        </template>
-    </AppModal>
+  <NewHoldingModal :is-open="showAddHoldingModal"
+    @cancel="showAddHoldingModal = false"
+    @created="handleCreated"
+  ></NewHoldingModal>
+
 </template>
 
 <script setup lang="ts">
@@ -52,9 +38,8 @@ import { onMounted, ref } from "vue"
 import HoldingService from "@/services/holding.service"
 import type Holding from "@/entities/Holding"
 import { useAuthStore } from "@/stores/auth.store"
-import { formatDate } from "../format.helper"
-import AppModal from "@/components/AppModal.vue"
-import AddNewHoldingForm from "./AddNewHoldingForm.vue"
+import { formatDate } from "@/components/format.helper"
+import NewHoldingModal from "./NewHoldingModal.vue"
 
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
@@ -66,15 +51,14 @@ onMounted(async () => {
         return
     }
 
-    const holdingService = new HoldingService()
-    holdings.value = await holdingService.listforUser(authStore.userId!)
+    holdings.value = await HoldingService.listforUser(authStore.userId!)
 })
 
 const showAddHoldingModal = ref(false)
 
-const onAddNewHolding = () => (showAddHoldingModal.value = true)
-const handleSaved = () => {
+const handleCreated = () => {
     showAddHoldingModal.value = false
+    // TODO:
     // Refresh the holdings list after adding a new holding
     // This could be optimized to just add the new holding to the list
     // if the API returns it directly
@@ -82,6 +66,4 @@ const handleSaved = () => {
 }
 </script>
 
-<style scoped lang="scss">
-@use "@/styles/table";
-</style>
+<style scoped lang="scss"></style>

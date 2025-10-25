@@ -22,6 +22,15 @@ form {
     }
 }
 
+.add-new-record-button {
+    @include mix.add-new-record-button;
+}
+
+
+form .add-new-record-button {
+    margin-top: 3px;
+}
+
 /* Add contrast for placeholder-selected state */
 :deep(select.placeholder-selected) {
     color: var(--text-color);

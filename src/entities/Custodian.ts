@@ -3,9 +3,13 @@ export default interface Custodian {
     id: string
     name: string
     desription?: string
-    kind: "Exchange" | "Wallet" | "Bank" | "Other"
+    kind: CustodianKind // "Exchange" | "Wallet" | "Bank" | "Other"
     url?: string
     accountCountryCode?: string
     walletAddress?: string
     // AccountId?: string
 }
+
+export type CustodianKind = "Exchange" | "Wallet" | "Bank" | "Other"
+
+export const parseKindFromString = (value: string) => value as CustodianKind

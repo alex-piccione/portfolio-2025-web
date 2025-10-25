@@ -28,8 +28,8 @@
                 >
                     {{ custodian.name }}
                 </option>
-                <option>Add new</option>
             </BaseSelect>
+            <AddNewRecordButton @click="showNewCustodianModal = true">add new custodian</AddNewRecordButton>
         </div>
 
         <div class="form-group">
@@ -67,10 +67,19 @@
             ></textarea>
         </div>
     </form>
+
+    <!-- Modal for new custodian -->
+    <NewCustodianModal
+        :isOpen="showNewCustodianModal"
+        title="Add New Custodian"
+        @cancel="showNewCustodianModal = false"
+        @created="handleNewCustodian"
+    >
+    </NewCustodianModal>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref, onMounted, reactive } from "vue"
 import type Currency from "@/entities/Currency"
 import type Custodian from "@/entities/Custodian"
 import CustodianService from "@/services/custodian.service"
@@ -79,7 +88,10 @@ import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
 import InlineError from "@/components/InlineError.vue"
 import { goTo } from "@/utils/router"
-import BaseSelect from "../Form/BaseSelect.vue"
+import BaseSelect from "@/components/Form/BaseSelect.vue"
+import NewCustodianModal from "@/components/Custodian/NewCustodianModal.vue"
+import AddNewRecordButton from "../Form/AddNewRecordButton.vue"
+import { debug } from "@/utils/utils"
 
 const authStore = useAuthStore()
 const currencyStore = useCurrencyStore()
@@ -87,9 +99,11 @@ const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
 const error = ref<string | null>(null)
 
-const emit = defineEmits(["saved", "cancel"])
+const emit = defineEmits(["cancel", "created"])
 
-const formData = ref({
+const showNewCustodianModal = ref(false)
+
+const formData = reactive({
     date: new Date().toISOString().split("T")[0],
     custodianId: "",
     action: "Balance",
@@ -99,9 +113,13 @@ const formData = ref({
 })
 
 onMounted(async () => {
+    debug("NewHoldingForm - onMounted")
     try {
-        if ((await authStore.checkSessionValidity()) !== "SessionExpired")
-            return
+        //const sessionResult = await authStore.checkSessionValidity();
+        //debug("onMounted 1: ", sessionResult)
+
+        if ((await authStore.checkSessionValidity()) !== "SessionOk")
+            return;
 
         //console.info("AddNewHoldingForm - onMounted | currencyStore.fetchCurrencies()")
         await currencyStore.fetchCurrencies()
@@ -114,22 +132,21 @@ onMounted(async () => {
         }
 
         currencies.value = currencyStore.currencies
-        custodians.value = await CustodianService.list()
+        custodians.value = await CustodianService.list()        
     } catch (error: unknown) {
-        console.error("AddNewHoldingForm - onMounted", error)
+        console.error("AddNewHoldingForm - onMounted error", error)
     }
 })
 
 const submitForm = async () => {
+    debug("NewHoldingForm - submitForm")
     if (!authStore.userId) {
         console.error("User not authenticated")
         await goTo("Login")
-        return
+        return;
     }
 
-    const { date, currencyId } = formData.value
-
-    const holdingService = new HoldingService()
+    const { date, currencyId } = formData
 
     const holdingData = {
         date,
@@ -138,8 +155,8 @@ const submitForm = async () => {
     }
 
     try {
-        await holdingService.create(holdingData)
-        emit("saved")
+        await HoldingService.create(holdingData)
+        emit("created")
     } catch (err) {
         console.error("Error creating holding:", err)
         error.value = "Failed to save holding. Please try again."
@@ -150,8 +167,13 @@ const submitForm = async () => {
 defineExpose({
     submitForm,
 })
+
+const handleNewCustodian = async (newId: string) => {
+    showNewCustodianModal.value = false
+    // TODO: add the new custodian to the select and select it
+    custodians.value = await CustodianService.list()
+    formData.custodianId = newId
+}
 </script>
 
-<style scoped lang="scss">
-@use "@/styles/form.scss";
-</style>
+<style scoped lang="scss"></style>

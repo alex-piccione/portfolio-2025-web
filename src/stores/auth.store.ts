@@ -54,6 +54,7 @@ export const useAuthStore = defineStore(
             "SessionOk" | "SessionCheckFailed" | "SessionExpired"
         > {
             if (!isLoggedIn.value) {
+                debug("checkSessionValidity: SessionExpired: not loggedIn")
                 //clearAuthentication()
                 await goTo("Login") // not logged in
                 return "SessionExpired"
@@ -61,9 +62,7 @@ export const useAuthStore = defineStore(
 
             const checkSessionrResult = await AuthService.checkSessionValidity()
             if (!checkSessionrResult.isSuccess) {
-                debug(
-                    `checkSessionValidity: Failed to check ${checkSessionrResult.error}`,
-                )
+                debug(`checkSessionValidity: SessionCheckFailed. Failed to check ${checkSessionrResult.error}`)
                 clearAuthentication()
 
                 await goTo("Login") // failed to check

@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue"
-import HoldingTable from "@/components/Holdings/HoldingTable.vue"
+import HoldingTable from "@/components/Holding/HoldingTable.vue"
 
 onMounted(async () => {
     //const currencies = await CurrencyService.list()

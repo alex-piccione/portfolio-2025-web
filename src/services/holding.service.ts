@@ -1,8 +1,8 @@
 import type Currency from "@/entities/Currency"
 import type Holding from "@/entities/Holding"
 
-class HoldingService {
-    async listforUser(userId: string): Promise<Holding[]> {
+export default class HoldingService {
+    static async listforUser(userId: string): Promise<Holding[]> {
         console.log("userId: " + userId)
         const currencies: Currency[] = [
             {
@@ -59,9 +59,8 @@ class HoldingService {
         ]
     }
 
-    async create(holdingData: unknown) {
+    static async create(holdingData: unknown) {
+        // TODO: 
         return Promise.resolve(holdingData)
     }
 }
-
-export default HoldingService

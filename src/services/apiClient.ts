@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { type AxiosResponse } from "axios"
 
 import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
@@ -82,9 +82,17 @@ export function deserialize<T>(item: unknown) {
     }
 }
 
+interface ApiCreatedResponse {
+    newId: string
+}
+
+const getNewId = (response: AxiosResponse) =>
+    deserialize<ApiCreatedResponse>(response).newId
+
 export default {
     client: apiClient,
     publicClient: apiClientNoAuth,
     parseError: parseErrorResponse,
     deserialize,
+    getNewId,
 }

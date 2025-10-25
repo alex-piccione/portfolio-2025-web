@@ -2,6 +2,7 @@
 import { debug } from "@/utils/utils"
 import api, { deserialize } from "./apiClient"
 import type Custodian from "@/entities/Custodian"
+import type { CustodianKind } from "@/entities/Custodian"
 
 export default class CustodianService {
     static async list() {
@@ -13,4 +14,30 @@ export default class CustodianService {
             throw error
         }
     }
+
+    static async create(data: CreateRequest): Promise<string> {
+        const response = await api.client.post("/custodian", data)
+        return api.getNewId(response)
+    }
 }
+
+export interface CreateRequest {
+    name: string
+    description: string | null
+    kind: CustodianKind
+    url: string | null
+    accountCountryCode: string
+    walletAddress: string | null
+}
+
+/*
+export namespace create {
+    interface Request {}
+
+    interface Response {}
+}
+
+function getNewId(response: AxiosResponse<any, any, {}>) {
+    throw new Error("Function not implemented.")
+}
+*/

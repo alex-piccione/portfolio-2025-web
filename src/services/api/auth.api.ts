@@ -52,7 +52,7 @@ export default class AuthApi {
     static async refreshToken(token: string): Promise<Result<RefreshResponse>> {
         try {
             const response = await api.publicClient.post("/auth/refresh", {
-                token,
+                refreshToken: token,
             })
             //debug(`Refresh response: ${response.status}`)
 

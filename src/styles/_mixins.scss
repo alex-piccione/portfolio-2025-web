@@ -71,6 +71,16 @@
     }
 }
 
+@mixin add-new-record-button {
+    color: theme.$text-color;
+    cursor: pointer;
+
+    &:hover {
+        color: color.scale(theme.$text-color, $lightness: 20%);
+        text-shadow: 1px 1px 5px theme.$secondary-color;
+    }
+}
+
 $controls-border-color: color.scale(theme.$secondary-color, $lightness: 25%);
 
 @mixin control-border {

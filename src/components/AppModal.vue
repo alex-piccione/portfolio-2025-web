@@ -2,7 +2,7 @@
 <template>
     <teleport to="body">
         <transition name="fade">
-            <div v-if="isOpen" class="modal-backdrop" @click="closeModal">
+            <div v-if="isOpen" class="modal-backdrop" @click="close">
                 <div
                     class="modal-content"
                     @click.stop
@@ -12,7 +12,7 @@
                 >
                     <header class="modal-header">
                         <h3>{{ title }}</h3>
-                        <button @click="closeModal" class="close-button">
+                        <button @click="close" class="close-button">
                             &times;
                         </button>
                     </header>
@@ -20,7 +20,22 @@
                         <slot> <!-- Custom content --> </slot>
                     </div>
                     <footer class="modal-footer">
-                        <slot name="footer"></slot>
+                        <slot name="footer">
+                            <button
+                                v-if="showcancelButton"
+                                @click="close"
+                                class="close"
+                            >
+                                {{ cancelButtonText }}
+                            </button>
+                            <button
+                                v-if="showcancelButton"
+                                @click="confirm"
+                                class="ok"
+                            >
+                                {{ confirmButtonText }}
+                            </button>
+                        </slot>
                     </footer>
                 </div>
             </div>
@@ -31,19 +46,28 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue"
 
-const props = defineProps<{
-    isOpen: boolean
-    title: string
-}>()
+const props = withDefaults(
+    defineProps<{
+        isOpen: boolean
+        title: string
+        showcancelButton?: boolean
+        cancelButtonText?: string
+        confirmButtonText?: string
+    }>(),
+    {
+        showcancelButton: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Confirm",
+    },
+)
 
-const emit = defineEmits(["close"])
+const emit = defineEmits(["close", "confirm"])
 
-const closeModal = () => emit("close")
+const close = () => emit("close")
+const confirm = () => emit("confirm")
 
 const handleKeydown = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && props.isOpen) {
-        closeModal()
-    }
+    if (e.key === "Escape" && props.isOpen) close()
 }
 
 onMounted(() => {

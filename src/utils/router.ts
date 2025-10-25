@@ -31,7 +31,7 @@ const routes = [
     {
         path: "/home",
         name: "Home",
-        component: () => import("@/components/Pages/HomePageNew.vue"),
+        component: () => import("@/components/Pages/HomePage.vue"),
         meta: { requiresAuth: true },
     },
 ]
