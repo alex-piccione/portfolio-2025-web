@@ -4,7 +4,7 @@
         :value="modelValue"
         :required="required"
         @change="handleChange"
-        :class="{ 'placeholder-selected': !modelValue}"
+        :class="{ 'placeholder-selected': !modelValue }"
         v-bind="attrs"
     >
         <slot></slot>
@@ -21,9 +21,8 @@ defineProps<{
     required: boolean
 }>()
 
-
 defineOptions({
-  inheritAttrs: true
+    inheritAttrs: true,
 })
 
 // Get all non-prop attributes (like required, disabled, etc.)

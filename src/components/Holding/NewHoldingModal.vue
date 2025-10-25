@@ -32,5 +32,4 @@ const create = () => {
     // submit the form
     form.value?.submitForm()
 }
-
 </script>

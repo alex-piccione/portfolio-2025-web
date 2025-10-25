@@ -29,7 +29,9 @@
                     {{ custodian.name }}
                 </option>
             </BaseSelect>
-            <AddNewRecordButton @click="showNewCustodianModal = true">add new custodian</AddNewRecordButton>
+            <AddNewRecordButton @click="showNewCustodianModal = true"
+                >add new custodian</AddNewRecordButton
+            >
         </div>
 
         <div class="form-group">
@@ -118,8 +120,7 @@ onMounted(async () => {
         //const sessionResult = await authStore.checkSessionValidity();
         //debug("onMounted 1: ", sessionResult)
 
-        if ((await authStore.checkSessionValidity()) !== "SessionOk")
-            return;
+        if ((await authStore.checkSessionValidity()) !== "SessionOk") return
 
         //console.info("AddNewHoldingForm - onMounted | currencyStore.fetchCurrencies()")
         await currencyStore.fetchCurrencies()
@@ -132,7 +133,7 @@ onMounted(async () => {
         }
 
         currencies.value = currencyStore.currencies
-        custodians.value = await CustodianService.list()        
+        custodians.value = await CustodianService.list()
     } catch (error: unknown) {
         console.error("AddNewHoldingForm - onMounted error", error)
     }
@@ -143,7 +144,7 @@ const submitForm = async () => {
     if (!authStore.userId) {
         console.error("User not authenticated")
         await goTo("Login")
-        return;
+        return
     }
 
     const { date, currencyId } = formData

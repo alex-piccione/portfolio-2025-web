@@ -3,8 +3,14 @@
         <InlineError :error="error" />
 
         <div class="form-group">
-            <label for="name">Name</label>            
-            <input id="name" v-model="form.name" type="text" required ref="autofocus" />
+            <label for="name">Name</label>
+            <input
+                id="name"
+                v-model="form.name"
+                type="text"
+                required
+                ref="autofocus"
+            />
         </div>
         <div class="form-group">
             <label for="description">Description</label>
@@ -41,7 +47,7 @@
                 <option value="US">US (United States of America)</option>
             </BaseSelect>
         </div>
-<!--
+        <!--
         <div class="form-actions">
             <button type="button" class="cancel" @click="$emit('cancel')">
                 Cancel

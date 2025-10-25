@@ -60,7 +60,7 @@ export default class HoldingService {
     }
 
     static async create(holdingData: unknown) {
-        // TODO: 
+        // TODO:
         return Promise.resolve(holdingData)
     }
 }

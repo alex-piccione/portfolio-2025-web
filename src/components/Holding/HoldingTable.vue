@@ -1,7 +1,9 @@
 <!-- src/components/Holdings/HoldingTable.vue -->
 <template>
     <div>
-        <button @click="showAddHoldingModal = true" class="ok">Add New Holding</button>
+        <button @click="showAddHoldingModal = true" class="ok">
+            Add New Holding
+        </button>
         <table>
             <thead>
                 <tr>
@@ -26,11 +28,11 @@
         </table>
     </div>
 
-  <NewHoldingModal :is-open="showAddHoldingModal"
-    @cancel="showAddHoldingModal = false"
-    @created="handleCreated"
-  ></NewHoldingModal>
-
+    <NewHoldingModal
+        :is-open="showAddHoldingModal"
+        @cancel="showAddHoldingModal = false"
+        @created="handleCreated"
+    ></NewHoldingModal>
 </template>
 
 <script setup lang="ts">

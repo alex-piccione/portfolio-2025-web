@@ -37,12 +37,15 @@ const handleConfirm = () => {
     form.value?.submitForm()
 }
 
-const handleCreated = (newId: string) => emit('created', newId)
+const handleCreated = (newId: string) => emit("created", newId)
 
-watch(() => props.isOpen, async (open) => {
-  if (open) {
-    await nextTick()
-    form.value?.focusFirstField()
-  }
-})
+watch(
+    () => props.isOpen,
+    async (open) => {
+        if (open) {
+            await nextTick()
+            form.value?.focusFirstField()
+        }
+    },
+)
 </script>

@@ -62,7 +62,9 @@ export const useAuthStore = defineStore(
 
             const checkSessionrResult = await AuthService.checkSessionValidity()
             if (!checkSessionrResult.isSuccess) {
-                debug(`checkSessionValidity: SessionCheckFailed. Failed to check ${checkSessionrResult.error}`)
+                debug(
+                    `checkSessionValidity: SessionCheckFailed. Failed to check ${checkSessionrResult.error}`,
+                )
                 clearAuthentication()
 
                 await goTo("Login") // failed to check
