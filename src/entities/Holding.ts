@@ -1,6 +1,6 @@
 import type Currency from "./Currency"
 
-//type HoldingAction = "Balance" | "Add" | "Remove"
+export type HoldingAction = "Balance" | "Add" | "Remove"
 
 export default interface Holding {
     id: number

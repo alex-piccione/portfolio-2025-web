@@ -6,4 +6,11 @@ const formatDate = (date: Date) => {
     return `${day}/${month}/${year}`
 }
 
-export { formatDate }
+/**
+ * Create a ISO 8601 date string using 00:00 UTC time
+ * @param date string date
+ */
+const createDatetime = (date: string) =>
+    new Date(date + "T00:00:00Z").toISOString()
+
+export { formatDate, createDatetime }

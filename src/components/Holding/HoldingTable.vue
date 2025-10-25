@@ -47,19 +47,27 @@ const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
 
 onMounted(async () => {
-    // ... existing code ...
     if (authStore.isLoggedIn === false) {
         console.warn("User not authenticated. Cannot fetch holdings.")
         return
     }
 
-    holdings.value = await HoldingService.listforUser(authStore.userId!)
+    await loadHoldings()
 })
+
+const loadHoldings = async () => {
+    holdings.value = await HoldingService.listforUser(authStore.userId!)
+}
 
 const showAddHoldingModal = ref(false)
 
-const handleCreated = () => {
+const handleCreated = async (newId: number) => {
     showAddHoldingModal.value = false
+
+    await loadHoldings()
+
+    alert(`newId: ${newId}`)
+
     // TODO:
     // Refresh the holdings list after adding a new holding
     // This could be optimized to just add the new holding to the list

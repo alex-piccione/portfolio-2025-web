@@ -84,6 +84,7 @@
 import { ref, onMounted, reactive } from "vue"
 import type Currency from "@/entities/Currency"
 import type Custodian from "@/entities/Custodian"
+//import type HoldingAction from "@/entities/Holding"
 import CustodianService from "@/services/custodian.service"
 import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
@@ -94,6 +95,8 @@ import BaseSelect from "@/components/Form/BaseSelect.vue"
 import NewCustodianModal from "@/components/Custodian/NewCustodianModal.vue"
 import AddNewRecordButton from "../Form/AddNewRecordButton.vue"
 import { debug } from "@/utils/utils"
+import type { create } from "@/services/api/schemas/holding.schema"
+import { createDatetime } from "../format.helper"
 
 const authStore = useAuthStore()
 const currencyStore = useCurrencyStore()
@@ -101,28 +104,31 @@ const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
 const error = ref<string | null>(null)
 
-const emit = defineEmits(["cancel", "created"])
+const emit = defineEmits<{
+    cancel: []
+    created: [number]
+}>()
 
 const showNewCustodianModal = ref(false)
 
 const formData = reactive({
-    date: new Date().toISOString().split("T")[0],
+    date: new Date().toISOString().split("T")[0] as string,
     custodianId: "",
-    action: "Balance",
+    action: "Balance", // as HoldingAction, // Kind "Balance",
     currencyId: "",
     amount: 0,
     note: "",
 })
 
+//const sessionResult = await authStore.checkSessionValidity();
+//debug("onMounted 1: ", sessionResult)
+
 onMounted(async () => {
     debug("NewHoldingForm - onMounted")
     try {
-        //const sessionResult = await authStore.checkSessionValidity();
-        //debug("onMounted 1: ", sessionResult)
+        if ((await authStore.checkSessionValidity()) !== "SessionOk") 
+            return; /* prettier-ignore */
 
-        if ((await authStore.checkSessionValidity()) !== "SessionOk") return
-
-        //console.info("AddNewHoldingForm - onMounted | currencyStore.fetchCurrencies()")
         await currencyStore.fetchCurrencies()
         if (currencyStore.error) {
             console.error(
@@ -147,17 +153,21 @@ const submitForm = async () => {
         return
     }
 
-    const { date, currencyId } = formData
+    const { date, currencyId, custodianId, action, amount, note } = formData
 
-    const holdingData = {
-        date,
-        currency: { id: parseInt(currencyId) },
-        user: { id: authStore.userId },
+    const holdingData: create.Request = {
+        date: createDatetime(date),
+        currencyId: parseInt(currencyId),
+        custodianId: parseInt(custodianId),
+        action,
+        amount,
+        note: note.trim() || null,
     }
 
     try {
-        await HoldingService.create(holdingData)
-        emit("created")
+        const result = await HoldingService.create(holdingData)
+        if (result.isSuccess) emit("created", result.value)
+        else error.value = result.error
     } catch (err) {
         console.error("Error creating holding:", err)
         error.value = "Failed to save holding. Please try again."

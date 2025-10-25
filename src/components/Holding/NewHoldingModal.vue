@@ -10,7 +10,7 @@
         <NewHoldingForm
             ref="form"
             @cancel="$emit('cancel')"
-            @created="$emit('created')"
+            @created="handleCreated"
         />
     </AppModal>
 </template>
@@ -24,7 +24,10 @@ defineProps<{
     isOpen: boolean
 }>()
 
-defineEmits(["cancel", "created"])
+const emit = defineEmits<{
+    cancel: []
+    created: [number]
+}>()
 
 const form = ref<typeof NewHoldingForm | null>(null)
 
@@ -32,4 +35,6 @@ const create = () => {
     // submit the form
     form.value?.submitForm()
 }
+
+const handleCreated = (newId: number) => emit("created", newId)
 </script>

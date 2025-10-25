@@ -7,7 +7,7 @@
         "dev": "vite",
         "build_old": "vue-tsc --noEmit && vite build",
         "build": "vue-tsc -b --noEmit && vite build",
-        "check-build": "vue-tsc -b --noEmit",
+        "check-build": "vue-tsc -b --noEmit && yarn lint && yarn format",
         "preview": "vite preview",
         "lint": "eslint src/**/*.{js,ts,vue}",
         "lint-fix": "eslint --fix src/**/*.{js,ts,vue}",

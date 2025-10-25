@@ -1,5 +1,7 @@
 import type Currency from "@/entities/Currency"
 import type Holding from "@/entities/Holding"
+import type { create } from "./api/schemas/holding.schema"
+import HoldingApi from "./api/holding.api"
 
 export default class HoldingService {
     static async listforUser(userId: string): Promise<Holding[]> {
@@ -59,8 +61,7 @@ export default class HoldingService {
         ]
     }
 
-    static async create(holdingData: unknown) {
-        // TODO:
-        return Promise.resolve(holdingData)
+    static async create(request: create.Request) {
+        return await HoldingApi.create(request)
     }
 }

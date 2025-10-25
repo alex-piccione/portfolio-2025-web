@@ -1,5 +1,5 @@
 // src/services/api/helper.ts
-import type { AxiosError } from "axios"
+import { AxiosError, type AxiosResponse } from "axios"
 
 interface ApiErrorResponse {
     status?: number
@@ -24,3 +24,22 @@ export const parseErrorResponse = (error: AxiosError): ApiErrorResponse => {
               code: undefined,
           }
 }
+
+export function getNewId(response: AxiosResponse): number {
+    return response.data?.newId
+}
+
+/*
+
+// extend AxiosResponse
+// Add the method to AxiosResponse's prototype
+(axios. as any).prototype.getNewId = function () {
+  return this.data?.newId;
+};
+
+
+export interface AxiosResponseNewId extends AxiosResponse<NewIdResponse> {
+    getNewId(): number;
+}
+
+*/
