@@ -8,3 +8,7 @@ export const debug = (...data: unknown[]) => {
         console.log(`${now.getMinutes() + ":" + now.getSeconds()} ${data}`)
     }
 }
+
+export function fail<T>(message: string): T {
+    throw new Error(message)
+}

@@ -1,6 +1,6 @@
 // src/entities/Custodian.ts
 export default interface Custodian {
-    id: string
+    id: number
     name: string
     desription?: string
     kind: CustodianKind // "Exchange" | "Wallet" | "Bank" | "Other"

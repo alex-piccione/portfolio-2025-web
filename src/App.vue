@@ -50,11 +50,13 @@ const storageChangeHandler = (event: StorageEvent) => {
 }
 
 onMounted(async () => {
+    debug("App.vue - onMounted")
     window.addEventListener("storage", storageChangeHandler)
 
     // Check login status on app load
     if (authStore.isLoggedIn) {
-        goTo("Home")
+        debug("App.vue - goto Home")
+        return await goTo("Home")
     }
 })
 

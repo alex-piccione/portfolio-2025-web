@@ -13,8 +13,16 @@
 <script setup lang="ts">
 import { onMounted } from "vue"
 import HoldingTable from "@/components/Holding/HoldingTable.vue"
+import { debug } from "@/utils/utils"
+import { useCustodianStore } from "@/stores/custodian.store"
+import { useCurrencyStore } from "@/stores/currency.store"
 
 onMounted(async () => {
     //const currencies = await CurrencyService.list()
+
+    // load stores
+    debug("HomePage.vue - onounted | load stores")
+    await useCustodianStore().refresh()
+    await useCurrencyStore().refresh()
 })
 </script>

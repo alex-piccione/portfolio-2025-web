@@ -1,33 +1,33 @@
-//src/stores/currency.store.ts
-// Pure state management for currencies
+// src/stores/custodian.store.ts
+// Pure state management for custodians
 // No business logic - just state getters and setters
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import type Currency from "@/entities/Currency"
-import CurrencyService from "@/services/currency.service"
+import type Custodian from "@/entities/Custodian"
+import CustodianService from "@/services/custodian.service"
 import { fail } from "@/utils/utils"
 
-const STORAGE_NAME = "currency"
+const STORAGE_NAME = "custodian"
 
-export const useCurrencyStore = defineStore(
+export const useCustodianStore = defineStore(
     STORAGE_NAME,
     () => {
         // ---------- State ----------
-        const currencies = ref<Currency[]>([])
+        const custodians = ref<Custodian[]>([])
         const isLoading = ref(false)
         const error = ref<string | null>(null)
 
         // ---------- Actions ----------
-        /** Load all currencies from the API via the service */
-        async function fetchCurrencies() {
+        /** Load all custodians from the API via the service */
+        async function fetchCustodians() {
             isLoading.value = true
             error.value = null
             try {
-                const list = await CurrencyService.list()
-                currencies.value = list
+                const list = await CustodianService.list()
+                custodians.value = list
             } catch (e: unknown) {
                 error.value =
-                    e instanceof Error ? e.message : "Failed to load currencies"
+                    e instanceof Error ? e.message : "Failed to load custodians"
             } finally {
                 isLoading.value = false
             }
@@ -35,29 +35,29 @@ export const useCurrencyStore = defineStore(
 
         /** Refresh the list – useful after a create / update operation */
         async function refresh() {
-            await fetchCurrencies()
+            await fetchCustodians()
         }
 
         /** Optional: clear state (e.g. on logout) */
         function clear() {
-            currencies.value = []
+            custodians.value = []
             error.value = null
             isLoading.value = false
         }
 
         // ---------- Getters ----------
         /** Get custodian by ID or throw error if not found */
-        const get = (id: number): Currency =>
-            currencies.value.find((c) => c.id === id) ||
-            fail(`Cannot find a Currency with id: ${id}.`)
+        const get = (id: number): Custodian =>
+            custodians.value.find((c) => c.id === id) ||
+            fail(`Cannot find a Custodian with id: ${id}.`)
 
         return {
             // state
-            currencies,
+            custodians,
             isLoading,
             error,
             // actions
-            fetchCurrencies,
+            fetchCustodians,
             refresh,
             clear,
             get,

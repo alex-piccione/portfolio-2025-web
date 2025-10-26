@@ -18,8 +18,8 @@
             </thead>
             <tbody>
                 <tr v-for="holding in holdings" :key="holding.id">
-                    <td>Not defined yet</td>
-                    <td>{{ holding.currency.id }}</td>
+                    <td>{{ holding.custodian.name }}</td>
+                    <td>{{ holding.currency.name }}</td>
                     <td>{{ formatDate(holding.date) }}</td>
                     <td>{{ holding.action }}</td>
                     <td>{{ holding.amount }}</td>
