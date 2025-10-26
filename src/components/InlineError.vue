@@ -16,7 +16,8 @@ import { toRefs } from "vue"
 
 const props = withDefaults(
     defineProps<{
-        error: string | null
+        //error: string | null
+        error: unknown
         position?: "initial" | "center"
     }>(),
     {

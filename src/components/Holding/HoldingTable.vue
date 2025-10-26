@@ -46,7 +46,7 @@ import NewHoldingModal from "./NewHoldingModal.vue"
 import { debug } from "@/utils/utils"
 import InlineError from "../InlineError.vue"
 
-const error = ref<string>("")
+const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
 const showAddHoldingModal = ref(false)
@@ -63,17 +63,15 @@ onMounted(async () => {
 const loadHoldings = async () => {
     debug("load holdings")
     error.value = ""
-    
+
     try {
         holdings.value = await HoldingService.list(authStore.userId!)
-    } catch (err: any) {
+    } catch (err: unknown) {
         error.value = err
     }
 }
 
-
-
-const handleCreated = async (newId: number) => {
+const handleCreated = async (_newId: number) => {
     showAddHoldingModal.value = false
     await loadHoldings()
 }

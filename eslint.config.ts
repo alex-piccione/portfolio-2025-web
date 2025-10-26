@@ -14,4 +14,15 @@ export default defineConfig([
         files: ["**/*.vue"],
         languageOptions: { parserOptions: { parser: tseslint.parser } },
     },
+    {
+        rules: {
+            "@typescript-eslint/no-unused-vars": [
+                "warn", // or "error" if you prefer
+                {
+                    argsIgnorePattern: "^_", // ignore unused parameters starting with "_"
+                    varsIgnorePattern: "^_", // ignore unused variables starting with "_"
+                },
+            ],
+        },
+    },
 ])
