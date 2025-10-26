@@ -1,8 +1,7 @@
 // src/services/api/auth.api.ts
-
+import { debug } from "@/utils/utils"
 import { Result } from "@/utils/result"
 import api from "../apiClient"
-import { debug } from "@/utils/utils"
 import axios from "axios"
 import {
     login,

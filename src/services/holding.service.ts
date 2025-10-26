@@ -1,37 +1,19 @@
-import type Currency from "@/entities/Currency"
 import type Holding from "@/entities/Holding"
 import type { create } from "./api/schemas/holding.schema"
 import HoldingApi from "./api/holding.api"
+import { debug } from "@/utils/utils"
+import { useCurrencyStore } from "@/stores/currency.store"
+import { Result } from "@/utils/result"
+
+const currencyStore = useCurrencyStore()
 
 export default class HoldingService {
-    static async listforUser(userId: string): Promise<Holding[]> {
-        console.log("userId: " + userId)
-        const currencies: Currency[] = [
-            {
-                id: 1,
-                symbol: "USD",
-                name: "US Dollar",
-                kind: "Fiat",
-                isActive: true,
-                precision: 2,
-            },
-            {
-                id: 2,
-                symbol: "EUR",
-                name: "Euro",
-                kind: "Fiat",
-                isActive: true,
-                precision: 2,
-            },
-            {
-                id: 3,
-                symbol: "BTC",
-                name: "Bitcoin",
-                kind: "Cryptocurrency",
-                isActive: true,
-                precision: 8,
-            },
-        ]
+    static async list(userId: string): Promise<Holding[]> {
+        debug("HoldingService.list - userId: " + userId)
+
+        const holdings = Result.dataOrError(await HoldingApi.list())
+
+        const currencies = currencyStore.currencies // is this updated ?
 
         const getCurrency = (id: number) => {
             // currencies.find(c => c.id === id) ?? throw new Error(`Currency not found with id=${id}`);
@@ -40,25 +22,19 @@ export default class HoldingService {
             return currency
         }
 
-        // For now, return some fake data
-        return [
-            {
-                id: 1,
-                //custodian: { id: 1 },
-                currency: getCurrency(1),
-                date: new Date(),
-                action: "Balance",
-                amount: 100.0,
-                note: undefined,
-            },
-            {
-                id: 2,
-                currency: getCurrency(3),
-                date: new Date(),
-                action: "Balance",
-                amount: 0.0000123,
-            },
-        ]
+        const holdingsFull: Holding[] = holdings.map((holding) => {
+            return {
+                id: holding.id,
+                currency: getCurrency(holding.currencyId),
+                custodian: { id: 1, name: "Fineco" }, // TODO: use custodian store
+                date: holding.date,
+                action: holding.action,
+                amount: parseFloat(holding.amount),
+                note: holding.note,
+            }
+        })
+
+        return holdingsFull
     }
 
     static async create(request: create.Request) {

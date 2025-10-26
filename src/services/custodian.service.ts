@@ -15,7 +15,7 @@ export default class CustodianService {
         }
     }
 
-    static async create(data: CreateRequest): Promise<string> {
+    static async create(data: CreateRequest): Promise<number> {
         const response = await api.client.post("/custodian", data)
         return api.getNewId(response)
     }

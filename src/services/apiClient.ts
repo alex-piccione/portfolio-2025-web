@@ -4,6 +4,8 @@ import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
 import ConfigurationProvider from "@/utils/configuration"
 import { parseErrorResponse } from "./api/helper"
+import type { ZodSafeParseResult } from "zod"
+import { Result } from "@/utils/result"
 
 const configuration = await ConfigurationProvider.getInstance()
 debug(`apiUrl: ${configuration.apiUrl}`)
@@ -83,16 +85,33 @@ export function deserialize<T>(item: unknown) {
 }
 
 interface ApiCreatedResponse {
-    newId: string
+    newId: number
 }
 
 const getNewId = (response: AxiosResponse) =>
     deserialize<ApiCreatedResponse>(response).newId
 
+const parseResult = <T>(parseResult: ZodSafeParseResult<T>): Result<T> => {
+    if (!parseResult.success) {
+        debug(
+            `Response validation failed (parseResponse.error.message): ${parseResult.error.message}`,
+        )
+
+        const errorMessages = parseResult.error.issues
+            .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+            .join("; ")
+
+        return Result.failed(`Response validation failed: ${errorMessages}`)
+    }
+
+    return Result.success(parseResult.data)
+}
+
 export default {
     client: apiClient,
     publicClient: apiClientNoAuth,
     parseError: parseErrorResponse,
+    parseResult,
     deserialize,
     getNewId,
 }

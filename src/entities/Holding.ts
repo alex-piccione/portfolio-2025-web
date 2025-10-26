@@ -9,5 +9,5 @@ export default interface Holding {
     date: Date
     action: string // enum
     amount: number
-    note?: string
+    note?: string | null
 }

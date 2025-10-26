@@ -4,7 +4,7 @@
         title="Add New Holding"
         @close="$emit('cancel')"
         cancel-button-text="Cancel"
-        @confirm="create"
+        @confirm="handleConfirm"
         confirmButtonText="Create"
     >
         <NewHoldingForm
@@ -31,7 +31,7 @@ const emit = defineEmits<{
 
 const form = ref<typeof NewHoldingForm | null>(null)
 
-const create = () => {
+const handleConfirm = () => {
     // submit the form
     form.value?.submitForm()
 }

@@ -1,5 +1,5 @@
 // src/services/api/helper.ts
-import { AxiosError, type AxiosResponse } from "axios"
+import { AxiosError } from "axios"
 
 interface ApiErrorResponse {
     status?: number
@@ -25,9 +25,10 @@ export const parseErrorResponse = (error: AxiosError): ApiErrorResponse => {
           }
 }
 
+/*
 export function getNewId(response: AxiosResponse): number {
     return response.data?.newId
-}
+}*/
 
 /*
 

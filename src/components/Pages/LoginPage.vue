@@ -38,6 +38,7 @@ import { ref } from "vue"
 import AuthService from "@/services/auth.service"
 import { goTo } from "@/utils/router"
 import InlineError from "@/components/InlineError.vue"
+import { debug } from "@/utils/utils"
 
 const router = useRouter()
 const email = ref<string>("")
@@ -46,6 +47,7 @@ const loginError = ref<string | null>(null)
 const isLoading = ref<boolean>(false)
 
 const handleLogin = async () => {
+    debug("handleLogin")
     loginError.value = null
     isLoading.value = true
 

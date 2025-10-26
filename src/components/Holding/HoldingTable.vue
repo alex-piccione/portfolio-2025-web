@@ -1,5 +1,6 @@
 <!-- src/components/Holdings/HoldingTable.vue -->
 <template>
+    <InlineError :error="error" position="center" />
     <div>
         <button @click="showAddHoldingModal = true" class="ok">
             Add New Holding
@@ -42,9 +43,13 @@ import type Holding from "@/entities/Holding"
 import { useAuthStore } from "@/stores/auth.store"
 import { formatDate } from "@/components/format.helper"
 import NewHoldingModal from "./NewHoldingModal.vue"
+import { debug } from "@/utils/utils"
+import InlineError from "../InlineError.vue"
 
+const error = ref<string>("")
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
+const showAddHoldingModal = ref(false)
 
 onMounted(async () => {
     if (authStore.isLoggedIn === false) {
@@ -56,23 +61,21 @@ onMounted(async () => {
 })
 
 const loadHoldings = async () => {
-    holdings.value = await HoldingService.listforUser(authStore.userId!)
+    debug("load holdings")
+    error.value = ""
+    
+    try {
+        holdings.value = await HoldingService.list(authStore.userId!)
+    } catch (err: any) {
+        error.value = err
+    }
 }
 
-const showAddHoldingModal = ref(false)
+
 
 const handleCreated = async (newId: number) => {
     showAddHoldingModal.value = false
-
     await loadHoldings()
-
-    alert(`newId: ${newId}`)
-
-    // TODO:
-    // Refresh the holdings list after adding a new holding
-    // This could be optimized to just add the new holding to the list
-    // if the API returns it directly
-    //onMounted()
 }
 </script>
 
