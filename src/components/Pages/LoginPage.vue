@@ -61,7 +61,7 @@ const handleLogin = async () => {
         if (result.isSuccess) {
             // Service handles navigation, so we don't need to do it here
             // But we can do it anyway for explicit control
-            goTo("Home")
+            return await goTo("Home")
         } else {
             loginError.value = result.error
         }

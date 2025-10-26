@@ -20,17 +20,22 @@ found in the session
 
 <script setup lang="ts">
 import { goTo } from "@/utils/router"
+import { debug } from "@/utils/utils"
 
-const goToLogin = () => goTo("Login")
+const goToLogin = async () => {
+    debug("goTo login")
+    await goTo("Login")
+    debug("123")
+}
 
 const tryGuest = () => {
     // TODO: Implement guest login logic here
-    console.log("Guest login clicked")
+    debug("Guest login clicked")
 }
 
 const createAccount = () => {
     // TODO: Implement create account logic here
-    console.log("Create account clicked")
+    debug("Create account clicked")
 }
 </script>
 

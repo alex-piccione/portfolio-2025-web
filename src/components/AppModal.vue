@@ -2,7 +2,7 @@
 <template>
     <teleport to="body">
         <transition name="fade">
-            <div v-if="isOpen" class="modal-backdrop" @click="close">
+            <div v-if="isOpen" class="modal-backdrop">
                 <div
                     class="modal-content"
                     @click.stop
@@ -106,6 +106,16 @@ onUnmounted(() => {
     max-height: 90%;
     overflow-y: auto;
     position: relative; // Needed for close button positioning
+
+    // For tablet and desktop screens
+    @media (min-width: 768px) {
+        min-width: 600px; // Larger width for better desktop experience
+    }
+
+    // For larger desktop screens
+    @media (min-width: 1200px) {
+        min-width: 750px; // Even wider for larger displays
+    }
 }
 
 .modal-header {
