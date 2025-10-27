@@ -1,15 +1,13 @@
 <template>
     <AppModal
         :is-open="isOpen"
-        title="Add New Holding"
+        title="Add New Holding"        
         @close="$emit('cancel')"
-        cancel-button-text="Cancel"
-        @confirm="handleConfirm"
-        confirmButtonText="Create"
+        :show-cancel-button=false
+        :show-confirm-button=false
     >
         <NewHoldingForm
-            ref="form"
-            @cancel="$emit('cancel')"
+            ref="form"            
             @created="handleCreated"
         />
     </AppModal>
@@ -30,11 +28,6 @@ const emit = defineEmits<{
 }>()
 
 const form = ref<typeof NewHoldingForm | null>(null)
-
-const handleConfirm = () => {
-    // submit the form
-    form.value?.submitForm()
-}
 
 const handleCreated = (newId: number) => emit("created", newId)
 </script>

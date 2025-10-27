@@ -1,7 +1,7 @@
 <!-- src/components/Holdings/AddNewHoldingForm.vue -->
 <template>
     <form @submit.prevent="submitForm">
-        <InlineError :error="error" />
+        <InlineError :error="loadError" />
         <div class="form-group">
             <label for="date">Date</label>
             <input type="date" id="date" v-model="formData.date" required />
@@ -10,17 +10,17 @@
         <div class="form-group">
             <label for="action">Action</label>
             <select id="action" v-model="formData.action" required>
-                <option>Balance</option>
+                <option selected>Balance</option>
                 <!--<option>Add</option>
-        <option>Remove</option>
-      -->
+                    <option>Remove</option>
+                -->
             </select>
         </div>
 
         <div class="form-group">
             <label for="custodian">Custodian</label>
             <BaseSelect id="custodian" v-model="formData.custodianId" required>
-                <!--<option value="" >Please select one</option>-->
+                <option disabled value="">Please select one</option>
                 <option
                     v-for="custodian in custodians"
                     :key="custodian.id"
@@ -36,7 +36,7 @@
 
         <div class="form-group">
             <label for="currency">Currency</label>
-            <BaseSelect id="currencyId" v-model="formData.currencyId" required>
+            <BaseSelect id="currency" v-model="formData.currencyId" required>
                 <option disabled value="">Please select one</option>
                 <option
                     v-for="currency in currencies"
@@ -67,6 +67,14 @@
                 id="note"
                 v-model="formData.note"
             ></textarea>
+        </div>
+
+        <div class="form-footer">
+            <div class="buttons">
+                <!--<button type="button" @click="$emit('cancel')" class="close">Cancel</button>-->
+                <button type="submit" class="ok">Create</button>
+            </div>
+            <InlineError :error="submitError" :autoclose="10"/>    
         </div>
     </form>
 
@@ -102,10 +110,11 @@ const authStore = useAuthStore()
 const currencyStore = useCurrencyStore()
 const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
-const error = ref<string | null>(null)
+const loadError = ref<unknown>(null)
+const submitError = ref<unknown>(null)
 
 const emit = defineEmits<{
-    cancel: []
+    //cancel: []
     created: [number]
 }>()
 
@@ -120,9 +129,6 @@ const formData = reactive({
     note: "",
 })
 
-//const sessionResult = await authStore.checkSessionValidity();
-//debug("onMounted 1: ", sessionResult)
-
 onMounted(async () => {
     debug("NewHoldingForm - onMounted")
     try {
@@ -135,22 +141,23 @@ onMounted(async () => {
                 "Error fetching currencies (onMount):",
                 currencyStore.error,
             )
-            error.value = "Failed to read currencies"
+            loadError.value = "Failed to read currencies"
         }
 
         currencies.value = currencyStore.currencies
         custodians.value = await CustodianService.list()
     } catch (error: unknown) {
-        console.error("AddNewHoldingForm - onMounted error", error)
+        loadError.value = error
     }
 })
 
 const submitForm = async () => {
     debug("NewHoldingForm - submitForm")
+    submitError.value = null
+
     if (!authStore.userId) {
-        console.error("User not authenticated")
-        await goTo("Login")
-        return
+        submitError.value = "User not authenticated"
+        return await goTo("Login")
     }
 
     const { date, currencyId, custodianId, action, amount, note } = formData
@@ -165,26 +172,35 @@ const submitForm = async () => {
     }
 
     try {
+            //throw new Error("test error")
         const result = await HoldingService.create(holdingData)
         if (result.isSuccess) emit("created", result.value)
-        else error.value = result.error
-    } catch (err) {
-        console.error("Error creating holding:", err)
-        error.value = "Failed to save holding. Please try again."
+        else submitError.value = result.error
+    } catch (error) {
+        submitError.value = error
     }
 }
 
 // Expose submitForm to be called from the parent where the "Save" button is located
-defineExpose({
+/*defineExpose({
     submitForm,
-})
+})*/
 
 const handleNewCustodian = async (newId: string) => {
     showNewCustodianModal.value = false
-    // TODO: add the new custodian to the select and select it
     custodians.value = await CustodianService.list()
     formData.custodianId = newId
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@use "@/styles/theme" as *;
+.form-footer {
+    /*padding: $padding;*/
+
+    &.buttons {
+        display: flex;
+        gap: $padding;
+    }
+}
+</style>

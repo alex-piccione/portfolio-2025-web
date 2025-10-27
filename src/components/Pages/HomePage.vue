@@ -25,4 +25,6 @@ onMounted(async () => {
     await useCustodianStore().refresh()
     await useCurrencyStore().refresh()
 })
+
+
 </script>

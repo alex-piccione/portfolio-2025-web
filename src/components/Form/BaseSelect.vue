@@ -2,33 +2,18 @@
     <select
         ref="select"
         :value="modelValue"
-        :required="required"
         @change="handleChange"
-        :class="{ 'placeholder-selected': !modelValue }"
-        v-bind="attrs"
+        :class="{ 'placeholder-selected': !modelValue }"        
     >
         <slot></slot>
     </select>
 </template>
 
 <script setup lang="ts">
-import { debug } from "@/utils/utils"
-import { onMounted, useAttrs } from "vue"
 
 defineProps<{
     modelValue: string
-    id: string
-    required: boolean
 }>()
-
-defineOptions({
-    inheritAttrs: true,
-})
-
-// Get all non-prop attributes (like required, disabled, etc.)
-const attrs = useAttrs()
-
-debug("attrs", attrs.required)
 
 const emit = defineEmits<{
     // this is a special event detected by Vue
@@ -39,15 +24,6 @@ const handleChange = (event: Event) => {
     emit("update:modelValue", (event.target as HTMLSelectElement).value)
 }
 
-/*computed(() => {
-    //"placeholder-selected": !props.modelValue,
-})*/
-
-onMounted(() => {
-    /*if (props.required) {
-        // add the empty options <option disabled value="">Please select one</option>
-    }*/
-})
 </script>
 
 <style scoped lang="scss">

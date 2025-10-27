@@ -8,6 +8,7 @@
                     type="text"
                     id="username"
                     placeholder="Username"
+                    autocomplete="username"
                 />
             </div>
             <div class="form-group">

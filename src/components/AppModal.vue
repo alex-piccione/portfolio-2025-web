@@ -9,27 +9,26 @@
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="model-header"
+                    ref="modalContainer"
                 >
                     <header class="modal-header">
-                        <h3>{{ title }}</h3>
-                        <button @click="close" class="close-button">
-                            &times;
-                        </button>
+                        <h3>{{ title }}</h3>   
+                        <button @click="close" class="close-button">&times;</button>
                     </header>
                     <div class="modal-body">
                         <slot> <!-- Custom content --> </slot>
                     </div>
-                    <footer class="modal-footer">
+                    <footer class="modal-footer" v-if="showCancelButton || showConfirmButton">
                         <slot name="footer">
                             <button
-                                v-if="showcancelButton"
+                                v-if="showCancelButton"
                                 @click="close"
                                 class="close"
                             >
                                 {{ cancelButtonText }}
                             </button>
                             <button
-                                v-if="showcancelButton"
+                                v-if="showConfirmButton"
                                 @click="confirm"
                                 class="ok"
                             >
@@ -44,18 +43,24 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from "vue"
+import { onMounted, onUnmounted, ref } from "vue"
+
+const modalContainer = ref<HTMLElement|null>(null)
 
 const props = withDefaults(
     defineProps<{
         isOpen: boolean
         title: string
-        showcancelButton?: boolean
+        error?: unknown
+        showCancelButton?: boolean
+        showConfirmButton?: boolean
         cancelButtonText?: string
         confirmButtonText?: string
     }>(),
     {
-        showcancelButton: true,
+        error: undefined,
+        showCancelButton: true,
+        showConfirmButton: true,
         cancelButtonText: "Cancel",
         confirmButtonText: "Confirm",
     },
@@ -69,6 +74,12 @@ const confirm = () => emit("confirm")
 const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === "Escape" && props.isOpen) close()
 }
+
+const scrollToTop = () => modalContainer?.value?.scrollTop.toExponential(0)
+
+defineExpose({
+    scrollToTop
+})
 
 onMounted(() => {
     window.addEventListener("keydown", handleKeydown)
@@ -110,11 +121,13 @@ onUnmounted(() => {
     // For tablet and desktop screens
     @media (min-width: 768px) {
         min-width: 600px; // Larger width for better desktop experience
+        padding: theme.$padding;
     }
 
     // For larger desktop screens
     @media (min-width: 1200px) {
         min-width: 750px; // Even wider for larger displays
+        padding: theme.$padding;
     }
 }
 
