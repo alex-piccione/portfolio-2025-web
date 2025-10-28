@@ -22,15 +22,14 @@ export const useCurrencyStore = defineStore(
         async function fetchCurrencies() {
             isLoading.value = true
             error.value = null
-            try {
-                const list = await CurrencyService.list()
-                currencies.value = list
-            } catch (e: unknown) {
-                error.value =
-                    e instanceof Error ? e.message : "Failed to load currencies"
-            } finally {
-                isLoading.value = false
-            }
+
+            // TODO: add retry
+            const result = await CurrencyService.list()
+            const _ = result.isSuccess
+                ? (currencies.value = result.value)
+                : (error.value = result.error)
+
+            isLoading.value = false
         }
 
         /** Refresh the list – useful after a create / update operation */

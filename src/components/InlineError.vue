@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, toRefs, ref, watch } from "vue"
+import { toRefs, ref, watch } from "vue"
 
 const props = withDefaults(
     defineProps<{
@@ -28,15 +28,6 @@ const props = withDefaults(
 
 const { error, position, autoclose } = toRefs(props)
 const isVisible = ref(false)
-
-/*
-onMounted(() => {
-    if(autoclose) {
-        const secs = (typeof(autoclose) === "number") ? autoclose : 5 // default autoclose seconds
-        //fade off after secs
-    }
-})*/
-
 
 let timeoutId: number | null = null
 watch(
@@ -67,8 +58,6 @@ watch(
     },
     { immediate: true },
 )
- 
-
 </script>
 
 <style scoped lang="scss">

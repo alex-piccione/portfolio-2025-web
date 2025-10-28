@@ -1,8 +1,6 @@
 import { debug } from "@/utils/utils"
 import { Result } from "@/utils/result"
-import axios from "axios"
-import api from "../apiClient"
-
+import api from "./apiClient"
 import { type create, list } from "./schemas/holding.schema"
 
 debug("HoldingApi")
@@ -12,12 +10,7 @@ export default class HoldingApi {
             const response = await api.client.post("/holding", request)
             return Result.success(api.getNewId(response))
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const errorData = api.parseError(error)
-                return Result.failed(errorData.message)
-            }
-
-            return Result.failed(`HoldingApi.create failed. ${error}`)
+            return api.handleError(error)
         }
     }
 
@@ -26,14 +19,9 @@ export default class HoldingApi {
         try {
             const response = await api.client.get("/holding")
             const parseResult = list.ResponseSchema.safeParse(response.data)
-            return api.parseResult(parseResult)
+            return api.getResult(parseResult)
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const errorData = api.parseError(error)
-                return Result.failed(errorData.message)
-            }
-
-            return Result.failed(`HoldingApi.list failed. ${error}`)
+            return api.handleError(error)
         }
     }
 }

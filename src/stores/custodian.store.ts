@@ -22,15 +22,13 @@ export const useCustodianStore = defineStore(
         async function fetchCustodians() {
             isLoading.value = true
             error.value = null
-            try {
-                const list = await CustodianService.list()
-                custodians.value = list
-            } catch (e: unknown) {
-                error.value =
-                    e instanceof Error ? e.message : "Failed to load custodians"
-            } finally {
-                isLoading.value = false
-            }
+
+            const result = await CustodianService.list()
+            const _ = result.isSuccess
+                ? (custodians.value = result.value)
+                : (error.value = result.error)
+
+            isLoading.value = false
         }
 
         /** Refresh the list – useful after a create / update operation */

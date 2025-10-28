@@ -2,14 +2,12 @@
     <AppModal
         :is-open="isOpen"
         title="Add New Custodian"
+        :show-cancel-button="false"
+        :show-confirm-button="false"
         @close="$emit('cancel')"
         @confirm="handleConfirm"
     >
-        <NewCustodianForm
-            ref="form"
-            @cancel="$emit('cancel')"
-            @created="handleCreated"
-        >
+        <NewCustodianForm ref="form" @created="handleCreated">
         </NewCustodianForm>
     </AppModal>
 </template>
@@ -27,7 +25,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "cancel"): void
-    (e: "created", newId: string): void
+    (e: "created", newId: number): void
 }>()
 
 const form = ref<typeof NewCustodianForm | null>(null)
@@ -37,7 +35,7 @@ const handleConfirm = () => {
     form.value?.submitForm()
 }
 
-const handleCreated = (newId: string) => emit("created", newId)
+const handleCreated = (newId: number) => emit("created", newId)
 
 watch(
     () => props.isOpen,

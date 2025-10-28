@@ -12,13 +12,18 @@
                     ref="modalContainer"
                 >
                     <header class="modal-header">
-                        <h3>{{ title }}</h3>   
-                        <button @click="close" class="close-button">&times;</button>
+                        <h3>{{ title }}</h3>
+                        <button @click="close" class="close-button">
+                            &times;
+                        </button>
                     </header>
                     <div class="modal-body">
                         <slot> <!-- Custom content --> </slot>
                     </div>
-                    <footer class="modal-footer" v-if="showCancelButton || showConfirmButton">
+                    <footer
+                        class="modal-footer"
+                        v-if="showCancelButton || showConfirmButton"
+                    >
                         <slot name="footer">
                             <button
                                 v-if="showCancelButton"
@@ -45,7 +50,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue"
 
-const modalContainer = ref<HTMLElement|null>(null)
+const modalContainer = ref<HTMLElement | null>(null)
 
 const props = withDefaults(
     defineProps<{
@@ -78,7 +83,7 @@ const handleKeydown = (e: KeyboardEvent) => {
 const scrollToTop = () => modalContainer?.value?.scrollTop.toExponential(0)
 
 defineExpose({
-    scrollToTop
+    scrollToTop,
 })
 
 onMounted(() => {

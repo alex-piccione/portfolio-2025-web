@@ -74,7 +74,7 @@
                 <!--<button type="button" @click="$emit('cancel')" class="close">Cancel</button>-->
                 <button type="submit" class="ok">Create</button>
             </div>
-            <InlineError :error="submitError" :autoclose="10"/>    
+            <InlineError :error="submitError" :autoclose="10" />
         </div>
     </form>
 
@@ -93,7 +93,7 @@ import { ref, onMounted, reactive } from "vue"
 import type Currency from "@/entities/Currency"
 import type Custodian from "@/entities/Custodian"
 //import type HoldingAction from "@/entities/Holding"
-import CustodianService from "@/services/custodian.service"
+//import CustodianService from "@/services/custodian.service"
 import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
@@ -105,8 +105,10 @@ import AddNewRecordButton from "../Form/AddNewRecordButton.vue"
 import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/holding.schema"
 import { createDatetime } from "../format.helper"
+import { useCustodianStore } from "@/stores/custodian.store"
 
 const authStore = useAuthStore()
+const custodianStore = useCustodianStore()
 const currencyStore = useCurrencyStore()
 const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
@@ -135,6 +137,7 @@ onMounted(async () => {
         if ((await authStore.checkSessionValidity()) !== "SessionOk") 
             return; /* prettier-ignore */
 
+        /*
         await currencyStore.fetchCurrencies()
         if (currencyStore.error) {
             console.error(
@@ -142,10 +145,10 @@ onMounted(async () => {
                 currencyStore.error,
             )
             loadError.value = "Failed to read currencies"
-        }
+        }*/
 
+        custodians.value = custodianStore.custodians
         currencies.value = currencyStore.currencies
-        custodians.value = await CustodianService.list()
     } catch (error: unknown) {
         loadError.value = error
     }
@@ -172,7 +175,6 @@ const submitForm = async () => {
     }
 
     try {
-            //throw new Error("test error")
         const result = await HoldingService.create(holdingData)
         if (result.isSuccess) emit("created", result.value)
         else submitError.value = result.error
@@ -186,18 +188,17 @@ const submitForm = async () => {
     submitForm,
 })*/
 
-const handleNewCustodian = async (newId: string) => {
+const handleNewCustodian = async (newId: number) => {
     showNewCustodianModal.value = false
-    custodians.value = await CustodianService.list()
-    formData.custodianId = newId
+    //custodianStore.refresh()
+    custodians.value = custodianStore.custodians // it should be updated
+    formData.custodianId = newId.toString()
 }
 </script>
 
 <style scoped lang="scss">
 @use "@/styles/theme" as *;
 .form-footer {
-    /*padding: $padding;*/
-
     &.buttons {
         display: flex;
         gap: $padding;

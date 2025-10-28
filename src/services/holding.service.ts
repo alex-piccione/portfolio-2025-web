@@ -13,7 +13,7 @@ export default class HoldingService {
     static async list(userId: string): Promise<Holding[]> {
         debug("HoldingService.list - userId: " + userId)
 
-        const holdings = Result.dataOrError(await HoldingApi.list())
+        const holdings = Result.valueOrError(await HoldingApi.list())
 
         const holdingsFull: Holding[] = holdings.map((holding) => {
             return {

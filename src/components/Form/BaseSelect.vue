@@ -3,14 +3,13 @@
         ref="select"
         :value="modelValue"
         @change="handleChange"
-        :class="{ 'placeholder-selected': !modelValue }"        
+        :class="{ 'placeholder-selected': !modelValue }"
     >
         <slot></slot>
     </select>
 </template>
 
 <script setup lang="ts">
-
 defineProps<{
     modelValue: string
 }>()
@@ -23,7 +22,6 @@ const emit = defineEmits<{
 const handleChange = (event: Event) => {
     emit("update:modelValue", (event.target as HTMLSelectElement).value)
 }
-
 </script>
 
 <style scoped lang="scss">

@@ -1,8 +1,7 @@
 // src/services/api/auth.api.ts
 import { debug } from "@/utils/utils"
 import { Result } from "@/utils/result"
-import api from "../apiClient"
-import axios from "axios"
+import api from "./apiClient"
 import {
     login,
     refresh,
@@ -39,12 +38,7 @@ export default class AuthApi {
 
             return Result.success(parseResult.data)
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const errorData = api.parseError(error)
-                return Result.failed(errorData.message)
-            }
-
-            return Result.failed(`AuthApi.login failed. ${error}`)
+            return api.handleError(error)
         }
     }
 
@@ -74,12 +68,7 @@ export default class AuthApi {
 
             return Result.success(parseResult.data)
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const errorData = api.parseError(error)
-                return Result.failed(errorData.message)
-            }
-
-            return Result.failed(`AuthApi.refreshToken failed. ${error}`)
+            return api.handleError(error)
         }
     }
 }

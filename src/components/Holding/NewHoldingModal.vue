@@ -1,15 +1,12 @@
 <template>
     <AppModal
         :is-open="isOpen"
-        title="Add New Holding"        
+        title="Add New Holding"
         @close="$emit('cancel')"
-        :show-cancel-button=false
-        :show-confirm-button=false
+        :show-cancel-button="false"
+        :show-confirm-button="false"
     >
-        <NewHoldingForm
-            ref="form"            
-            @created="handleCreated"
-        />
+        <NewHoldingForm ref="form" @created="handleCreated" />
     </AppModal>
 </template>
 

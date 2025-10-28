@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="submitForm">
-        <InlineError :error="error" />
+        <InlineError :error="loadError" />
 
         <div class="form-group">
             <label for="name">Name</label>
@@ -47,14 +47,14 @@
                 <option value="US">US (United States of America)</option>
             </BaseSelect>
         </div>
-        <!--
-        <div class="form-actions">
-            <button type="button" class="cancel" @click="$emit('cancel')">
-                Cancel
-            </button>
-            <button type="submit" class="ok">Create Custodian</button>
+
+        <div class="form-footer">
+            <div class="buttons">
+                <!--<button type="button" @click="$emit('cancel')" class="close">Cancel</button>-->
+                <button type="submit" class="ok">Create</button>
+            </div>
+            <InlineError :error="submitError" :autoclose="10" />
         </div>
-        -->
     </form>
 </template>
 
@@ -63,16 +63,19 @@ import { onMounted, reactive, ref } from "vue"
 import InlineError from "@/components/InlineError.vue"
 import { useAuthStore } from "@/stores/auth.store"
 import BaseSelect from "../Form/BaseSelect.vue"
-import CustodianService, {
-    type CreateRequest,
-} from "@/services/custodian.service"
 import { parseKindFromString } from "@/entities/Custodian"
 import { debug } from "@/utils/utils"
+import type { create } from "@/services/api/schemas/custodian.schema"
+import CustodianService from "@/services/custodian.service"
+import { Result } from "@/utils/result"
 
 const authStore = useAuthStore()
-const error = ref<string | null>(null)
+const loadError = ref<unknown>(null)
+const submitError = ref<unknown>(null)
 
-const emit = defineEmits(["created", "cancel"])
+const emit = defineEmits<{
+    created: [number]
+}>()
 
 const autofocus = ref<HTMLInputElement | null>(null)
 
@@ -91,28 +94,39 @@ onMounted(async () => {
         if ((await authStore.checkSessionValidity()) !== "SessionExpired")
             return
     } catch (error: unknown) {
-        console.error("NewCustodianForm - onMounted", error)
+        loadError.value = error
     }
 })
 
 const submitForm = async () => {
     debug("NewCustodianModal - submitForm")
 
-    error.value = null
+    submitError.value = null
     try {
-        const data: CreateRequest = {
+        const data: create.Request = {
             ...form,
             kind: parseKindFromString(form.kind),
         }
 
-        const newId = await CustodianService.create(data)
+        const result = await CustodianService.create(data)
+        const newId = Result.valueOrError<number>(result)
         emit("created", newId)
-    } catch (err: unknown) {
-        error.value = (err as Error)?.message || `${err}`
+    } catch (error: unknown) {
+        submitError.value = error
     }
 }
 
 const focusFirstField = () => autofocus.value?.focus()
 
-defineExpose({ submitForm, focusFirstField })
+defineExpose({ focusFirstField })
 </script>
+
+<style scoped lang="scss">
+@use "@/styles/theme" as *;
+.form-footer {
+    &.buttons {
+        display: flex;
+        gap: $padding;
+    }
+}
+</style>

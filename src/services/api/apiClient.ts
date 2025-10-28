@@ -1,10 +1,14 @@
-import axios, { type AxiosResponse } from "axios"
+import axios from "axios"
 
 import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
 import ConfigurationProvider from "@/utils/configuration"
-import { parseErrorResponse } from "./api/helper"
-import type { ZodSafeParseResult } from "zod"
+import {
+    deserialize,
+    parseErrorResponse,
+    parseNewIdResponse,
+    parseZodParseResult,
+} from "./helper"
 import { Result } from "@/utils/result"
 
 const configuration = await ConfigurationProvider.getInstance()
@@ -75,43 +79,21 @@ apiClientNoAuth.interceptors.response.use(
     },
 )
 
-export function deserialize<T>(item: unknown) {
-    try {
-        return item as T
-    } catch (error) {
-        //const t = generic
-        throw new Error(`Failed to deserialize data to {T}. ${error}`)
-    }
-}
-
-interface ApiCreatedResponse {
-    newId: number
-}
-
-const getNewId = (response: AxiosResponse) =>
-    deserialize<ApiCreatedResponse>(response).newId
-
-const parseResult = <T>(parseResult: ZodSafeParseResult<T>): Result<T> => {
-    if (!parseResult.success) {
-        debug(
-            `Response validation failed (parseResponse.error.message): ${parseResult.error.message}`,
-        )
-
-        const errorMessages = parseResult.error.issues
-            .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
-            .join("; ")
-
-        return Result.failed(`Response validation failed: ${errorMessages}`)
+const handleError = (error: unknown) => {
+    if (axios.isAxiosError(error)) {
+        const errorData = parseErrorResponse(error)
+        return Result.failed(errorData.message)
     }
 
-    return Result.success(parseResult.data)
+    return Result.failed(`${error}`)
 }
 
 export default {
     client: apiClient,
     publicClient: apiClientNoAuth,
-    parseError: parseErrorResponse,
-    parseResult,
+    handleError,
+    getError: parseErrorResponse,
+    getNewId: parseNewIdResponse,
+    getResult: parseZodParseResult,
     deserialize,
-    getNewId,
 }

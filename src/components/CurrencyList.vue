@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import type Currency from "@/entities/Currency"
-import CurrencyService from "@/services/currency.service"
 import { useCurrencyStore } from "@/stores/currency.store"
 
 const currencies = ref<Currency[]>([])
@@ -30,10 +29,12 @@ const currencies = ref<Currency[]>([])
 const currencyStore = useCurrencyStore()
 
 onMounted(async () => {
-    currencies.value = await CurrencyService.list()
+    /*    
     if (!currencyStore.currencies.length) {
         currencyStore.fetchCurrencies()
-    }
+    }*/
+
+    currencies.value = currencyStore.currencies
 })
 </script>
 
