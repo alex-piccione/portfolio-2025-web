@@ -2,11 +2,16 @@
     <div class="toolbar">
         <div class="toolbar-left">
             <!-- logo here -->
-            <h1 class="toolbar-title">Portfolius (v{{ ui_version }})</h1>
+            <h1 class="toolbar-title">
+                Portfolius <small>(v{{ ui_version }})</small>
+            </h1>
             <nav class="toolbar-nav">
-                <!--
-        <router-link to="/settings" class="toolbar-nav-item">Settings</router-link>
-        -->
+                <router-link to="/home" class="toolbar-nav-item"
+                    >Home</router-link
+                >
+                <router-link to="/currencies" class="toolbar-nav-item"
+                    >Currencies</router-link
+                >
             </nav>
         </div>
 
@@ -93,6 +98,7 @@ const handleLogout = async () => await AuthService.logout()
         gap: 20px;
 
         &-item {
+            color: theme.$text-color;
             text-decoration: none;
             /*padding: 8px 12px;*/
             border-radius: theme.$border-radius;

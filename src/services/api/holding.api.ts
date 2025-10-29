@@ -14,6 +14,15 @@ export default class HoldingApi {
         }
     }
 
+    static async delete(id: number) {
+        try {
+            await api.client.delete(`/holding/${id}`)
+            return Result.success({})
+        } catch (error) {
+            return api.handleError(error)
+        }
+    }
+
     static async list() {
         debug("HoldingApi - list")
         try {

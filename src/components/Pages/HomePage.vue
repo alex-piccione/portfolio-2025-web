@@ -1,7 +1,6 @@
 // src/components/Pages/Home.vue
 <template>
     <div>
-        <h1>Holdings</h1>
         <HoldingTable />
 
         <!--

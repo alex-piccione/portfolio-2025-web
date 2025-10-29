@@ -33,4 +33,8 @@ export default class HoldingService {
     static async create(request: create.Request) {
         return await HoldingApi.create(request)
     }
+
+    static async delete(id: number) {
+        return await HoldingApi.delete(id)
+    }
 }

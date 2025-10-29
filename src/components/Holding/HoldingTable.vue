@@ -14,6 +14,7 @@
                     <th>Action</th>
                     <th>Amount</th>
                     <th>Note</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,12 @@
                     <td>{{ holding.action }}</td>
                     <td>{{ holding.amount }}</td>
                     <td>{{ holding.note }}</td>
+                    <CommandsCell
+                        :can-edit="true"
+                        :can-delete="true"
+                        @edit="handleEdit(holding.id)"
+                        @delete="handleDelete(holding.id)"
+                    />
                 </tr>
             </tbody>
         </table>
@@ -45,6 +52,7 @@ import { formatDate } from "@/components/format.helper"
 import NewHoldingModal from "./NewHoldingModal.vue"
 import { debug } from "@/utils/utils"
 import InlineError from "../InlineError.vue"
+import CommandsCell from "../Table/CommandsCell.vue"
 
 const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])
@@ -74,6 +82,18 @@ const loadHoldings = async () => {
 const handleCreated = async (_newId: number) => {
     showAddHoldingModal.value = false
     await loadHoldings()
+}
+
+const handleEdit = (id: number) => {
+    debug(`edit: ${id}`)
+    // TODO
+}
+
+const handleDelete = async (id: number) => {
+    error.value = null
+    const result = await HoldingService.delete(id)
+    if (result.isSuccess) await loadHoldings()
+    else error.value = result.error
 }
 </script>
 

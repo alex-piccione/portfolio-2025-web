@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import { useAuthStore } from "@/stores/auth.store"
 import { debug } from "@/utils/utils"
 
-export type RouteNames = "Landing" | "Home" | "Login"
+export type RouteNames = "Landing" | "Home" | "Login" | "Currencies"
 export const goTo = (routeName: RouteNames) => router.push({ name: routeName })
 
 export const goToLogin = async () => {
@@ -35,6 +35,12 @@ const routes = [
         path: "/home",
         name: "Home",
         component: () => import("@/components/Pages/HomePage.vue"),
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/currencies",
+        name: "Currencies",
+        component: () => import("@/components/Pages/CurrenciesPage.vue"),
         meta: { requiresAuth: true },
     },
 ]
