@@ -10,16 +10,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="currency in currencies" :key="currency.id">                
+            <tr v-for="currency in currencies" :key="currency.id">
                 <td><AppCurrency :symbol="currency.symbol" /></td>
                 <td>{{ currency.name }}</td>
                 <td>{{ currency.kind }}</td>
                 <td>
-                    <span style="white-space: nowrap;">
-                    <AppIcon 
-                        :name="inUse ? 'heart_off_outline' : 'heart_plus'" 
-                        :color="inUse ? 'delete' : 'heart'" 
-                        @click="$emit('update', {id: currency.id, enable: !inUse})" clickable /> 
+                    <span
+                        class="nowrap clickable"
+                        @click="$emit('update', currency.id, !inUse)"
+                    >
+                        <AppIcon
+                            :name="inUse ? 'heart_off_outline' : 'heart_plus'"
+                            :color="inUse ? 'delete' : 'heart'"
+                        />
                         {{ inUse ? "disable" : "enable" }}
                     </span>
                 </td>
@@ -32,7 +35,7 @@
 import BaseTable from "@/components/Table/BaseTable.vue"
 import AppCurrency from "./AppCurrency.vue"
 import type { UserCurrency } from "@/entities/Currency"
-import AppIcon from "../AppIcon.vue";
+import AppIcon from "../AppIcon.vue"
 
 defineProps<{
     currencies: UserCurrency[]
@@ -40,9 +43,8 @@ defineProps<{
 }>()
 
 defineEmits<{
-    update: [{id: number, enable: boolean}]
+    update: [number, boolean]
 }>()
-
 </script>
 
 <style lang="scss" scoped>

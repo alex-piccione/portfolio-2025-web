@@ -37,4 +37,18 @@ export default class CurrencyApi {
             return api.handleError(error)
         }
     }
+
+    static async enableForUser(
+        currencyId: number,
+        enable: boolean,
+    ): Promise<Result<void>> {
+        try {
+            await api.client.put(
+                `/currency/${currencyId}/${enable ? "enable" : "disable"}`,
+            )
+            return Result.success(undefined)
+        } catch (error) {
+            return api.handleError(error)
+        }
+    }
 }

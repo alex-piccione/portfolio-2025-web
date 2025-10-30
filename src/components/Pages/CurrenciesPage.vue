@@ -1,13 +1,21 @@
 <template>
-    <InlineError :error="loadError" />
+    <InlineError :error="error" />
     <div class="currencies-page">
         <div class="currencies-page__left">
             <h4>Enabled</h4>
-            <CurrenciesTable :inUse=true :currencies="currenciesInUse" />
+            <CurrenciesTable
+                :inUse="true"
+                :currencies="currenciesInUse"
+                @update="handleUpdate"
+            />
         </div>
         <div class="currencies-page__right">
             <h4>Disabled</h4>
-            <CurrenciesTable :inUse=false :currencies="currenciesNotUsed" />
+            <CurrenciesTable
+                :inUse="false"
+                :currencies="currenciesNotUsed"
+                @update="handleUpdate"
+            />
         </div>
     </div>
 </template>
@@ -19,24 +27,32 @@ import CurrencyService from "@/services/currency.service"
 import { onMounted, ref } from "vue"
 import InlineError from "../InlineError.vue"
 
-const loadError = ref<unknown>()
+const error = ref<unknown>()
 const currenciesInUse = ref<UserCurrency[]>([])
 const currenciesNotUsed = ref<UserCurrency[]>([])
 
 onMounted(async () => {
-    const result = await CurrencyService.listOfUser() 
-    
-    if(result.isSuccess) {
-        currenciesInUse.value = result.value.filter(c => c.isUsed)
-        currenciesNotUsed.value = result.value.filter(c => c.isUsed == false)
-    }
-    else {
-        loadError.value = result.error
-    }
-
+    await load()
 })
 
+const load = async () => {
+    const result = await CurrencyService.listOfUser()
 
+    if (result.isSuccess) {
+        currenciesInUse.value = result.value.filter((c) => c.isUsed)
+        currenciesNotUsed.value = result.value.filter((c) => c.isUsed == false)
+    } else {
+        error.value = result.error
+    }
+}
+
+const handleUpdate = async (currencyId: number, enable: boolean) => {
+    error.value = null
+    const result = await CurrencyService.enableForUser(currencyId, enable)
+    if (!result.isSuccess) error.value = result.error
+
+    await load()
+}
 </script>
 
 <style lang="scss" scoped>

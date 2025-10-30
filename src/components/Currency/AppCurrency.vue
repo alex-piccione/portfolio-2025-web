@@ -1,12 +1,12 @@
 <template>
-    <span style="white-space: nowrap;">
-    <img
-        :src="iconPath"
-        :alt="symbol"
-        class="currency-icon"
-        :class="{ cursor: clickable ? 'pointer' : '' }"
-    />
-    {{ symbol }}
+    <span class="nowrap">
+        <img
+            :src="iconPath"
+            :alt="symbol"
+            class="currency-icon"
+            :class="{ cursor: clickable ? 'pointer' : '' }"
+        />
+        {{ symbol }}
     </span>
 </template>
 
@@ -30,7 +30,7 @@ const iconPath = computed(
 
 <style lang="scss" scoped>
 .currency-icon {
-    display: inline-block;    
+    display: inline-block;
     width: 1.2rem;
     height: 1.2rem;
     /*vertical-align: middle;*/

@@ -21,8 +21,8 @@ import tableLargeIcon from "@/assets/icons/table-large.svg?raw"
 import editIcon from "@/assets/icons/pencil.svg?raw" // used for "edit" command
 import deleteIcon from "@/assets/icons/delete.svg?raw" // used for "delete" command
 import heartIcon from "@/assets/icons/heart.svg?raw"
-import heartPlusIcon from "@/assets/icons/heart-plus.svg?raw"  // used to set Enabled
-import heartOffOutlineIcon from "@/assets/icons/heart-off-outline.svg?raw"  // used to set Disabled
+import heartPlusIcon from "@/assets/icons/heart-plus.svg?raw" // used to set Enabled
+import heartOffOutlineIcon from "@/assets/icons/heart-off-outline.svg?raw" // used to set Disabled
 
 // use underscore to make easy to add the map key
 type Icons =
@@ -73,7 +73,7 @@ const colorMap = {
     edit: "var(--icon-color-edit)",
     delete: "var(--icon-color-delete)",
     ok: "var(--icon-color-ok)",
-    heart: "var(--icon-color-red)"
+    heart: "var(--icon-color-red)",
 }
 
 const iconContent = computed(() => iconMap[props.name])
