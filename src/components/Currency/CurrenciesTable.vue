@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar"></div>
-    <BaseTable :class="inUse ? 'enabled': 'disabled'">
+    <BaseTable :class="inUse ? 'enabled' : 'disabled'">
         <thead>
             <tr>
                 <th>Symbol</th>
@@ -45,7 +45,6 @@ defineProps<{
 defineEmits<{
     update: [number, boolean]
 }>()
-
 </script>
 
 <style lang="scss" scoped>
