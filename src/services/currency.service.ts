@@ -2,5 +2,6 @@
 import CurrencyApi from "./api/currency.api"
 
 export default class CurrencyService {
-    static list = async () => await CurrencyApi.list()
+    static listAll = async () => await CurrencyApi.list_all()
+    static listOfUser = async () => await CurrencyApi.list_OfUser()
 }

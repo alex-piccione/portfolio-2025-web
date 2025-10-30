@@ -3,8 +3,8 @@
 // No business logic - just state getters and setters
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import type Currency from "@/entities/Currency"
 import CurrencyService from "@/services/currency.service"
+import type Currency from "@/entities/Currency"
 import { fail } from "@/utils/utils"
 
 const STORAGE_NAME = "currency"
@@ -13,7 +13,7 @@ export const useCurrencyStore = defineStore(
     STORAGE_NAME,
     () => {
         // ---------- State ----------
-        const currencies = ref<Currency[]>([])
+        const currencies = ref<Currency[]>([]) // user currencies
         const isLoading = ref(false)
         const error = ref<string | null>(null)
 
@@ -24,7 +24,7 @@ export const useCurrencyStore = defineStore(
             error.value = null
 
             // TODO: add retry
-            const result = await CurrencyService.list()
+            const result = await CurrencyService.listAll()
             const _ = result.isSuccess
                 ? (currencies.value = result.value)
                 : (error.value = result.error)

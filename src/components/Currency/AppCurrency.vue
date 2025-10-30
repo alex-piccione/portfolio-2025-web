@@ -1,4 +1,5 @@
 <template>
+    <span style="white-space: nowrap;">
     <img
         :src="iconPath"
         :alt="symbol"
@@ -6,6 +7,7 @@
         :class="{ cursor: clickable ? 'pointer' : '' }"
     />
     {{ symbol }}
+    </span>
 </template>
 
 <script setup lang="ts">
@@ -28,9 +30,10 @@ const iconPath = computed(
 
 <style lang="scss" scoped>
 .currency-icon {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    vertical-align: middle;
+    display: inline-block;    
+    width: 1.2rem;
+    height: 1.2rem;
+    /*vertical-align: middle;*/
+    vertical-align: -0.2rem; /* TODO: adjust as need */
 }
 </style>
