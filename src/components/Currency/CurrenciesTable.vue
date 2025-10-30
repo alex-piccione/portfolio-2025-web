@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar"></div>
-    <BaseTable>
+    <BaseTable :class="inUse ? 'enabled': 'disabled'">
         <thead>
             <tr>
                 <th>Symbol</th>
@@ -45,12 +45,23 @@ defineProps<{
 defineEmits<{
     update: [number, boolean]
 }>()
+
 </script>
 
 <style lang="scss" scoped>
 @use "@/styles/theme" as theme;
 
+.enabled {
+    box-shadow: 0 0 5px 0.1rem theme.$ok-color;
+}
+
+.disabled {
+    box-shadow: 0 0 5px 0.1rem theme.$error-color;
+}
+
 table {
-    border-color: theme.$ok-color;
+    @media (min-width: 768px) {
+        min-width: 320px;
+    }
 }
 </style>

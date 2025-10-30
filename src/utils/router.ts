@@ -4,12 +4,12 @@ import { useAuthStore } from "@/stores/auth.store"
 import { debug } from "@/utils/utils"
 
 export type RouteNames = "Landing" | "Home" | "Login" | "Currencies"
-export const goTo = (routeName: RouteNames) => router.push({ name: routeName })
+export const goTo = (routeName: RouteNames) =>  router.push({ name: routeName })
 
 export const goToLogin = async () => {
     try {
         debug("goToLogin - before")
-        await goTo("Login")
+        goTo("Login")
         debug("goToLogin - after")
     } catch (error) {
         console.error("Error navigating to login page:", error)

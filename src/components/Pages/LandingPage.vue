@@ -22,10 +22,9 @@ found in the session
 import { goTo } from "@/utils/router"
 import { debug } from "@/utils/utils"
 
-const goToLogin = async () => {
+const goToLogin = () => {
     debug("goTo login")
-    await goTo("Login")
-    debug("123")
+    goTo("Login")
 }
 
 const tryGuest = () => {
