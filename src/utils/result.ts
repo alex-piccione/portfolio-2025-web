@@ -15,7 +15,6 @@ export const Result = {
     }),
     valueOrError: <T>(result: Result<T>, error?: string): T => {
         if (result.isSuccess) return result.value
-
         throw Error(error || result.error)
     },
 }
@@ -25,11 +24,3 @@ export function getValue<T>(result: Result<T>) {
     if (result.isSuccess) return result.value
     throw new Error(result.error)
 }
-
-// ref 1: https://www.webdevtutor.net/blog/typescript-result-option
-
-/*
-export interface Result extends ResultEnum<T> {
-    dataOrError: 
-}
-    */

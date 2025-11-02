@@ -30,7 +30,7 @@
                 </option>
             </BaseSelect>
             <AddNewRecordButton @click="showNewCustodianModal = true"
-                >add new custodian</AddNewRecordButton
+                >Add new custodian</AddNewRecordButton
             >
         </div>
 
@@ -48,16 +48,12 @@
             </BaseSelect>
         </div>
 
-        <div class="form-group">
-            <label for="amount">Amount</label>
-            <input
-                type="number"
-                id="amount"
-                v-model.number="formData.amount"
-                required
-                step="any"
-            />
-        </div>
+        <FormGroup
+            id="amount"
+            v-model="formData.amount"
+            type="number"
+            required
+        />
 
         <div class="form-group">
             <label for="note">Note</label>
@@ -106,6 +102,7 @@ import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/holding.schema"
 import { createDatetime } from "../format.helper"
 import { useCustodianStore } from "@/stores/custodian.store"
+import FormGroup from "../Form/FormGroup.vue"
 
 const authStore = useAuthStore()
 const custodianStore = useCustodianStore()
@@ -137,16 +134,6 @@ onMounted(async () => {
         if ((await authStore.checkSessionValidity()) !== "SessionOk") 
             return; /* prettier-ignore */
 
-        /*
-        await currencyStore.fetchCurrencies()
-        if (currencyStore.error) {
-            console.error(
-                "Error fetching currencies (onMount):",
-                currencyStore.error,
-            )
-            loadError.value = "Failed to read currencies"
-        }*/
-
         custodians.value = custodianStore.custodians
         currencies.value = currencyStore.currencies
     } catch (error: unknown) {
@@ -176,8 +163,8 @@ const submitForm = async () => {
 
     try {
         const result = await HoldingService.create(holdingData)
-        if (result.isSuccess) emit("created", result.value)
-        else submitError.value = result.error
+        if (result.isSuccess) emit("created", result.data)
+        else submitError.value = result.apiError
     } catch (error) {
         submitError.value = error
     }
@@ -189,6 +176,7 @@ const submitForm = async () => {
 })*/
 
 const handleNewCustodian = async (newId: number) => {
+    alert(`handleNewCustodian. newId: ${newId}`)
     showNewCustodianModal.value = false
     //custodianStore.refresh()
     custodians.value = custodianStore.custodians // it should be updated

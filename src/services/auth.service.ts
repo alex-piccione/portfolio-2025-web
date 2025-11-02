@@ -41,23 +41,23 @@ export default class AuthService {
                 // Store tokens
                 CookieUtils.setCookie(
                     "AuthToken",
-                    apiResult.value.accessToken,
-                    apiResult.value.accessTokenExpiresAt,
+                    apiResult.data.accessToken,
+                    apiResult.data.accessTokenExpiresAt,
                 )
 
                 CookieUtils.setCookie(
                     "RefreshToken",
-                    apiResult.value.refreshToken,
-                    apiResult.value.refreshTokenExpiresAt,
+                    apiResult.data.refreshToken,
+                    apiResult.data.refreshTokenExpiresAt,
                 )
 
                 // Update store state
                 const authStore = useAuthStore()
-                authStore.setAuthenticated(apiResult.value.user)
+                authStore.setAuthenticated(apiResult.data.user)
 
                 return Result.success(true)
             } else {
-                return Result.failed(apiResult.error)
+                return Result.failed(apiResult.getError())
             }
         } catch (error: unknown) {
             // TODO: logger.error("Login failed.", error)
@@ -125,7 +125,7 @@ export default class AuthService {
 
             const refreshResult = await AuthApi.refreshToken(refreshToken)
             if (!refreshResult.isSuccess)
-                return Result.failed(refreshResult.error)
+                return Result.failed(refreshResult.getError())
         }
 
         return Result.success(true)
@@ -143,18 +143,18 @@ export default class AuthService {
                 // Update tokens and expiration dates
                 CookieUtils.setCookie(
                     "AuthToken",
-                    apiResult.value.accessToken,
-                    apiResult.value.accessTokenExpiresAt,
+                    apiResult.data.accessToken,
+                    apiResult.data.accessTokenExpiresAt,
                 )
                 CookieUtils.setCookie(
                     "RefreshToken",
-                    apiResult.value.refreshToken,
-                    apiResult.value.refreshTokenExpiresAt,
+                    apiResult.data.refreshToken,
+                    apiResult.data.refreshTokenExpiresAt,
                 )
 
                 return Result.success(true)
             } else {
-                return Result.failed(apiResult.error)
+                return Result.failed(apiResult.getError())
             }
         } catch (error: unknown) {
             return resultFailed("Failed to refresh token", error)

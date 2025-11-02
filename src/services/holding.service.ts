@@ -3,8 +3,8 @@ import type { create } from "./api/schemas/holding.schema"
 import HoldingApi from "./api/holding.api"
 import { debug } from "@/utils/utils"
 import { useCurrencyStore } from "@/stores/currency.store"
-import { Result } from "@/utils/result"
 import { useCustodianStore } from "@/stores/custodian.store"
+import { ApiResult } from "./api/helper"
 
 const custodianStore = useCustodianStore()
 const currencyStore = useCurrencyStore()
@@ -13,7 +13,8 @@ export default class HoldingService {
     static async list(userId: string): Promise<Holding[]> {
         debug("HoldingService.list - userId: " + userId)
 
-        const holdings = Result.valueOrError(await HoldingApi.list())
+        const result = await HoldingApi.list()
+        const holdings = ApiResult.dataOrError(result)
 
         const holdingsFull: Holding[] = holdings.map((holding) => {
             return {

@@ -6,12 +6,16 @@
             class="error-notification"
             :class="[`position-${position}`]"
         >
-            {{ error }}
+            <span v-if="errorText">{{ errorText }}</span>
+            <ul v-if="formErrors.length > 0">
+                <li v-for="value in formErrors" :key="value">{{ value }}</li>
+            </ul>
         </div>
     </transition>
 </template>
 
 <script setup lang="ts">
+import { isApiError } from "@/services/api/helper"
 import { toRefs, ref, watch } from "vue"
 
 const props = withDefaults(
@@ -29,6 +33,9 @@ const props = withDefaults(
 const { error, position, autoclose } = toRefs(props)
 const isVisible = ref(false)
 
+const errorText = ref<string | null>(null)
+const formErrors = ref<string[]>([])
+
 let timeoutId: number | null = null
 watch(
     error,
@@ -42,6 +49,21 @@ watch(
         if (newError) {
             // A new error has arrived, so make it visible
             isVisible.value = true
+
+            errorText.value = null
+            formErrors.value = []
+
+            if (isApiError(newError)) {
+                if (newError.type === "form") {
+                    /*errorText.value = "Form contains some errors"*/
+                    formErrors.value = newError.errors
+                    /*.map(
+                        (e) => `${e.field}: ${e.error}`,
+                    )*/
+                } else errorText.value = newError.error
+            } else {
+                errorText.value = `${newError}`
+            }
 
             // If autoclose is enabled, set a timer to hide it
             if (autoclose.value) {
@@ -81,5 +103,10 @@ watch(
     }
 
     width: 100h;
+
+    & ul {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
 }
 </style>

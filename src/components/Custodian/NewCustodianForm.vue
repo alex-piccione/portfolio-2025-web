@@ -12,15 +12,16 @@
                 ref="autofocus"
             />
         </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <input
-                id="description"
-                v-model="form.description"
-                type="text"
-                required
-            />
-        </div>
+
+        <FormGroup id="custodian" v-model="form.custodian" required />
+        <FormGroup id="account" v-model="form.account" />
+        <FormGroup
+            id="description"
+            v-model="form.description"
+            type="textarea"
+            :rows="3"
+        />
+
         <div class="form-group">
             <label for="kind">Custodian (primary) Kind</label>
             <!-- TODO: use a store -->
@@ -31,26 +32,14 @@
                 <option value="Other">Other</option>
             </select>
         </div>
+
         <div class="form-group">
-            <label for="url">URL</label>
-            <input id="url" v-model="form.url" type="url" />
-        </div>
-        <div class="form-group">
-            <label for="accountCountryCode">Account country code</label>
-            <BaseSelect
-                id="accountCountryCode"
-                v-model="form.accountCountryCode"
-                required
-            >
-                <option value="IT">IT (Italy)</option>
-                <option value="UK">UK (United Kingdom)</option>
-                <option value="US">US (United States of America)</option>
-            </BaseSelect>
+            <label for="color">Color</label>
+            <ColorPicker id="color" v-model="form.colorCode" />
         </div>
 
         <div class="form-footer">
             <div class="buttons">
-                <!--<button type="button" @click="$emit('cancel')" class="close">Cancel</button>-->
                 <button type="submit" class="ok">Create</button>
             </div>
             <InlineError :error="submitError" :autoclose="10" />
@@ -62,14 +51,16 @@
 import { onMounted, reactive, ref } from "vue"
 import InlineError from "@/components/InlineError.vue"
 import { useAuthStore } from "@/stores/auth.store"
-import BaseSelect from "../Form/BaseSelect.vue"
 import { parseKindFromString } from "@/entities/Custodian"
 import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/custodian.schema"
 import CustodianService from "@/services/custodian.service"
-import { Result } from "@/utils/result"
+import FormGroup from "../Form/FormGroup.vue"
+import ColorPicker from "../Form/ColorPicker.vue"
+import { useCustodianStore } from "@/stores/custodian.store"
 
 const authStore = useAuthStore()
+//const custodianStore = useCustodianStore()
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
 
@@ -81,11 +72,11 @@ const autofocus = ref<HTMLInputElement | null>(null)
 
 const form = reactive({
     name: "",
+    custodian: "",
+    account: "",
     description: "",
     kind: "Bank",
-    url: "",
-    accountCountryCode: "",
-    walletAddress: "",
+    colorCode: "",
 })
 
 onMounted(async () => {
@@ -109,8 +100,11 @@ const submitForm = async () => {
         }
 
         const result = await CustodianService.create(data)
-        const newId = Result.valueOrError<number>(result)
-        emit("created", newId)
+        
+        if (result.isSuccess)
+            emit("created", result.data)
+        else 
+            submitError.value = result.apiError
     } catch (error: unknown) {
         submitError.value = error
     }

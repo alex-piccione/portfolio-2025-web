@@ -39,17 +39,17 @@ const load = async () => {
     const result = await CurrencyService.listOfUser()
 
     if (result.isSuccess) {
-        currenciesInUse.value = result.value.filter((c) => c.isUsed)
-        currenciesNotUsed.value = result.value.filter((c) => c.isUsed == false)
+        currenciesInUse.value = result.data.filter((c) => c.isUsed)
+        currenciesNotUsed.value = result.data.filter((c) => c.isUsed == false)
     } else {
-        error.value = result.error
+        error.value = result.getError()
     }
 }
 
 const handleUpdate = async (currencyId: number, enable: boolean) => {
     error.value = null
     const result = await CurrencyService.enableForUser(currencyId, enable)
-    if (!result.isSuccess) error.value = result.error
+    if (!result.isSuccess) error.value = result.getError()
 
     await load()
 }

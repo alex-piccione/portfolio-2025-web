@@ -25,8 +25,8 @@ export const useCustodianStore = defineStore(
 
             const result = await CustodianService.list()
             const _ = result.isSuccess
-                ? (custodians.value = result.value)
-                : (error.value = result.error)
+                ? (custodians.value = result.data)
+                : (error.value = result.getError())
 
             isLoading.value = false
         }

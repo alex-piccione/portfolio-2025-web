@@ -6,11 +6,11 @@
 export namespace create {
     export interface Request {
         name: string
-        description: string | null
+        custodian: string
+        account: string | null
         kind: string
-        url: string | null
-        accountCountryCode: string
-        walletAddress: string | null
+        colorCode: string
+        description: string | null
     }
 
     /*export const ResponseSchema = z.object({

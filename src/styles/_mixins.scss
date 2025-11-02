@@ -72,7 +72,7 @@
 }
 
 @mixin add-new-record-button {
-    color: theme.$text-color;
+    color: theme.$primary-color;
     cursor: pointer;
 
     &:hover {

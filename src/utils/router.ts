@@ -43,6 +43,12 @@ const routes = [
         component: () => import("@/components/Pages/CurrenciesPage.vue"),
         meta: { requiresAuth: true },
     },
+    {
+        path: "/custodians",
+        name: "Custodians",
+        component: () => import("@/components/Pages/CustodiansPage.vue"),
+        meta: { requiresAuth: true },
+    },
 ]
 
 const router = createRouter({

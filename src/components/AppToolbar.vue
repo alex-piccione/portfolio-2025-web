@@ -12,6 +12,9 @@
                 <router-link to="/currencies" class="toolbar-nav-item"
                     >Currencies</router-link
                 >
+                <router-link to="/custodians" class="toolbar-nav-item"
+                    >Custodians</router-link
+                >
             </nav>
         </div>
 

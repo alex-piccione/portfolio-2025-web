@@ -1,1 +1,1 @@
-- Use Vue 3 modern coding patterns
+- Use Vue.js 3 modern coding patterns

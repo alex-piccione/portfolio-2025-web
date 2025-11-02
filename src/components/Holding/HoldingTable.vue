@@ -93,7 +93,7 @@ const handleDelete = async (id: number) => {
     error.value = null
     const result = await HoldingService.delete(id)
     if (result.isSuccess) await loadHoldings()
-    else error.value = result.error
+    else error.value = result.apiError
 }
 </script>
 

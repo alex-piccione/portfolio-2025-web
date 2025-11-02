@@ -26,8 +26,8 @@ export const useCurrencyStore = defineStore(
             // TODO: add retry
             const result = await CurrencyService.listAll()
             const _ = result.isSuccess
-                ? (currencies.value = result.value)
-                : (error.value = result.error)
+                ? (currencies.value = result.data)
+                : (error.value = result.getError())
 
             isLoading.value = false
         }

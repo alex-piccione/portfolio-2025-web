@@ -1,6 +1,5 @@
 // src/services/api/auth.api.ts
 import { debug } from "@/utils/utils"
-import { Result } from "@/utils/result"
 import api from "./apiClient"
 import {
     login,
@@ -8,12 +7,13 @@ import {
     type LoginResponse,
     type RefreshResponse,
 } from "./schemas/auth.schema"
+import { ApiResult } from "./helper"
 
 export default class AuthApi {
     static async login(
         username: string,
         password: string,
-    ): Promise<Result<LoginResponse>> {
+    ): Promise<ApiResult<LoginResponse>> {
         try {
             const response = await api.publicClient.post("/auth/login", {
                 username,
@@ -31,18 +31,20 @@ export default class AuthApi {
                     .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
                     .join("; ")
 
-                return Result.failed(
+                return ApiResult.genericError(
                     `Response validation failed: ${errorMessages}`,
                 )
             }
 
-            return Result.success(parseResult.data)
+            return ApiResult.success(parseResult.data)
         } catch (error) {
             return api.handleError(error)
         }
     }
 
-    static async refreshToken(token: string): Promise<Result<RefreshResponse>> {
+    static async refreshToken(
+        token: string,
+    ): Promise<ApiResult<RefreshResponse>> {
         try {
             const response = await api.publicClient.post("/auth/refresh", {
                 refreshToken: token,
@@ -66,7 +68,7 @@ export default class AuthApi {
                 throw Error(errorMessage)
             }
 
-            return Result.success(parseResult.data)
+            return ApiResult.success(parseResult.data)
         } catch (error) {
             return api.handleError(error)
         }

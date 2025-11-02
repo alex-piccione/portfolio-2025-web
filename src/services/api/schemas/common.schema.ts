@@ -1,9 +1,9 @@
+import z from "zod"
+
 export interface NewIdResponse {
     newId: number
 }
 
-export interface ApiErrorResponse {
-    status?: number
-    message: string
-    code?: string
-}
+export const NewIdResponseSchema = z.object({
+  newId: z.number(),
+})

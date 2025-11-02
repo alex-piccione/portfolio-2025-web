@@ -7,8 +7,7 @@
         @close="$emit('cancel')"
         @confirm="handleConfirm"
     >
-        <NewCustodianForm ref="form" @created="handleCreated">
-        </NewCustodianForm>
+        <NewCustodianForm ref="form" @created="handleCreated" />
     </AppModal>
 </template>
 

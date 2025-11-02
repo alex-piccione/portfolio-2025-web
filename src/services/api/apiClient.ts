@@ -4,12 +4,13 @@ import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
 import ConfigurationProvider from "@/utils/configuration"
 import {
+    ApiResult,
     deserialize,
-    parseErrorResponse,
+    parseAxiosError,
     parseNewIdResponse,
     parseZodParseResult,
+    type ApiFailure,
 } from "./helper"
-import { Result } from "@/utils/result"
 
 const configuration = await ConfigurationProvider.getInstance()
 debug(`apiUrl: ${configuration.apiUrl}`)
@@ -79,20 +80,45 @@ apiClientNoAuth.interceptors.response.use(
     },
 )
 
-const handleError = (error: unknown) => {
+const handleError = (error: unknown): ApiFailure => {
+    if (axios.isAxiosError(error)) return parseAxiosError(error)
+
+    return ApiResult.genericError(`${error}`)
+}
+
+/**
+ * Analyze the error from API call and return Generic or Form error (inside ApiResult).
+ * @param error
+ * @returns
+ */
+/*
+const parseError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
-        const errorData = parseErrorResponse(error)
-        return Result.failed(errorData.message)
+        const apiError = parseErrorResponse(error)
+        if (isGenericError(apiError)) return ApiResult.failed(apiError)
+        else if (isFormError(apiError)) {
+            return ApiResult.failed(apiError)
+            //const firstFormError = apiError.errors[0] || 'Form validation failed.'
+            //return ApiResult.failed(`Form error: ${firstFormError}`)
+        }
     }
 
-    return Result.failed(`${error}`)
-}
+    const apiError: ApiErrorResponse = {
+        kind: "generic",
+        //isGeneric: true,
+        status: undefined,
+        message: `${error}`,
+        code: undefined,
+    }
+
+    return ApiResult.failed(apiError)
+}*/
 
 export default {
     client: apiClient,
     publicClient: apiClientNoAuth,
     handleError,
-    getError: parseErrorResponse,
+    //getError: parseErrorResponse,
     getNewId: parseNewIdResponse,
     getResult: parseZodParseResult,
     deserialize,
