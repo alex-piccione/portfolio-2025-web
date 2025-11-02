@@ -6,6 +6,7 @@ import { ref } from "vue"
 import type Custodian from "@/entities/Custodian"
 import CustodianService from "@/services/custodian.service"
 import { fail } from "@/utils/utils"
+import type { create } from "@/services/api/schemas/custodian.schema"
 
 const STORAGE_NAME = "custodian"
 
@@ -29,6 +30,17 @@ export const useCustodianStore = defineStore(
                 : (error.value = result.getError())
 
             isLoading.value = false
+        }
+
+        async function createCustodian(data: create.Request) {
+            const result = await CustodianService.create(data)
+            if (result.isSuccess) {
+                // Update the store with the new custodian
+                //custodians.value.push(result.data);
+                await refresh()
+            }
+
+            return result
         }
 
         /** Refresh the list – useful after a create / update operation */
@@ -56,6 +68,7 @@ export const useCustodianStore = defineStore(
             error,
             // actions
             fetchCustodians,
+            createCustodian,
             refresh,
             clear,
             get,

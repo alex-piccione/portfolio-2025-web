@@ -1,7 +1,7 @@
 // src/services/api/helper.ts
 import { debug } from "@/utils/utils"
 import { AxiosError, type AxiosResponse } from "axios"
-import { NewIdResponseSchema, type NewIdResponse } from "./schemas/common.schema"
+import { NewIdResponseSchema } from "./schemas/common.schema"
 import type { ZodSafeParseResult } from "zod"
 
 // TODO: keep private
@@ -74,7 +74,7 @@ export const parseAxiosError = (error: AxiosError): ApiFailure => {
             "code" in responseData ? (responseData.code as string) : undefined
 
         if ("error" in responseData && typeof responseData.error === "string")
-            return ApiResult.genericError(responseData.error) // ApiGenericError
+            return ApiResult.genericError(responseData.error, status, code) // ApiGenericError
 
         if ("errors" in responseData && Array.isArray(responseData.errors))
             return ApiResult.formError(responseData.errors) // ApiFormError

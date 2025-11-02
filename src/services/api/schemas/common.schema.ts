@@ -5,5 +5,5 @@ export interface NewIdResponse {
 }
 
 export const NewIdResponseSchema = z.object({
-  newId: z.number(),
+    newId: z.number(),
 })

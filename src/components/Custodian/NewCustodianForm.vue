@@ -54,13 +54,13 @@ import { useAuthStore } from "@/stores/auth.store"
 import { parseKindFromString } from "@/entities/Custodian"
 import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/custodian.schema"
-import CustodianService from "@/services/custodian.service"
+//import CustodianService from "@/services/custodian.service"
 import FormGroup from "../Form/FormGroup.vue"
 import ColorPicker from "../Form/ColorPicker.vue"
 import { useCustodianStore } from "@/stores/custodian.store"
 
 const authStore = useAuthStore()
-//const custodianStore = useCustodianStore()
+const custodianStore = useCustodianStore()
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
 
@@ -99,12 +99,10 @@ const submitForm = async () => {
             kind: parseKindFromString(form.kind),
         }
 
-        const result = await CustodianService.create(data)
-        
-        if (result.isSuccess)
-            emit("created", result.data)
-        else 
-            submitError.value = result.apiError
+        const result = await custodianStore.createCustodian(data)
+
+        if (result.isSuccess) emit("created", result.data)
+        else submitError.value = result.apiError
     } catch (error: unknown) {
         submitError.value = error
     }
