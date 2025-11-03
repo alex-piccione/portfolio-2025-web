@@ -38,5 +38,4 @@ const updateModelValue = (newValue: string) => {
     display: flex;
     gap: 0.5rem;
 }
-
 </style>

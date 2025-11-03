@@ -23,7 +23,7 @@
                     <td><AppCurrency :symbol="holding.currency.symbol" /></td>
                     <td>{{ formatDate(holding.date) }}</td>
                     <td>{{ holding.action }}</td>
-                    <td style="text-align: right;">{{ holding.amount }}</td>
+                    <td style="text-align: right">{{ holding.amount }}</td>
                     <td>{{ holding.note }}</td>
                     <CommandsCell
                         :can-edit="true"

@@ -21,7 +21,12 @@
                 <td>{{ custodian.custodian }}</td>
                 <td>{{ custodian.account }}</td>
                 <td>{{ custodian.kind }}</td>
-                <td style="text-align: center;"><span class="color-square" :style="{backgroundColor: custodian.colorCode}"></span></td>
+                <td style="text-align: center">
+                    <span
+                        class="color-square"
+                        :style="{ backgroundColor: custodian.colorCode }"
+                    ></span>
+                </td>
                 <td>{{ custodian.description?.slice(0, 50) }}</td>
                 <CommandsCell
                     :can-edit="false"
