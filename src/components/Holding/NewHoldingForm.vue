@@ -176,10 +176,8 @@ const submitForm = async () => {
 })*/
 
 const handleNewCustodian = async (newId: number) => {
-    alert(`handleNewCustodian. newId: ${newId}`)
     showNewCustodianModal.value = false
-    //custodianStore.refresh()
-    custodians.value = custodianStore.custodians // it should be updated
+    custodians.value = custodianStore.custodians
     formData.custodianId = newId.toString()
 }
 </script>

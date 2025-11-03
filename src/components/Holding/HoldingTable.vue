@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr v-for="holding in holdings" :key="holding.id">
-                    <td>{{ holding.custodian.name }}</td>
+                    <td><AppCustodian :custodian="holding.custodian" /></td>
                     <td>{{ holding.currency.name }}</td>
                     <td>{{ formatDate(holding.date) }}</td>
                     <td>{{ holding.action }}</td>
@@ -53,6 +53,7 @@ import NewHoldingModal from "./NewHoldingModal.vue"
 import { debug } from "@/utils/utils"
 import InlineError from "../InlineError.vue"
 import CommandsCell from "../Table/CommandsCell.vue"
+import AppCustodian from "../Custodian/AppCustodian.vue"
 
 const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])

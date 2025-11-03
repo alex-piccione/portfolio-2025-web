@@ -19,7 +19,6 @@ import { debug } from "@/utils/utils"
 
 const props = defineProps<{
     isOpen: boolean
-    title: string
 }>()
 
 const emit = defineEmits<{

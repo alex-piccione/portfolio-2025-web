@@ -34,9 +34,16 @@ export const useCustodianStore = defineStore(
 
         async function createCustodian(data: create.Request) {
             const result = await CustodianService.create(data)
+            if (result.isSuccess) await refresh()
+
+            return result
+        }
+
+        async function deleteCustodian(id: number) {
+            const result = await CustodianService.delete(id)
             if (result.isSuccess) {
                 // Update the store with the new custodian
-                //custodians.value.push(result.data);
+                //custodians.value.rem  [result.data] = null;
                 await refresh()
             }
 
@@ -49,11 +56,11 @@ export const useCustodianStore = defineStore(
         }
 
         /** Optional: clear state (e.g. on logout) */
-        function clear() {
+        /*nction clear() {
             custodians.value = []
             error.value = null
             isLoading.value = false
-        }
+        }*/
 
         // ---------- Getters ----------
         /** Get custodian by ID or throw error if not found */
@@ -68,10 +75,11 @@ export const useCustodianStore = defineStore(
             error,
             // actions
             fetchCustodians,
-            createCustodian,
-            refresh,
-            clear,
             get,
+            createCustodian,
+            deleteCustodian,
+            refresh,
+            //clear,
         }
     },
     {

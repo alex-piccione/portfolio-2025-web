@@ -13,6 +13,15 @@ export default class CustodianApi {
         }
     }
 
+    static async delete(id: number) {
+        try {
+            await api.client.delete(`/custodian/${id}`)
+            return ApiResult.success({})
+        } catch (error) {
+            return api.handleError(error)
+        }
+    }
+
     static async list(): Promise<ApiResult<Custodian[]>> {
         try {
             const response = await api.client.get(`/custodian`)

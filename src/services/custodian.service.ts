@@ -10,4 +10,8 @@ export default class CustodianService {
     static async create(data: create.Request) {
         return await CustodianApi.create(data)
     }
+
+    static async delete(id: number) {
+        return await CustodianApi.delete(id)
+    }
 }

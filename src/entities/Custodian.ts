@@ -6,7 +6,7 @@ export default interface Custodian {
     account?: string
     kind: CustodianKind // "Exchange" | "Wallet" | "Bank" | "Blockchain" | "Other"
     colorCode: string
-    desription?: string
+    description?: string
 }
 
 export type CustodianKind =
