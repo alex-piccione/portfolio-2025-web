@@ -17,10 +17,13 @@ defineProps<{
 const emit = defineEmits<{
     // this is a special event detected by Vue
     "update:modelValue": [value: string]
+    change: [value: string]
 }>()
 
 const handleChange = (event: Event) => {
-    emit("update:modelValue", (event.target as HTMLSelectElement).value)
+    const value = (event.target as HTMLSelectElement).value
+    emit("update:modelValue", value)
+    emit("change", value)
 }
 </script>
 

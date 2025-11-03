@@ -97,3 +97,17 @@ textarea {
 .nowrap {
     white-space: nowrap;
 }
+
+// for color picker
+.color-square {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #333;
+    cursor: pointer;
+
+    &.selected {
+        border: 2px solid #ddd;
+        box-shadow: 0 0 0.1rem #ddd;
+    }
+}

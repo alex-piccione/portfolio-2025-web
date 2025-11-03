@@ -36,14 +36,19 @@
 
         <div class="form-group">
             <label for="currency">Currency</label>
-            <BaseSelect id="currency" v-model="formData.currencyId" required>
+            <BaseSelect
+                id="currency"
+                v-model="formData.currencyId"
+                required
+                @change="handleCurrencyChange"
+            >
                 <option disabled value="">Please select one</option>
                 <option
                     v-for="currency in currencies"
                     :key="currency.id"
                     :value="currency.id"
                 >
-                    {{ currency.name }} ({{ currency.symbol }})
+                    <AppCurrency :symbol="currency.symbol" />
                 </option>
             </BaseSelect>
         </div>
@@ -51,8 +56,9 @@
         <FormGroup
             id="amount"
             v-model="formData.amount"
-            type="number"
+            type="currency amount"
             required
+            :decimals="selectedCurrency?.precision"
         />
 
         <div class="form-group">
@@ -88,8 +94,6 @@
 import { ref, onMounted, reactive } from "vue"
 import type Currency from "@/entities/Currency"
 import type Custodian from "@/entities/Custodian"
-//import type HoldingAction from "@/entities/Holding"
-//import CustodianService from "@/services/custodian.service"
 import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
@@ -103,6 +107,7 @@ import type { create } from "@/services/api/schemas/holding.schema"
 import { createDatetime } from "../format.helper"
 import { useCustodianStore } from "@/stores/custodian.store"
 import FormGroup from "../Form/FormGroup.vue"
+import AppCurrency from "../Currency/AppCurrency.vue"
 
 const authStore = useAuthStore()
 const custodianStore = useCustodianStore()
@@ -111,6 +116,7 @@ const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
+const selectedCurrency = ref<Currency | null>(null)
 
 const emit = defineEmits<{
     //cancel: []
@@ -179,6 +185,10 @@ const handleNewCustodian = async (newId: number) => {
     showNewCustodianModal.value = false
     custodians.value = custodianStore.custodians
     formData.custodianId = newId.toString()
+}
+
+const handleCurrencyChange = async (id: string) => {
+    selectedCurrency.value = currencyStore.get(parseInt(id))
 }
 </script>
 

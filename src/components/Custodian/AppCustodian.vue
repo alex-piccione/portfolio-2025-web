@@ -15,7 +15,9 @@ defineProps<{
 <style scoped lang="scss">
 .custodian {
     font-size: 120%;
-    font-weight: bold;
+    font-weight: 500;
+
+    text-shadow: 2px 2px 2px #000d;
 
     &::first-letter {
         font-size: 150%;

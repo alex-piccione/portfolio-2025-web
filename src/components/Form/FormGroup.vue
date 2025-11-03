@@ -1,39 +1,48 @@
 <template>
     <div class="form-group">
         <label :for="id"
-            >{{ label || capitalizedId }} <LabelOptional :required="required"
+            >{{ label || capitalizedId }} <LabelOptional :required
         /></label>
         <textarea
             v-if="type === 'textarea'"
-            :id="id"
+            :id
             v-model="value"
-            :rows="rows"
-            :required="required"
+            :rows
+            :required
         ></textarea>
 
-        <input
-            v-else
-            :id="id"
+        <InputCurrencyAmount
+            v-else-if="type === 'currency amount'"
             v-model="value"
-            :type="type"
-            :required="required"
+            :decimals
+            :required
         />
+
+        <input v-else :id v-model="value" :type :required />
     </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from "vue"
-import LabelOptional from "./LabelOptional.vue"
+import LabelOptional from "@/components/Form/LabelOptional.vue"
+import InputCurrencyAmount from "@/components/Form/InputCurrencyAmount.vue"
 
 const props = withDefaults(
     defineProps<{
         id: string
         modelValue: string | number // This is for v-model
         label?: string
-        type?: "text" | "number" | "date" | "password" | "textarea"
+        type?:
+            | "text"
+            | "number"
+            | "date"
+            | "password"
+            | "textarea"
+            | "currency amount"
+        required?: boolean
         rows?: number // for textarea
         steps?: number // for number
-        required?: boolean
+        decimals?: number // for currency amount
     }>(),
     {
         type: "text",
@@ -41,6 +50,7 @@ const props = withDefaults(
         label: "",
         rows: 3,
         steps: 1,
+        decimals: 18,
     },
 )
 

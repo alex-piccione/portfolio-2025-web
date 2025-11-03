@@ -12,7 +12,7 @@
         <tbody>
             <tr v-for="currency in currencies" :key="currency.id">
                 <td><AppCurrency :symbol="currency.symbol" /></td>
-                <td>{{ currency.name }}</td>
+                <td class="nowrap">{{ currency.name }}</td>
                 <td>{{ currency.kind }}</td>
                 <td>
                     <span
@@ -51,11 +51,11 @@ defineEmits<{
 @use "@/styles/theme" as theme;
 
 .enabled {
-    box-shadow: 0 0 5px 0.1rem theme.$ok-color;
+    box-shadow: 0 0 5px 0.05rem theme.$primary-color;
 }
 
 .disabled {
-    box-shadow: 0 0 5px 0.1rem theme.$error-color;
+    box-shadow: 0 0 5px 0.05rem theme.$cancel-color;
 }
 
 table {

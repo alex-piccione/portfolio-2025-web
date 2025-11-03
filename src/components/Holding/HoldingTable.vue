@@ -20,10 +20,10 @@
             <tbody>
                 <tr v-for="holding in holdings" :key="holding.id">
                     <td><AppCustodian :custodian="holding.custodian" /></td>
-                    <td>{{ holding.currency.name }}</td>
+                    <td><AppCurrency :symbol="holding.currency.symbol" /></td>
                     <td>{{ formatDate(holding.date) }}</td>
                     <td>{{ holding.action }}</td>
-                    <td>{{ holding.amount }}</td>
+                    <td style="text-align: right;">{{ holding.amount }}</td>
                     <td>{{ holding.note }}</td>
                     <CommandsCell
                         :can-edit="true"
@@ -54,6 +54,7 @@ import { debug } from "@/utils/utils"
 import InlineError from "../InlineError.vue"
 import CommandsCell from "../Table/CommandsCell.vue"
 import AppCustodian from "../Custodian/AppCustodian.vue"
+import AppCurrency from "../Currency/AppCurrency.vue"
 
 const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])

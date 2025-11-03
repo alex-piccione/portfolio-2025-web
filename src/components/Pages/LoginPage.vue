@@ -53,10 +53,17 @@ const handleLogin = async () => {
     isLoading.value = true
 
     try {
-        const [result] = await Promise.all([
-            AuthService.login(email.value, password.value),
-            new Promise((resolve) => setTimeout(resolve, 500)), // Minimum 500ms
-        ])
+        const loginPromise = AuthService.login(email.value, password.value)
+        const delayPromise = new Promise((resolve) =>
+            setTimeout(() => resolve(null), 500),
+        ) // Minimum 500ms
+        const [result, _] = await Promise.all([loginPromise, delayPromise])
+
+        //const [result] = await
+        //it Promise.all([
+        //
+        //    new Promise((resolve) => setTimeout(() => resolve(), 500)), // Minimum 500ms
+        //])
         //const result = await AuthService.login(email.value, password.value)
 
         if (result.isSuccess) {
