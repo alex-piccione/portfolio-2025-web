@@ -6,7 +6,7 @@
         :show-cancel-button="false"
         :show-confirm-button="false"
     >
-        <NewHoldingForm ref="form" @created="handleCreated" />
+        <HoldingForm ref="form" @save="handleSave" />
     </AppModal>
 </template>
 
@@ -14,6 +14,7 @@
 import AppModal from "@/components/AppModal.vue"
 import NewHoldingForm from "@/components/Holding/NewHoldingForm.vue"
 import { ref } from "vue"
+import HoldingForm from "./HoldingForm.vue"
 
 defineProps<{
     isOpen: boolean
@@ -26,5 +27,5 @@ const emit = defineEmits<{
 
 const form = ref<typeof NewHoldingForm | null>(null)
 
-const handleCreated = (newId: number) => emit("created", newId)
+const handleSave = (newId: number) => emit("created", newId)
 </script>

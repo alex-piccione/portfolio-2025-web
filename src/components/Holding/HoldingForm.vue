@@ -7,15 +7,14 @@
             <input type="date" id="date" v-model="formData.date" required />
         </div>
 
+        <!-- ATM we have only a fixed Action: Balance
         <div class="form-group">
             <label for="action">Action</label>
             <select id="action" v-model="formData.action" required>
                 <option selected>Balance</option>
-                <!--<option>Add</option>
-                    <option>Remove</option>
-                -->
             </select>
         </div>
+        -->
 
         <div class="form-group">
             <label for="custodian">Custodian</label>
@@ -73,7 +72,6 @@
 
         <div class="form-footer">
             <div class="buttons">
-                <!--<button type="button" @click="$emit('cancel')" class="close">Cancel</button>-->
                 <button type="submit" class="ok">Create</button>
             </div>
             <InlineError :error="submitError" :autoclose="10" />
@@ -119,8 +117,7 @@ const submitError = ref<unknown>(null)
 const selectedCurrency = ref<Currency | null>(null)
 
 const emit = defineEmits<{
-    //cancel: []
-    created: [number]
+    save: [number]
 }>()
 
 const showNewCustodianModal = ref(false)
@@ -128,7 +125,7 @@ const showNewCustodianModal = ref(false)
 const formData = reactive({
     date: new Date().toISOString().split("T")[0] as string,
     custodianId: "",
-    action: "Balance", // as HoldingAction, // Kind "Balance",
+    action: "Balance", // FIXED
     currencyId: "",
     amount: 0,
     note: "",
@@ -169,7 +166,7 @@ const submitForm = async () => {
 
     try {
         const result = await HoldingService.create(holdingData)
-        if (result.isSuccess) emit("created", result.data)
+        if (result.isSuccess) emit("save", result.data)
         else submitError.value = result.apiError
     } catch (error) {
         submitError.value = error
