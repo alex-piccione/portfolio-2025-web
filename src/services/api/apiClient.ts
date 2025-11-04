@@ -11,6 +11,8 @@ import {
     parseZodParseResult,
     type ApiFailure,
 } from "./helper"
+import { goToLogin } from "@/utils/router"
+import { useAuthStore } from "@/stores/auth.store"
 
 const configuration = await ConfigurationProvider.getInstance()
 debug(`apiUrl: ${configuration.apiUrl}`)
@@ -26,18 +28,31 @@ const apiClientNoAuth = axios.create({
     timeout: 10000, // 10 seconds timeout
 })
 
-// Add request interceptor to automatically include auth token
+// Add Request interceptor to automatically include auth token
 apiClient.interceptors.request.use(
-    (config) => {
-        const authToken = CookieUtils.getCookie("AuthToken")
-        if (!authToken)
-            return Promise.reject("AuthToken cookie was not found or empty.")
-        config.headers["X-Auth-Token"] = authToken
+    async (config) => {
+        switch (await useAuthStore().checkSessionValidity()) {
+            case "SessionOk":
+                const authToken = CookieUtils.getCookie("AuthToken")
+                if (!authToken)
+                    return Promise.reject(
+                        "AuthToken cookie was not found or empty.",
+                    )
+                config.headers["X-Auth-Token"] = authToken
 
-        debug(
-            `API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`,
-        )
-        return config
+                debug(
+                    `API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`,
+                )
+
+                return config
+            case "SessionCheckFailed":
+            case "SessionExpired":
+                debug(`interceptors.request = Session expired or check failed.`)
+                await goToLogin()
+                return Promise.reject(
+                    new Error("Session expired. Redirecting to login."),
+                )
+        }
     },
     (error) => {
         debug(`API Request Error: ${error}`)
@@ -45,14 +60,14 @@ apiClient.interceptors.request.use(
     },
 )
 
-// Add response interceptor for global error handling (optional but useful)
+// Add Response interceptor for global error handling (optional but useful)
 apiClient.interceptors.response.use(
     (response) => {
         debug(`API Response: ${response.status} ${response.config.url}`)
         return response
     },
     (error) => {
-        if (error)
+        if (typeof error === "object")
             debug(
                 `API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message} (${error})`,
             )

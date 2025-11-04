@@ -119,15 +119,22 @@ export default class AuthService {
             // try to refresh
             const refreshToken = CookieUtils.getCookie("RefreshToken")
             if (!refreshToken) {
-                debug("Session is expired")
+                debug("(checkSessionValidity) Session is expired")
                 return Result.success(false)
             }
 
             const refreshResult = await AuthApi.refreshToken(refreshToken)
-            if (!refreshResult.isSuccess)
+            if (!refreshResult.isSuccess) {
+                debug(
+                    `(checkSessionValidity) refreshResult error: ${refreshResult.getError()}`,
+                )
                 return Result.failed(refreshResult.getError())
+            }
+
+            debug("(checkSessionValidity) refreshResult OK")
         }
 
+        debug("(checkSessionValidity) Session is ok")
         return Result.success(true)
     }
 
