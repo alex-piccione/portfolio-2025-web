@@ -2,9 +2,7 @@
 <template>
     <InlineError :error="error" position="center" />
     <div>
-        <button @click="showAddHoldingModal = true" class="ok">
-            Add New Holding
-        </button>
+        <button @click="handleAddNewHolding" class="ok">Add New Holding</button>
         <table>
             <thead>
                 <tr>
@@ -36,11 +34,13 @@
         </table>
     </div>
 
-    <NewHoldingModal
-        :is-open="showAddHoldingModal"
-        @cancel="showAddHoldingModal = false"
+    <HoldingModal
+        :action="holdingModalAction"
+        :is-open="holdingModalIsOpen"
+        @cancel="holdingModalIsOpen = false"
         @created="handleCreated"
-    ></NewHoldingModal>
+        @updated="handleUpdated"
+    />
 </template>
 
 <script setup lang="ts">
@@ -49,17 +49,19 @@ import HoldingService from "@/services/holding.service"
 import type Holding from "@/entities/Holding"
 import { useAuthStore } from "@/stores/auth.store"
 import { formatDate } from "@/components/format.helper"
-import NewHoldingModal from "./NewHoldingModal.vue"
 import { debug } from "@/utils/utils"
-import InlineError from "../InlineError.vue"
-import CommandsCell from "../Table/CommandsCell.vue"
-import AppCustodian from "../Custodian/AppCustodian.vue"
-import AppCurrency from "../Currency/AppCurrency.vue"
+import InlineError from "@/components/InlineError.vue"
+import CommandsCell from "@/components/Table/CommandsCell.vue"
+import AppCustodian from "@/components/Custodian/AppCustodian.vue"
+import AppCurrency from "@/components/Currency/AppCurrency.vue"
+import HoldingModal from "@/components/Holding/HoldingModal.vue"
+import type { FormAction } from "@/components/Form/AppForm.vue"
 
 const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
-const showAddHoldingModal = ref(false)
+const holdingModalIsOpen = ref(false)
+const holdingModalAction = ref<FormAction>({ kind: "new" })
 
 onMounted(async () => {
     if (authStore.isLoggedIn === false) {
@@ -81,14 +83,14 @@ const loadHoldings = async () => {
     }
 }
 
-const handleCreated = async (_newId: number) => {
-    showAddHoldingModal.value = false
-    await loadHoldings()
+const handleAddNewHolding = () => {
+    holdingModalAction.value = { kind: "new" }
+    holdingModalIsOpen.value = true
 }
 
 const handleEdit = (id: number) => {
-    debug(`edit: ${id}`)
-    // TODO
+    holdingModalAction.value = { kind: "update", id }
+    holdingModalIsOpen.value = true
 }
 
 const handleDelete = async (id: number) => {
@@ -96,6 +98,16 @@ const handleDelete = async (id: number) => {
     const result = await HoldingService.delete(id)
     if (result.isSuccess) await loadHoldings()
     else error.value = result.apiError
+}
+
+const handleCreated = async (_newId: number) => {
+    holdingModalIsOpen.value = false
+    await loadHoldings()
+}
+
+const handleUpdated = async () => {
+    holdingModalIsOpen.value = false
+    await loadHoldings()
 }
 </script>
 

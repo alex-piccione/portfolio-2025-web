@@ -10,6 +10,22 @@ const custodianStore = useCustodianStore()
 const currencyStore = useCurrencyStore()
 
 export default class HoldingService {
+    static async create(request: create.Request) {
+        return await HoldingApi.create(request)
+    }
+
+    static async get(id: number) {
+        return await HoldingApi.get(id)
+    }
+
+    static async update(request: update.Request) {
+        return await HoldingApi.update(request)
+    }
+
+    static async delete(id: number) {
+        return await HoldingApi.delete(id)
+    }
+
     static async list(userId: string): Promise<Holding[]> {
         debug("HoldingService.list - userId: " + userId)
 
@@ -29,17 +45,5 @@ export default class HoldingService {
         })
 
         return holdingsFull
-    }
-
-    static async create(request: create.Request) {
-        return await HoldingApi.create(request)
-    }
-
-    static async update(request: update.Request) {
-        return await HoldingApi.update(request)
-    }
-
-    static async delete(id: number) {
-        return await HoldingApi.delete(id)
     }
 }

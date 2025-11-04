@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from "vue"
+import { ref, onMounted, reactive, watch } from "vue"
 import type Currency from "@/entities/Currency"
 import type Custodian from "@/entities/Custodian"
 import HoldingService from "@/services/holding.service"
@@ -106,6 +106,14 @@ import { createDatetime } from "../format.helper"
 import { useCustodianStore } from "@/stores/custodian.store"
 import FormGroup from "../Form/FormGroup.vue"
 import AppCurrency from "../Currency/AppCurrency.vue"
+import type { ApiSuccess } from "@/services/api/helper"
+import { type FormAction } from "@/components/Form/AppForm.vue"
+
+const props = defineProps<{ action: FormAction }>()
+const emit = defineEmits<{
+    created: [number]
+    updated: []
+}>()
 
 const authStore = useAuthStore()
 const custodianStore = useCustodianStore()
@@ -115,21 +123,44 @@ const currencies = ref<Currency[]>([])
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
 const selectedCurrency = ref<Currency | null>(null)
-
-const emit = defineEmits<{
-    save: [number]
-}>()
-
 const showNewCustodianModal = ref(false)
 
 const formData = reactive({
     date: new Date().toISOString().split("T")[0] as string,
-    custodianId: "",
     action: "Balance", // FIXED
+    custodianId: "",
     currencyId: "",
     amount: 0,
     note: "",
 })
+
+const initializeFormData = async () => {
+    loadError.value = undefined
+
+    if (props.action.kind === "new") {
+        Object.assign(formData, {
+            date: new Date().toISOString().slice(0, 10), // .split("T")[0] as string, // TODO: use a helper/format
+            action: "Balance", // FIXED
+            custodianId: "",
+            currencyId: "",
+            amount: 0,
+            note: "",
+        })
+    } else {
+        const result = await HoldingService.get(props.action.id)
+        if (result.isSuccess) {
+            const item = result.data
+            Object.assign(formData, {
+                date: item.date.toISOString().slice(0, 10),
+                action: item.action,
+                custodianId: item.custodianId.toString(),
+                currencyId: item.currencyId.toString(),
+                amount: item.amount,
+                note: item.note || "",
+            })
+        } else loadError.value = result.getError()
+    }
+}
 
 onMounted(async () => {
     debug("NewHoldingForm - onMounted")
@@ -139,13 +170,17 @@ onMounted(async () => {
 
         custodians.value = custodianStore.custodians
         currencies.value = currencyStore.currencies
+
+        await initializeFormData()
     } catch (error: unknown) {
         loadError.value = error
     }
 })
 
+watch(props.action, async () => await initializeFormData())
+
 const submitForm = async () => {
-    debug("NewHoldingForm - submitForm")
+    debug(`HoldingForm - submitForm`)
     submitError.value = null
 
     if (!authStore.userId) {
@@ -165,9 +200,19 @@ const submitForm = async () => {
     }
 
     try {
-        const result = await HoldingService.create(holdingData)
-        if (result.isSuccess) emit("save", result.data)
-        else submitError.value = result.apiError
+        const result =
+            props.action.kind === "new"
+                ? await HoldingService.create(holdingData)
+                : await HoldingService.update({
+                      ...holdingData,
+                      id: props.action.id,
+                  })
+
+        if (result.isSuccess) {
+            if (props.action.kind === "new")
+                emit("created", (result as ApiSuccess<number>).data)
+            else emit("updated")
+        } else submitError.value = result.apiError
     } catch (error) {
         submitError.value = error
     }

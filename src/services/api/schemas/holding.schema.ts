@@ -24,17 +24,22 @@ export namespace update {
     }
 }
 
+const readSchema = z.object({
+    id: z.int32(),
+    date: z_date(),
+    custodianId: z.int32(),
+    currencyId: z.int32(),
+    action: z.string().min(1),
+    amount: z.string(),
+    note: z.string().nullable(),
+})
+
+export namespace single {
+    export const ResponseSchema = readSchema
+    export type Response = z.infer<typeof readSchema>
+}
+
 export namespace list {
-    export const ResponseSchema = z.array(
-        z.object({
-            id: z.int32(),
-            date: z_date(),
-            custodianId: z.int32(),
-            currencyId: z.int32(),
-            action: z.string().min(1),
-            amount: z.string(),
-            note: z.string().nullable(),
-        }),
-    )
+    export const ResponseSchema = z.array(readSchema)
     export type Response = z.infer<typeof list.ResponseSchema>
 }

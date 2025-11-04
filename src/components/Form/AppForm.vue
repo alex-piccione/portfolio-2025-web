@@ -14,6 +14,10 @@
     </form>
 </template>
 
+<script lang="ts">
+export type FormAction = { kind: "new" } | { kind: "update"; id: number }
+</script>
+
 <script setup lang="ts">
 import { ref } from "vue"
 import InlineError from "@/components/InlineError.vue"
