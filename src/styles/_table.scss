@@ -5,7 +5,6 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: theme.$padding;
     border-radius: theme.$border-radius;
     overflow: hidden; // This is important for border-radius to work correctly with collapsed borders
 

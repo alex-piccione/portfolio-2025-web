@@ -1,8 +1,12 @@
 <!-- src/components/Holdings/HoldingTable.vue -->
 <template>
     <InlineError :error="error" position="center" />
-    <div>
-        <button @click="handleAddNewHolding" class="ok">Add New Holding</button>
+    <TableLayout>
+        <template #commands>
+            <button @click="handleAddNewHolding" class="ok">
+                Add New Holding
+            </button>
+        </template>
         <table>
             <thead>
                 <tr>
@@ -32,7 +36,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </TableLayout>
 
     <HoldingModal
         :action="holdingModalAction"
@@ -56,6 +60,7 @@ import AppCustodian from "@/components/Custodian/AppCustodian.vue"
 import AppCurrency from "@/components/Currency/AppCurrency.vue"
 import HoldingModal from "@/components/Holding/HoldingModal.vue"
 import type { FormAction } from "@/components/Form/AppForm.vue"
+import TableLayout from "../TableLayout.vue"
 
 const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])
@@ -110,5 +115,3 @@ const handleUpdated = async () => {
     await loadHoldings()
 }
 </script>
-
-<style scoped lang="scss"></style>

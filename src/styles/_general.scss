@@ -104,6 +104,7 @@ textarea {
     width: 1rem;
     height: 1rem;
     border: 1px solid #333;
+    border-radius: theme.$border-radius;
     cursor: pointer;
 
     &.selected {
