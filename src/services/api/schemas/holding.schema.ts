@@ -18,6 +18,12 @@ export namespace create {
     }
 }
 
+export namespace update {
+    export interface Request extends create.Request {
+        id: number
+    }
+}
+
 export namespace list {
     export const ResponseSchema = z.array(
         z.object({

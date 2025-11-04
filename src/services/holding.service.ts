@@ -1,5 +1,5 @@
 import type Holding from "@/entities/Holding"
-import type { create } from "./api/schemas/holding.schema"
+import type { create, update } from "./api/schemas/holding.schema"
 import HoldingApi from "./api/holding.api"
 import { debug } from "@/utils/utils"
 import { useCurrencyStore } from "@/stores/currency.store"
@@ -33,6 +33,10 @@ export default class HoldingService {
 
     static async create(request: create.Request) {
         return await HoldingApi.create(request)
+    }
+
+    static async update(request: update.Request) {
+        return await HoldingApi.update(request)
     }
 
     static async delete(id: number) {

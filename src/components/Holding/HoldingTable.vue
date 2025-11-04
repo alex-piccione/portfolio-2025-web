@@ -11,9 +11,9 @@
                     <th>Custodian</th>
                     <th>Currency</th>
                     <th>Date</th>
-                    <th>Action</th>
+                    <!--<th>Action</th>-->
                     <th>Amount</th>
-                    <th>Note</th>
+                    <th style="min-width: 150px">Note</th>
                     <th></th>
                 </tr>
             </thead>
@@ -22,7 +22,7 @@
                     <td><AppCustodian :custodian="holding.custodian" /></td>
                     <td><AppCurrency :symbol="holding.currency.symbol" /></td>
                     <td>{{ formatDate(holding.date) }}</td>
-                    <td>{{ holding.action }}</td>
+                    <!--<td>{{ holding.action }}</td>-->
                     <td style="text-align: right">{{ holding.amount }}</td>
                     <td>{{ holding.note }}</td>
                     <CommandsCell

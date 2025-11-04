@@ -5,7 +5,6 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build_old": "vue-tsc --noEmit && vite build",
         "build": "vue-tsc -b --noEmit && vite build",
         "check-build": "vue-tsc -b --noEmit && yarn lint && yarn format",
         "preview": "vite preview",
