@@ -1,11 +1,6 @@
 <template>
     <transition name="slide-fade">
-        <div
-            v-if="error && isVisible"
-            role="alert"
-            class="error-notification"
-            :class="[`position-${position}`]"
-        >
+        <div v-if="error && isVisible" role="alert" class="error-notification" :class="[`position-${position}`]">
             <span v-if="errorText">{{ errorText }}</span>
             <ul v-if="formErrors.length > 0">
                 <li v-for="value in formErrors" :key="value">{{ value }}</li>
@@ -67,8 +62,7 @@ watch(
 
             // If autoclose is enabled, set a timer to hide it
             if (autoclose.value) {
-                const secs =
-                    typeof autoclose.value === "number" ? autoclose.value : 5 // default autoclose seconds
+                const secs = typeof autoclose.value === "number" ? autoclose.value : 5 // default autoclose seconds
                 timeoutId = setTimeout(() => {
                     isVisible.value = false
                 }, secs * 1000)

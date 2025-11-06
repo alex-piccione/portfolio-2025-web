@@ -3,14 +3,7 @@ import axios from "axios"
 import CookieUtils from "@/utils/cookie.utils"
 import { debug } from "@/utils/utils"
 import ConfigurationProvider from "@/utils/configuration"
-import {
-    ApiResult,
-    deserialize,
-    parseAxiosError,
-    parseNewIdResponse,
-    parseZodParseResult,
-    type ApiFailure,
-} from "./helper"
+import { ApiResult, deserialize, parseAxiosError, parseNewIdResponse, parseZodParseResult, type ApiFailure } from "./helper"
 import { goToLogin } from "@/utils/router"
 import { useAuthStore } from "@/stores/auth.store"
 
@@ -34,24 +27,17 @@ apiClient.interceptors.request.use(
         switch (await useAuthStore().checkSessionValidity()) {
             case "SessionOk":
                 const authToken = CookieUtils.getCookie("AuthToken")
-                if (!authToken)
-                    return Promise.reject(
-                        "AuthToken cookie was not found or empty.",
-                    )
+                if (!authToken) return Promise.reject("AuthToken cookie was not found or empty.")
                 config.headers["X-Auth-Token"] = authToken
 
-                debug(
-                    `API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`,
-                )
+                debug(`API Request: ${config.method?.toUpperCase()} ${config.url} with auth: ${!!authToken}`)
 
                 return config
             case "SessionCheckFailed":
             case "SessionExpired":
                 debug(`interceptors.request = Session expired or check failed.`)
                 await goToLogin()
-                return Promise.reject(
-                    new Error("Session expired. Redirecting to login."),
-                )
+                return Promise.reject(new Error("Session expired. Redirecting to login."))
         }
     },
     (error) => {
@@ -67,10 +53,7 @@ apiClient.interceptors.response.use(
         return response
     },
     (error) => {
-        if (typeof error === "object")
-            debug(
-                `API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message} (${error})`,
-            )
+        if (typeof error === "object") debug(`API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message} (${error})`)
         else debug(`API Response Error: ${error}`)
 
         if (error.response?.status === 401) {
@@ -87,9 +70,7 @@ apiClientNoAuth.interceptors.response.use(
         return response
     },
     (error) => {
-        debug(
-            `API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message}`,
-        )
+        debug(`API Response Error: ${error.response?.status} ${error.config?.url} - ${error.message}`)
 
         return Promise.reject(error)
     },

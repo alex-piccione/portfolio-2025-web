@@ -3,9 +3,7 @@
     <InlineError :error="error" position="center" />
     <TableLayout>
         <template #commands>
-            <button @click="handleAddNewHolding" class="ok">
-                Add New Holding
-            </button>
+            <button @click="handleAddNewHolding" class="ok">Add New Holding</button>
         </template>
         <table>
             <thead>
@@ -27,24 +25,13 @@
                     <!--<td>{{ holding.action }}</td>-->
                     <td style="text-align: right">{{ holding.amount }}</td>
                     <td>{{ holding.note }}</td>
-                    <CommandsCell
-                        :can-edit="true"
-                        :can-delete="true"
-                        @edit="handleEdit(holding.id)"
-                        @delete="handleDelete(holding.id)"
-                    />
+                    <CommandsCell :can-edit="true" :can-delete="true" @edit="handleEdit(holding.id)" @delete="handleDelete(holding.id)" />
                 </tr>
             </tbody>
         </table>
     </TableLayout>
 
-    <HoldingModal
-        :action="holdingModalAction"
-        :is-open="holdingModalIsOpen"
-        @cancel="holdingModalIsOpen = false"
-        @created="handleCreated"
-        @updated="handleUpdated"
-    />
+    <HoldingModal :action="holdingModalAction" :is-open="holdingModalIsOpen" @cancel="holdingModalIsOpen = false" @created="handleCreated" @updated="handleUpdated" />
 </template>
 
 <script setup lang="ts">

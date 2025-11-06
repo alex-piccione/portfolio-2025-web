@@ -3,19 +3,11 @@
     <div class="currencies-page">
         <div class="currencies-page__left">
             <h4>Enabled</h4>
-            <CurrenciesTable
-                :inUse="true"
-                :currencies="currenciesInUse"
-                @update="handleUpdate"
-            />
+            <CurrenciesTable :inUse="true" :currencies="currenciesInUse" @update="handleUpdate" />
         </div>
         <div class="currencies-page__right">
             <h4>Disabled</h4>
-            <CurrenciesTable
-                :inUse="false"
-                :currencies="currenciesNotUsed"
-                @update="handleUpdate"
-            />
+            <CurrenciesTable :inUse="false" :currencies="currenciesNotUsed" @update="handleUpdate" />
         </div>
     </div>
 </template>

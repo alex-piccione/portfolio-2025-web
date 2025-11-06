@@ -1,10 +1,5 @@
 <template>
-    <select
-        ref="select"
-        :value="modelValue"
-        @change="handleChange"
-        :class="{ 'placeholder-selected': !modelValue }"
-    >
+    <select ref="select" :value="modelValue" @change="handleChange" :class="{ 'placeholder-selected': !modelValue }">
         <slot></slot>
     </select>
 </template>

@@ -4,23 +4,12 @@
 
         <div class="form-group">
             <label for="name">Name</label>
-            <input
-                id="name"
-                v-model="form.name"
-                type="text"
-                required
-                ref="autofocus"
-            />
+            <input id="name" v-model="form.name" type="text" required ref="autofocus" />
         </div>
 
         <FormGroup id="custodian" v-model="form.custodian" required />
         <FormGroup id="account" v-model="form.account" />
-        <FormGroup
-            id="description"
-            v-model="form.description"
-            type="textarea"
-            :rows="3"
-        />
+        <FormGroup id="description" v-model="form.description" type="textarea" :rows="3" />
 
         <div class="form-group">
             <label for="kind">Custodian (primary) Kind</label>
@@ -82,8 +71,7 @@ const form = reactive({
 onMounted(async () => {
     // can I focus here, at least wjhen the form is NOT shown in hte modal ?
     try {
-        if ((await authStore.checkSessionValidity()) !== "SessionExpired")
-            return
+        if ((await authStore.checkSessionValidity()) !== "SessionExpired") return
     } catch (error: unknown) {
         loadError.value = error
     }

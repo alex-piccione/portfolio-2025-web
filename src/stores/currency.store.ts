@@ -25,9 +25,7 @@ export const useCurrencyStore = defineStore(
 
             // TODO: add retry
             const result = await CurrencyService.listAll()
-            const _ = result.isSuccess
-                ? (currencies.value = result.data)
-                : (error.value = result.getError())
+            const _ = result.isSuccess ? (currencies.value = result.data) : (error.value = result.getError())
 
             isLoading.value = false
         }
@@ -46,9 +44,7 @@ export const useCurrencyStore = defineStore(
 
         // ---------- Getters ----------
         /** Get custodian by ID or throw error if not found */
-        const get = (id: number): Currency =>
-            currencies.value.find((c) => c.id === id) ||
-            fail(`Cannot find a Currency with id: ${id}.`)
+        const get = (id: number): Currency => currencies.value.find((c) => c.id === id) || fail(`Cannot find a Currency with id: ${id}.`)
 
         return {
             // state

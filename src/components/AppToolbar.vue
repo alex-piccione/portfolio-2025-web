@@ -1,36 +1,25 @@
 <template>
     <div class="toolbar">
         <div class="toolbar-left">
-            <!-- logo here -->
+            <img src="/logo.png" height="32px" />
             <h1 class="toolbar-title">
-                Portfolius <small>(v{{ ui_version }})</small>
+                Portfolius <small>({{ ui_version }})</small>
             </h1>
             <nav class="toolbar-nav">
-                <router-link to="/home" class="toolbar-nav-item"
-                    >Home</router-link
-                >
-                <router-link to="/currencies" class="toolbar-nav-item"
-                    >Currencies</router-link
-                >
-                <router-link to="/custodians" class="toolbar-nav-item"
-                    >Custodians</router-link
-                >
+                <router-link to="/home" class="toolbar-nav-item">Home</router-link>
+                <router-link to="/currencies" class="toolbar-nav-item">Currencies</router-link>
+                <router-link to="/custodians" class="toolbar-nav-item">Custodians</router-link>
             </nav>
         </div>
-
         <div class="toolbar-right">
             <!--
-      <button class="toolbar-button" @click="handleNotifications">
-        <Icon name="bell" />
-        Notifications
-      </button>
-      -->
-            <div class="toolbar-user">
-                <AppIcon name="account" /> {{ username }}
-            </div>
-            <button class="toolbar-button delete" @click="handleLogout">
-                Logout
+            <button class="toolbar-button" @click="handleNotifications">
+                <Icon name="bell" />
+                Notifications
             </button>
+            -->
+            <div class="toolbar-user"><AppIcon name="account" /> {{ username }}</div>
+            <button class="toolbar-button delete" @click="handleLogout">Logout</button>
         </div>
     </div>
 </template>

@@ -1,12 +1,5 @@
 <template>
-    <AppModal
-        :is-open="isOpen"
-        title="Add New Custodian"
-        :show-cancel-button="false"
-        :show-confirm-button="false"
-        @close="$emit('cancel')"
-        @confirm="handleConfirm"
-    >
+    <AppModal :is-open="isOpen" title="Add New Custodian" :show-cancel-button="false" :show-confirm-button="false" @close="$emit('cancel')" @confirm="handleConfirm">
         <NewCustodianForm ref="form" @created="handleCreated" />
     </AppModal>
 </template>

@@ -1,22 +1,9 @@
 <template>
     <div class="form-group">
-        <label :for="id"
-            >{{ label || capitalizedId }} <LabelOptional :required
-        /></label>
-        <textarea
-            v-if="type === 'textarea'"
-            :id
-            v-model="value"
-            :rows
-            :required
-        ></textarea>
+        <label :for="id">{{ label || capitalizedId }} <LabelOptional :required /></label>
+        <textarea v-if="type === 'textarea'" :id v-model="value" :rows :required></textarea>
 
-        <InputCurrencyAmount
-            v-else-if="type === 'currency amount'"
-            v-model="value"
-            :decimals
-            :required
-        />
+        <InputCurrencyAmount v-else-if="type === 'currency amount'" v-model="value" :decimals :required />
 
         <input v-else :id v-model="value" :type :required />
     </div>
@@ -32,13 +19,7 @@ const props = withDefaults(
         id: string
         modelValue: string | number // This is for v-model
         label?: string
-        type?:
-            | "text"
-            | "number"
-            | "date"
-            | "password"
-            | "textarea"
-            | "currency amount"
+        type?: "text" | "number" | "date" | "password" | "textarea" | "currency amount"
         required?: boolean
         rows?: number // for textarea
         steps?: number // for number
@@ -65,7 +46,5 @@ const value = computed({
     },
 })
 
-const capitalizedId = computed(() =>
-    props.id ? props.id.charAt(0).toUpperCase() + props.id.slice(1) : "",
-)
+const capitalizedId = computed(() => (props.id ? props.id.charAt(0).toUpperCase() + props.id.slice(1) : ""))
 </script>

@@ -1,8 +1,6 @@
 // src/utils/result.ts
 
-export type Result<T> =
-    | { isSuccess: true; value: T }
-    | { isSuccess: false; error: string }
+export type Result<T> = { isSuccess: true; value: T } | { isSuccess: false; error: string }
 
 export const Result = {
     success: <T>(value: T): { isSuccess: true; value: T } => ({

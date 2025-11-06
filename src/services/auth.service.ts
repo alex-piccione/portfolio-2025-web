@@ -9,12 +9,7 @@ import { useAuthStore } from "@/stores/auth.store"
 import { goTo } from "@/utils/router"
 import { debug } from "@/utils/utils"
 
-const resultFailed = (operation: string, error: unknown) =>
-    Result.failed(
-        operation +
-            ". " +
-            (error instanceof Error ? error.message : `${error}`),
-    )
+const resultFailed = (operation: string, error: unknown) => Result.failed(operation + ". " + (error instanceof Error ? error.message : `${error}`))
 
 /*async function execute<T> (action: () => Promise<Result<T>>): Promise<Result<T>> {
     try {
@@ -29,27 +24,16 @@ export default class AuthService {
     /**
      * Handles complete login flow: API call, token storage, state update
      */
-    static async login(
-        username: string,
-        password: string,
-    ): Promise<Result<boolean>> {
+    static async login(username: string, password: string): Promise<Result<boolean>> {
         try {
             // Call API
             const apiResult = await AuthApi.login(username, password)
 
             if (apiResult.isSuccess) {
                 // Store tokens
-                CookieUtils.setCookie(
-                    "AuthToken",
-                    apiResult.data.accessToken,
-                    apiResult.data.accessTokenExpiresAt,
-                )
+                CookieUtils.setCookie("AuthToken", apiResult.data.accessToken, apiResult.data.accessTokenExpiresAt)
 
-                CookieUtils.setCookie(
-                    "RefreshToken",
-                    apiResult.data.refreshToken,
-                    apiResult.data.refreshTokenExpiresAt,
-                )
+                CookieUtils.setCookie("RefreshToken", apiResult.data.refreshToken, apiResult.data.refreshTokenExpiresAt)
 
                 // Update store state
                 const authStore = useAuthStore()
@@ -62,11 +46,7 @@ export default class AuthService {
         } catch (error: unknown) {
             // TODO: logger.error("Login failed.", error)
             console.warn("Login error:", error)
-            return Result.failed(
-                error instanceof Error
-                    ? error.message || "Login failed"
-                    : `${error}`,
-            )
+            return Result.failed(error instanceof Error ? error.message || "Login failed" : `${error}`)
         }
     }
 
@@ -125,9 +105,7 @@ export default class AuthService {
 
             const refreshResult = await AuthApi.refreshToken(refreshToken)
             if (!refreshResult.isSuccess) {
-                debug(
-                    `(checkSessionValidity) refreshResult error: ${refreshResult.getError()}`,
-                )
+                debug(`(checkSessionValidity) refreshResult error: ${refreshResult.getError()}`)
                 return Result.failed(refreshResult.getError())
             }
 
@@ -141,23 +119,14 @@ export default class AuthService {
     static async refreshToken(): Promise<Result<boolean>> {
         try {
             const refreshToken = CookieUtils.getCookie("RefreshToken")
-            if (!refreshToken)
-                return Result.failed("No refresh token available")
+            if (!refreshToken) return Result.failed("No refresh token available")
 
             const apiResult = await AuthApi.refreshToken(refreshToken)
 
             if (apiResult.isSuccess) {
                 // Update tokens and expiration dates
-                CookieUtils.setCookie(
-                    "AuthToken",
-                    apiResult.data.accessToken,
-                    apiResult.data.accessTokenExpiresAt,
-                )
-                CookieUtils.setCookie(
-                    "RefreshToken",
-                    apiResult.data.refreshToken,
-                    apiResult.data.refreshTokenExpiresAt,
-                )
+                CookieUtils.setCookie("AuthToken", apiResult.data.accessToken, apiResult.data.accessTokenExpiresAt)
+                CookieUtils.setCookie("RefreshToken", apiResult.data.refreshToken, apiResult.data.refreshTokenExpiresAt)
 
                 return Result.success(true)
             } else {

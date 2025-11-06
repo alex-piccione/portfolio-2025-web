@@ -1,10 +1,5 @@
 <template>
-    <BaseSelect
-        id="color"
-        :modelValue="modelValue"
-        required
-        @update:modelValue="updateModelValue"
-    >
+    <BaseSelect id="color" :modelValue="modelValue" required @update:modelValue="updateModelValue">
         <option v-for="color in colors" :value="color" :key="color">
             <div :style="{ backgroundColor: color }"></div>
         </option>

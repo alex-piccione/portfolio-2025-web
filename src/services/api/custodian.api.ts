@@ -26,9 +26,7 @@ export default class CustodianApi {
         try {
             const response = await api.client.get(`/custodian`)
             // TODO: api.getResult(response)
-            return ApiResult.success(
-                api.deserialize<Custodian[]>(response.data),
-            )
+            return ApiResult.success(api.deserialize<Custodian[]>(response.data))
         } catch (error) {
             return api.handleError(error)
         }

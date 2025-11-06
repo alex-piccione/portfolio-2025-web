@@ -3,30 +3,17 @@
         <form class="login-form" @submit.prevent="handleLogin">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input
-                    v-model="email"
-                    type="text"
-                    id="username"
-                    placeholder="Username"
-                    autocomplete="username"
-                />
+                <input v-model="email" type="text" id="username" placeholder="Username" autocomplete="username" />
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input
-                    v-model="password"
-                    type="password"
-                    id="password"
-                    placeholder="Password"
-                />
+                <input v-model="password" type="password" id="password" placeholder="Password" />
             </div>
             <div class="button-group">
                 <button type="submit" class="submit" :disabled="isLoading">
                     {{ isLoading ? "Logging in..." : "Login" }}
                 </button>
-                <button type="button" class="cancel" @click="goBack">
-                    Return Back
-                </button>
+                <button type="button" class="cancel" @click="goBack">Return Back</button>
             </div>
             <InlineError :error="loginError" position="center" />
         </form>
@@ -54,9 +41,7 @@ const handleLogin = async () => {
 
     try {
         const loginPromise = AuthService.login(email.value, password.value)
-        const delayPromise = new Promise((resolve) =>
-            setTimeout(() => resolve(null), 500),
-        ) // Minimum 500ms
+        const delayPromise = new Promise((resolve) => setTimeout(() => resolve(null), 500)) // Minimum 500ms
         const [result, _] = await Promise.all([loginPromise, delayPromise])
 
         //const [result] = await
@@ -74,10 +59,7 @@ const handleLogin = async () => {
             loginError.value = result.error
         }
     } catch (error: unknown) {
-        loginError.value =
-            error instanceof Error
-                ? error.message
-                : "An unexpected error occurred"
+        loginError.value = error instanceof Error ? error.message : "An unexpected error occurred"
     } finally {
         isLoading.value = false
     }

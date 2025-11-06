@@ -70,18 +70,12 @@ onUnmounted(() => {
 watch(
     () => props.modelValue,
     (value) => {
-        selectedOption.value =
-            props.options.find((option) => option.value === value) || null
+        selectedOption.value = props.options.find((option) => option.value === value) || null
     },
 )
 
 function handleClickOutside(event: MouseEvent) {
-    if (
-        triggerElement.value &&
-        !triggerElement.value.contains(event.target as Node) &&
-        dropdownElement.value &&
-        !dropdownElement.value.contains(event.target as Node)
-    ) {
+    if (triggerElement.value && !triggerElement.value.contains(event.target as Node) && dropdownElement.value && !dropdownElement.value.contains(event.target as Node)) {
         toggleDropdown(false)
     }
 }

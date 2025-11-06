@@ -2,9 +2,7 @@
     <InlineError :error />
     <TableLayout>
         <template #commands>
-            <button @click="showAddCustodianModal = true" class="ok">
-                Add New Custodian
-            </button>
+            <button @click="showAddCustodianModal = true" class="ok">Add New Custodian</button>
         </template>
         <slot>
             <BaseTable>
@@ -34,22 +32,14 @@
                             ></span>
                         </td>
                         <td>{{ custodian.description?.slice(0, 50) }}</td>
-                        <CommandsCell
-                            :can-edit="false"
-                            :can-delete="true"
-                            @delete="remove(custodian.id)"
-                        />
+                        <CommandsCell :can-edit="false" :can-delete="true" @delete="remove(custodian.id)" />
                     </tr>
                 </tbody>
             </BaseTable>
         </slot>
     </TableLayout>
 
-    <NewCustodianModal
-        :is-open="showAddCustodianModal"
-        @created="handleCreated"
-        @cancel="showAddCustodianModal = false"
-    />
+    <NewCustodianModal :is-open="showAddCustodianModal" @created="handleCreated" @cancel="showAddCustodianModal = false" />
 </template>
 
 <script setup lang="ts">

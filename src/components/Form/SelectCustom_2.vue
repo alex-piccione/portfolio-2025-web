@@ -1,11 +1,6 @@
 <!-- not useed -->
 <template>
-    <div
-        class="select-custom"
-        ref="selectElement"
-        @keydown="handleKeydown"
-        tabindex="0"
-    >
+    <div class="select-custom" ref="selectElement" @keydown="handleKeydown" tabindex="0">
         <div class="select-custom__selected" @click="toggleDropdown">
             <slot name="selected" :selectedOption="selectedOption">
                 {{ selectedLabel }}
@@ -17,10 +12,8 @@
                 :key="option.value"
                 :class="{
                     'select-custom__option': true,
-                    'select-custom__option--focused':
-                        index === focusedOptionIndex,
-                    'select-custom__option--selected':
-                        option.value === modelValue,
+                    'select-custom__option--focused': index === focusedOptionIndex,
+                    'select-custom__option--selected': option.value === modelValue,
                 }"
                 @click="selectOption(option)"
             >
@@ -54,16 +47,13 @@ const focusedOptionIndex = ref(-1)
 const selectElement = ref<HTMLElement | null>(null)
 
 const selectedLabel = computed(() => {
-    return selectedOption.value
-        ? selectedOption.value.label
-        : props.placeholder || "Select..."
+    return selectedOption.value ? selectedOption.value.label : props.placeholder || "Select..."
 })
 
 watch(
     () => props.modelValue,
     (newValue) => {
-        selectedOption.value =
-            props.options.find((option) => option.value === newValue) || null
+        selectedOption.value = props.options.find((option) => option.value === newValue) || null
     },
     { immediate: true },
 )
@@ -71,9 +61,7 @@ watch(
 const toggleDropdown = () => {
     isOpen.value = !isOpen.value
     if (isOpen.value) {
-        focusedOptionIndex.value = props.options.findIndex(
-            (option) => option.value === props.modelValue,
-        )
+        focusedOptionIndex.value = props.options.findIndex((option) => option.value === props.modelValue)
     }
 }
 
@@ -84,10 +72,7 @@ const selectOption = (option: Option) => {
 }
 
 const handleClickOutside = (event: MouseEvent) => {
-    if (
-        selectElement.value &&
-        !selectElement.value.contains(event.target as Node)
-    ) {
+    if (selectElement.value && !selectElement.value.contains(event.target as Node)) {
         isOpen.value = false
     }
 }
@@ -102,14 +87,11 @@ const handleKeydown = (event: KeyboardEvent) => {
         switch (event.key) {
             case "ArrowDown":
                 event.preventDefault()
-                focusedOptionIndex.value =
-                    (focusedOptionIndex.value + 1) % props.options.length
+                focusedOptionIndex.value = (focusedOptionIndex.value + 1) % props.options.length
                 break
             case "ArrowUp":
                 event.preventDefault()
-                focusedOptionIndex.value =
-                    (focusedOptionIndex.value - 1 + props.options.length) %
-                    props.options.length
+                focusedOptionIndex.value = (focusedOptionIndex.value - 1 + props.options.length) % props.options.length
                 break
             case "Enter":
             case " ":

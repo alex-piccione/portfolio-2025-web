@@ -93,8 +93,7 @@ $controls-border-color: color.scale(theme.$secondary-color, $lightness: 25%);
     @include control-border;
     background-color: theme.$secondary-color !important;
     padding: theme.$padding-small;
-    _border: thin theme.$border-style
-        color.scale(theme.$border-color, $lightness: 20%);
+    _border: thin theme.$border-style color.scale(theme.$border-color, $lightness: 20%);
     _border-radius: theme.$space-small;
 
     &:focus {

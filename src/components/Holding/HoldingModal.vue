@@ -1,17 +1,6 @@
 <template>
-    <AppModal
-        :is-open="isOpen"
-        :title
-        @close="$emit('cancel')"
-        :show-cancel-button="false"
-        :show-confirm-button="false"
-    >
-        <HoldingForm
-            ref="form"
-            :action
-            @created="handleCreated"
-            @updated="handleUpdated"
-        />
+    <AppModal :is-open="isOpen" :title @close="$emit('cancel')" :show-cancel-button="false" :show-confirm-button="false">
+        <HoldingForm ref="form" :action @created="handleCreated" @updated="handleUpdated" />
     </AppModal>
 </template>
 
@@ -32,9 +21,7 @@ const emit = defineEmits<{
     updated: []
 }>()
 
-const title = computed(() =>
-    props.action.kind === "new" ? "Add New Holding" : "Update Holding",
-)
+const title = computed(() => (props.action.kind === "new" ? "Add New Holding" : "Update Holding"))
 
 const form = ref<typeof HoldingForm | null>(null)
 

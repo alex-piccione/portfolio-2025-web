@@ -9,11 +9,6 @@ export default interface Custodian {
     description?: string
 }
 
-export type CustodianKind =
-    | "Exchange"
-    | "Pension"
-    | "Bank"
-    | "Blockchain Wallet"
-    | "Other"
+export type CustodianKind = "Exchange" | "Pension" | "Bank" | "Blockchain Wallet" | "Other"
 
 export const parseKindFromString = (value: string) => value as CustodianKind

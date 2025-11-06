@@ -25,9 +25,7 @@ export const useCustodianStore = defineStore(
             error.value = null
 
             const result = await CustodianService.list()
-            const _ = result.isSuccess
-                ? (custodians.value = result.data)
-                : (error.value = result.getError())
+            const _ = result.isSuccess ? (custodians.value = result.data) : (error.value = result.getError())
 
             isLoading.value = false
         }
@@ -64,9 +62,7 @@ export const useCustodianStore = defineStore(
 
         // ---------- Getters ----------
         /** Get custodian by ID or throw error if not found */
-        const get = (id: number): Custodian =>
-            custodians.value.find((c) => c.id === id) ||
-            fail(`Cannot find a Custodian with id: ${id}.`)
+        const get = (id: number): Custodian => custodians.value.find((c) => c.id === id) || fail(`Cannot find a Custodian with id: ${id}.`)
 
         return {
             // state

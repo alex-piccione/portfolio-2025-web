@@ -1,7 +1,5 @@
 <template>
-    <span class="custodian" :style="{ color: custodian.colorCode }">{{
-        custodian.name
-    }}</span>
+    <span class="custodian" :style="{ color: custodian.colorCode }">{{ custodian.name }}</span>
 </template>
 
 <script setup lang="ts">

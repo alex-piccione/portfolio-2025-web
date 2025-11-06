@@ -18,24 +18,13 @@
             blur/focusout: Be careful. showOptions = false breaks the click on the option!
         -->
             <!-- value is required to have the select rendering the label-->
-            <option
-                v-for="option in options"
-                :key="option.value"
-                :value="option.value"
-                hidden
-                ref="optionElement"
-            >
+            <option v-for="option in options" :key="option.value" :value="option.value" hidden ref="optionElement">
                 {{ option.label }}
             </option>
         </select>
         <div ref="dropdownElement" v-show="showOptions" class="options">
             <!-- @keydown.down.prevent="focusNextOption" -->
-            <div
-                v-for="(option, index) in options"
-                :key="index"
-                @click="() => handleOptionClick(option)"
-                :class="{ focused: focusedIndex === index }"
-            >
+            <div v-for="(option, index) in options" :key="index" @click="() => handleOptionClick(option)" :class="{ focused: focusedIndex === index }">
                 <slot name="option" :option="option"></slot>
             </div>
         </div>
@@ -68,9 +57,7 @@ function toggleDropdown(): void
 function toggleDropdown(value: boolean): void
 
 function toggleDropdown(value?: boolean) {
-    return typeof value === "boolean"
-        ? (showOptions.value = value)
-        : (showOptions.value = !showOptions.value)
+    return typeof value === "boolean" ? (showOptions.value = value) : (showOptions.value = !showOptions.value)
 }
 
 function handleOptionClick(option: Option) {
@@ -88,12 +75,7 @@ function handleOptionClick(option: Option) {
 function handleClickOutside(event: MouseEvent) {
     const target = event.target as Node
 
-    if (
-        triggerElement.value &&
-        !triggerElement.value.contains(target) &&
-        dropdownElement.value &&
-        !dropdownElement.value.contains(target)
-    ) {
+    if (triggerElement.value && !triggerElement.value.contains(target) && dropdownElement.value && !dropdownElement.value.contains(target)) {
         showOptions.value = false
     }
 }

@@ -1,19 +1,11 @@
 // src/services/api/auth.api.ts
 import { debug } from "@/utils/utils"
 import api from "./apiClient"
-import {
-    login,
-    refresh,
-    type LoginResponse,
-    type RefreshResponse,
-} from "./schemas/auth.schema"
+import { login, refresh, type LoginResponse, type RefreshResponse } from "./schemas/auth.schema"
 import { ApiResult } from "./helper"
 
 export default class AuthApi {
-    static async login(
-        username: string,
-        password: string,
-    ): Promise<ApiResult<LoginResponse>> {
+    static async login(username: string, password: string): Promise<ApiResult<LoginResponse>> {
         try {
             const response = await api.publicClient.post("/auth/login", {
                 username,
@@ -23,17 +15,11 @@ export default class AuthApi {
 
             const parseResult = login.ResponseSchema.safeParse(response.data)
             if (!parseResult.success) {
-                debug(
-                    `Response validation failed (parseResponse.error.message): ${parseResult.error.message}`,
-                )
+                debug(`Response validation failed (parseResponse.error.message): ${parseResult.error.message}`)
 
-                const errorMessages = parseResult.error.issues
-                    .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
-                    .join("; ")
+                const errorMessages = parseResult.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ")
 
-                return ApiResult.genericError(
-                    `Response validation failed: ${errorMessages}`,
-                )
+                return ApiResult.genericError(`Response validation failed: ${errorMessages}`)
             }
 
             return ApiResult.success(parseResult.data)
@@ -42,9 +28,7 @@ export default class AuthApi {
         }
     }
 
-    static async refreshToken(
-        token: string,
-    ): Promise<ApiResult<RefreshResponse>> {
+    static async refreshToken(token: string): Promise<ApiResult<RefreshResponse>> {
         try {
             const response = await api.publicClient.post("/auth/refresh", {
                 refreshToken: token,
@@ -58,12 +42,7 @@ export default class AuthApi {
                     "Response validation failed. " +
                     parseResult.error.message +
                     ". " +
-                    parseResult.error.issues
-                        .map(
-                            (issue) =>
-                                `${issue.path.join(".")}: ${issue.message}`,
-                        )
-                        .join("; ")
+                    parseResult.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ")
 
                 throw Error(errorMessage)
             }

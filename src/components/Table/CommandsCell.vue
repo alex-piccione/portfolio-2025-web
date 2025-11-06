@@ -1,19 +1,7 @@
 <template>
     <td>
-        <AppIcon
-            v-if="canEdit"
-            name="edit"
-            @click="$emit('edit')"
-            color="edit"
-            clickable
-        />
-        <AppIcon
-            v-if="canDelete"
-            name="delete"
-            @click="$emit('delete')"
-            color="delete"
-            clickable
-        />
+        <AppIcon v-if="canEdit" name="edit" @click="$emit('edit')" color="edit" clickable />
+        <AppIcon v-if="canDelete" name="delete" @click="$emit('delete')" color="delete" clickable />
     </td>
 </template>
 

@@ -23,9 +23,7 @@
                     <AppCustodian :custodian="option.item as Custodian" />
                 </template>
             </AppSelect>
-            <AddNewRecordButton @click="showNewCustodianModal = true"
-                >Add new custodian</AddNewRecordButton
-            >
+            <AddNewRecordButton @click="showNewCustodianModal = true">Add new custodian</AddNewRecordButton>
         </div>
         <div class="form-group">
             <label for="currency">Currency</label>
@@ -46,20 +44,8 @@
                 </template>
             </AppSelect>
         </div>
-        <FormGroup
-            id="amount"
-            v-model="formData.amount"
-            type="currency amount"
-            required
-            :decimals="selectedCurrency?.precision"
-        />
-        <FormGroup
-            id="note"
-            v-model="formData.note"
-            type="textarea"
-            required
-            :rows="3"
-        />
+        <FormGroup id="amount" v-model="formData.amount" type="currency amount" required :decimals="selectedCurrency?.precision" />
+        <FormGroup id="note" v-model="formData.note" type="textarea" required :rows="3" />
 
         <div class="form-footer">
             <div class="buttons">
@@ -70,13 +56,7 @@
     </form>
 
     <!-- Modal for new custodian -->
-    <NewCustodianModal
-        :isOpen="showNewCustodianModal"
-        title="Add New Custodian"
-        @cancel="showNewCustodianModal = false"
-        @created="handleNewCustodian"
-    >
-    </NewCustodianModal>
+    <NewCustodianModal :isOpen="showNewCustodianModal" title="Add New Custodian" @cancel="showNewCustodianModal = false" @created="handleNewCustodian"> </NewCustodianModal>
 </template>
 
 <script setup lang="ts">
@@ -207,8 +187,7 @@ const submitForm = async () => {
                   })
 
         if (result.isSuccess) {
-            if (props.action.kind === "new")
-                emit("created", (result as ApiSuccess<number>).data)
+            if (props.action.kind === "new") emit("created", (result as ApiSuccess<number>).data)
             else emit("updated")
         } else submitError.value = result.apiError
     } catch (error) {

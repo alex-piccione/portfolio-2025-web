@@ -15,14 +15,8 @@
                 <td class="nowrap">{{ currency.name }}</td>
                 <td>{{ currency.kind }}</td>
                 <td>
-                    <span
-                        class="nowrap clickable"
-                        @click="$emit('update', currency.id, !inUse)"
-                    >
-                        <AppIcon
-                            :name="inUse ? 'heart_off_outline' : 'heart_plus'"
-                            :color="inUse ? 'delete' : 'heart'"
-                        />
+                    <span class="nowrap clickable" @click="$emit('update', currency.id, !inUse)">
+                        <AppIcon :name="inUse ? 'heart_off_outline' : 'heart_plus'" :color="inUse ? 'delete' : 'heart'" />
                         {{ inUse ? "disable" : "enable" }}
                     </span>
                 </td>

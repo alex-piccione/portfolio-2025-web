@@ -30,22 +30,15 @@ export default class CurrencyApi {
             //const parseResult = list.ResponseSchema.safeParse(response.data)
             //return api.getResult(parseResult)
             //api.getResult(response)
-            return ApiResult.success(
-                api.deserialize<UserCurrency[]>(response.data),
-            )
+            return ApiResult.success(api.deserialize<UserCurrency[]>(response.data))
         } catch (error) {
             return api.handleError(error)
         }
     }
 
-    static async enableForUser(
-        currencyId: number,
-        enable: boolean,
-    ): Promise<ApiResult<void>> {
+    static async enableForUser(currencyId: number, enable: boolean): Promise<ApiResult<void>> {
         try {
-            await api.client.put(
-                `/currency/${currencyId}/${enable ? "enable" : "disable"}`,
-            )
+            await api.client.put(`/currency/${currencyId}/${enable ? "enable" : "disable"}`)
             return ApiResult.success(undefined)
         } catch (error) {
             return api.handleError(error)

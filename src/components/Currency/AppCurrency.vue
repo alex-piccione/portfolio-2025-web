@@ -1,11 +1,6 @@
 <template>
     <span class="nowrap">
-        <img
-            :src="iconPath"
-            :alt="symbol"
-            class="currency-icon"
-            :class="{ cursor: clickable ? 'pointer' : '' }"
-        />
+        <img :src="iconPath" :alt="symbol" class="currency-icon" :class="{ cursor: clickable ? 'pointer' : '' }" />
         {{ symbol }}
     </span>
 </template>
@@ -23,9 +18,7 @@ const props = withDefaults(
     },
 )
 
-const iconPath = computed(
-    () => `/src/assets/icons/currencies/${props.symbol.toLowerCase()}.svg`,
-)
+const iconPath = computed(() => `/src/assets/icons/currencies/${props.symbol.toLowerCase()}.svg`)
 </script>
 
 <style lang="scss" scoped>

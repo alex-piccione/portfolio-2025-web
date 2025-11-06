@@ -1,17 +1,9 @@
 <template>
     <h1>Currencies</h1>
     <ul class="currency-list">
-        <li
-            v-for="currency in currencyStore.currencies"
-            :key="currency.id"
-            class="currency-list__item"
-        >
-            {{ currency.name }} ({{ currency.symbol }})
-        </li>
+        <li v-for="currency in currencyStore.currencies" :key="currency.id" class="currency-list__item">{{ currency.name }} ({{ currency.symbol }})</li>
 
-        <li v-if="currencyStore.isLoading" class="currency-list__loading">
-            Loading…
-        </li>
+        <li v-if="currencyStore.isLoading" class="currency-list__loading">Loading…</li>
 
         <li v-if="currencyStore.error" class="currency-list__error">
             {{ currencyStore.error }}

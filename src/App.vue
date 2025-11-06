@@ -37,9 +37,7 @@ const storageChangeHandler = (event: StorageEvent) => {
             const newState = JSON.parse(event.newValue || "{}")
             authStore.$patch(newState)
 
-            debug(
-                `auth event cathed. authStore.isLoggedIn:${authStore.isLoggedIn}, authStore.username:${authStore.username}.`,
-            )
+            debug(`auth event cathed. authStore.isLoggedIn:${authStore.isLoggedIn}, authStore.username:${authStore.username}.`)
 
             if (authStore.isLoggedIn) goTo("Home")
             else goTo("Landing")

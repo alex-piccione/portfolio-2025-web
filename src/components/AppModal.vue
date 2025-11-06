@@ -3,40 +3,20 @@
     <teleport to="body">
         <transition name="fade">
             <div v-if="isOpen" class="modal-backdrop">
-                <div
-                    class="modal-content"
-                    @click.stop
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby="model-header"
-                    ref="modalContainer"
-                >
+                <div class="modal-content" @click.stop role="dialog" aria-modal="true" aria-labelledby="model-header" ref="modalContainer">
                     <header class="modal-header">
                         <h3>{{ title }}</h3>
-                        <button @click="close" class="close-button">
-                            &times;
-                        </button>
+                        <button @click="close" class="close-button">&times;</button>
                     </header>
                     <div class="modal-body">
                         <slot> <!-- Custom content --> </slot>
                     </div>
-                    <footer
-                        class="modal-footer"
-                        v-if="showCancelButton || showConfirmButton"
-                    >
+                    <footer class="modal-footer" v-if="showCancelButton || showConfirmButton">
                         <slot name="footer">
-                            <button
-                                v-if="showCancelButton"
-                                @click="close"
-                                class="close"
-                            >
+                            <button v-if="showCancelButton" @click="close" class="close">
                                 {{ cancelButtonText }}
                             </button>
-                            <button
-                                v-if="showConfirmButton"
-                                @click="confirm"
-                                class="ok"
-                            >
+                            <button v-if="showConfirmButton" @click="confirm" class="ok">
                                 {{ confirmButtonText }}
                             </button>
                         </slot>

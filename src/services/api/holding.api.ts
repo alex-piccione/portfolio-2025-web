@@ -1,11 +1,6 @@
 import { debug } from "@/utils/utils"
 import api from "./apiClient"
-import {
-    type create,
-    list,
-    single,
-    type update,
-} from "./schemas/holding.schema"
+import { type create, list, single, type update } from "./schemas/holding.schema"
 import { ApiResult } from "./helper"
 
 debug("HoldingApi")

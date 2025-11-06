@@ -25,17 +25,7 @@ import heartPlusIcon from "@/assets/icons/heart-plus.svg?raw" // used to set Ena
 import heartOffOutlineIcon from "@/assets/icons/heart-off-outline.svg?raw" // used to set Disabled
 
 // use underscore to make easy to add the map key
-type Icons =
-    | "bell"
-    | "account"
-    | "account_box"
-    | "help"
-    | "tableLarge"
-    | "edit"
-    | "delete"
-    | "heart"
-    | "heart_plus"
-    | "heart_off_outline"
+type Icons = "bell" | "account" | "account_box" | "help" | "tableLarge" | "edit" | "delete" | "heart" | "heart_plus" | "heart_off_outline"
 type Sizes = "small" | "big"
 
 const props = withDefaults(
