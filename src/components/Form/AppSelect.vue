@@ -6,11 +6,7 @@
             :value="modelValue"
             v-bind="$attrs"
             style="width: 100%"
-            @mousedown.prevent="
-                (e) => {
-                    ;(e.target as HTMLElement).focus()
-                }
-            "
+            @mousedown.prevent="(e) => (e.target as HTMLElement).focus()"
             @focusout="focusOut"
             @keydown.down="focusNextOption"
             @keydown.up.prevent="focusPrevOption"

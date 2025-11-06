@@ -117,22 +117,22 @@ onUnmounted(() => {
     border: 1px solid theme.$border-color;
     border-radius: theme.$border-radius;
     box-shadow: theme.$box-shadow-modal;
-    min-width: 350px;
-    max-width: 90%;
+    min-width: 300px;
+    max-width: 95%;
     max-height: 90%;
     overflow-y: auto;
-    position: relative; // Needed for close button positioning
+    //position: relative; // Needed for close button positioning
+    padding: 0 theme.$padding-small theme.$padding-small;
 
     // For tablet and desktop screens
     @media (min-width: 768px) {
         min-width: 600px; // Larger width for better desktop experience
-        padding: theme.$padding;
+        padding: 0 theme.$padding theme.$padding;
     }
 
     // For larger desktop screens
     @media (min-width: 1200px) {
-        min-width: 750px; // Even wider for larger displays
-        padding: theme.$padding;
+        min-width: 700px; // Even wider for larger displays
     }
 }
 
@@ -140,17 +140,18 @@ onUnmounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: theme.$padding;
+    text-align: center;
 
     h3 {
+        flex-grow: 1;
         margin: 0;
-        color: theme.$text-color-emphasis;
+        color: theme.$primary-color;
     }
 
     .close-button {
         background: none;
         border: none;
-        font-size: 1.5rem;
+        font-size: 2rem;
         cursor: pointer;
         color: theme.$text-color;
         padding: 0 theme.$space-small;
@@ -163,13 +164,11 @@ onUnmounted(() => {
 
 .modal-body {
     border-top: 1px solid theme.$border-color;
-    border-bottom: 1px solid theme.$border-color;
-    padding: theme.$padding;
 }
 
 .modal-footer {
-    padding: theme.$padding;
     display: flex;
     gap: theme.$padding;
+    border-top: 1px solid theme.$border-color;
 }
 </style>
