@@ -6,52 +6,46 @@
             <label for="date">Date</label>
             <input type="date" id="date" v-model="formData.date" required />
         </div>
-
-        <!-- ATM we have only a fixed Action: Balance
-        <div class="form-group">
-            <label for="action">Action</label>
-            <select id="action" v-model="formData.action" required>
-                <option selected>Balance</option>
-            </select>
-        </div>
-        -->
-
         <div class="form-group">
             <label for="custodian">Custodian</label>
-            <BaseSelect id="custodian" v-model="formData.custodianId" required>
-                <option disabled value="">Please select one</option>
-                <option
-                    v-for="custodian in custodians"
-                    :key="custodian.id"
-                    :value="custodian.id"
-                >
-                    {{ custodian.name }}
-                </option>
-            </BaseSelect>
+            <AppSelect
+                id="custodian"
+                v-model="formData.custodianId"
+                :options="
+                    custodians.map((c) => ({
+                        label: c.name,
+                        value: c.id.toString(),
+                        item: c,
+                    }))
+                "
+            >
+                <template #option="{ option }">
+                    <AppCustodian :custodian="option.item as Custodian" />
+                </template>
+            </AppSelect>
             <AddNewRecordButton @click="showNewCustodianModal = true"
                 >Add new custodian</AddNewRecordButton
             >
         </div>
-
         <div class="form-group">
             <label for="currency">Currency</label>
-            <BaseSelect
+            <AppSelect
                 id="currency"
                 v-model="formData.currencyId"
                 required
-                @change="handleCurrencyChange"
+                :options="
+                    currencies.map((c) => ({
+                        label: c.symbol,
+                        value: c.id.toString(),
+                        item: c,
+                    }))
+                "
             >
-                <option disabled value="">Please select one</option>
-                <option
-                    v-for="currency in currencies"
-                    :key="currency.id"
-                    :value="currency.id"
-                >
-                    <AppCurrency :symbol="currency.symbol" />
-                </option>
-            </BaseSelect>
+                <template #option="{ option }">
+                    <AppCurrency :symbol="(option.item as Currency).symbol" />
+                </template>
+            </AppSelect>
         </div>
-
         <FormGroup
             id="amount"
             v-model="formData.amount"
@@ -59,20 +53,17 @@
             required
             :decimals="selectedCurrency?.precision"
         />
-
-        <div class="form-group">
-            <label for="note">Note</label>
-            <textarea
-                rows="5"
-                cols="30"
-                id="note"
-                v-model="formData.note"
-            ></textarea>
-        </div>
+        <FormGroup
+            id="note"
+            v-model="formData.note"
+            type="textarea"
+            required
+            :rows="3"
+        />
 
         <div class="form-footer">
             <div class="buttons">
-                <button type="submit" class="ok">Create</button>
+                <button type="submit" class="ok">{{ submitButtonText }}</button>
             </div>
             <InlineError :error="submitError" :autoclose="10" />
         </div>
@@ -97,7 +88,6 @@ import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
 import InlineError from "@/components/InlineError.vue"
 import { goTo } from "@/utils/router"
-import BaseSelect from "@/components/Form/BaseSelect.vue"
 import NewCustodianModal from "@/components/Custodian/NewCustodianModal.vue"
 import AddNewRecordButton from "../Form/AddNewRecordButton.vue"
 import { debug } from "@/utils/utils"
@@ -108,6 +98,8 @@ import FormGroup from "../Form/FormGroup.vue"
 import AppCurrency from "../Currency/AppCurrency.vue"
 import type { ApiSuccess } from "@/services/api/helper"
 import { type FormAction } from "@/components/Form/AppForm.vue"
+import AppCustodian from "../Custodian/AppCustodian.vue"
+import AppSelect from "../Form/AppSelect.vue"
 
 const props = defineProps<{ action: FormAction }>()
 const emit = defineEmits<{
@@ -122,11 +114,12 @@ const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
+const submitButtonText = ref("")
 const selectedCurrency = ref<Currency | null>(null)
 const showNewCustodianModal = ref(false)
 
 const formData = reactive({
-    date: new Date().toISOString().split("T")[0] as string,
+    date: new Date().toISOString().slice(0, 10), //.split("T")[0] as string,
     action: "Balance", // FIXED
     custodianId: "",
     currencyId: "",
@@ -138,6 +131,7 @@ const initializeFormData = async () => {
     loadError.value = undefined
 
     if (props.action.kind === "new") {
+        submitButtonText.value = "Create"
         Object.assign(formData, {
             date: new Date().toISOString().slice(0, 10), // .split("T")[0] as string, // TODO: use a helper/format
             action: "Balance", // FIXED
@@ -147,6 +141,7 @@ const initializeFormData = async () => {
             note: "",
         })
     } else {
+        submitButtonText.value = "Update"
         const result = await HoldingService.get(props.action.id)
         if (result.isSuccess) {
             const item = result.data
@@ -178,6 +173,9 @@ onMounted(async () => {
 })
 
 watch(props.action, async () => await initializeFormData())
+watch(formData, () => {
+    selectedCurrency.value = currencyStore.get(parseInt(formData.currencyId))
+})
 
 const submitForm = async () => {
     debug(`HoldingForm - submitForm`)
@@ -227,10 +225,6 @@ const handleNewCustodian = async (newId: number) => {
     showNewCustodianModal.value = false
     custodians.value = custodianStore.custodians
     formData.custodianId = newId.toString()
-}
-
-const handleCurrencyChange = async (id: string) => {
-    selectedCurrency.value = currencyStore.get(parseInt(id))
 }
 </script>
 

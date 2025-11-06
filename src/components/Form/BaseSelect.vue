@@ -29,8 +29,4 @@ const handleChange = (event: Event) => {
 
 <style scoped lang="scss">
 @use "@/styles/_form";
-
-select.placeholder-selected > *::disabled {
-    color: green !important;
-}
 </style>

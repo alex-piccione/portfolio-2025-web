@@ -19,9 +19,9 @@ defineProps<{
 
     text-shadow: 2px 2px 2px #000d;
 
-    &::first-letter {
+    /*&::first-letter {
         font-size: 150%;
         font-weight: bold;
-    }
+    }*/
 }
 </style>
