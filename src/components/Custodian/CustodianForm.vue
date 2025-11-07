@@ -2,11 +2,7 @@
     <form @submit.prevent="submitForm">
         <InlineError :error="loadError" />
 
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input id="name" v-model="form.name" type="text" required ref="autofocus" />
-        </div>
-
+        <FormGroup id="name" v-model="form.name" required autofocus />
         <FormGroup id="custodian" v-model="form.custodian" required />
         <FormGroup id="account" v-model="form.account" />
         <FormGroup id="description" v-model="form.description" type="textarea" :rows="3" />
@@ -29,7 +25,7 @@
 
         <div class="form-footer">
             <div class="buttons">
-                <button type="submit" class="ok">Create</button>
+                <button type="submit" class="ok">{{ submitButtonText }}</button>
             </div>
             <InlineError :error="submitError" :autoclose="10" />
         </div>
@@ -37,41 +33,76 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue"
+import { computed, onMounted, reactive, ref } from "vue"
 import InlineError from "@/components/InlineError.vue"
 import { useAuthStore } from "@/stores/auth.store"
 import { parseKindFromString } from "@/entities/Custodian"
 import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/custodian.schema"
-//import CustodianService from "@/services/custodian.service"
-import FormGroup from "../Form/FormGroup.vue"
-import ColorPicker from "../Form/ColorPicker.vue"
+import FormGroup from "@/components/Form/FormGroup.vue"
+import ColorPicker from "@/components/Form/ColorPicker.vue"
 import { useCustodianStore } from "@/stores/custodian.store"
+import type { FormMode } from "@/components/Form/AppForm.vue"
+import CustodianService from "@/services/custodian.service"
+
+const props = defineProps<{
+    formMode: FormMode
+}>()
+
+const emit = defineEmits<{
+    created: [number]
+    updated: []
+}>()
 
 const authStore = useAuthStore()
 const custodianStore = useCustodianStore()
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
-
-const emit = defineEmits<{
-    created: [number]
-}>()
-
-const autofocus = ref<HTMLInputElement | null>(null)
+//const autofocus = ref<HTMLInputElement | null>(null)
+const submitButtonText = computed(() => props.formMode.mode == "new" ? "Create" : "Update")
 
 const form = reactive({
     name: "",
     custodian: "",
     account: "",
     description: "",
-    kind: "Bank",
+    kind: "",
     colorCode: "",
 })
 
+const initializeFormData = async () => {
+    loadError.value = undefined
+
+    if (props.formMode.mode === "new") {
+        Object.assign(form, {
+            name: "",
+            custodian: "",
+            account: "",
+            description: "",
+            kind: "",
+            colorCode: ""
+        })        
+    } else {
+        const result = await CustodianService.get(props.formMode.id)
+        if (result.isSuccess) {
+            Object.assign(form, {
+                name: result.data.name,
+                custodian: result.data.custodian,
+                account: result.data.account,
+                description: result.data.description,
+                kind: result.data.kind,
+                colorCode: result.data.colorCode
+            })   
+        } else loadError.value = result.getError()
+    }
+}
+
 onMounted(async () => {
-    // can I focus here, at least wjhen the form is NOT shown in hte modal ?
     try {
-        if ((await authStore.checkSessionValidity()) !== "SessionExpired") return
+        if ((await authStore.checkSessionValidity()) !== "SessionOk") 
+            return; /* prettier-ignore */
+
+        await initializeFormData()
     } catch (error: unknown) {
         loadError.value = error
     }
@@ -96,9 +127,11 @@ const submitForm = async () => {
     }
 }
 
-const focusFirstField = () => autofocus.value?.focus()
+// is this used because the form is re-used ??
 
-defineExpose({ focusFirstField })
+//const focusFirstField = () => autofocus.value?.focus()
+
+//defineExpose({ focusFirstField })
 </script>
 
 <style scoped lang="scss">

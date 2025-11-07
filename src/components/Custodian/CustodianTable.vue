@@ -1,8 +1,8 @@
 <template>
-    <InlineError :error />
+    <InlineError :error :autoclose="10" />
     <TableLayout>
         <template #commands>
-            <button @click="showAddCustodianModal = true" class="ok">Add New Custodian</button>
+            <button @click="handleAddNewCustodian" class="ok">Add New Custodian</button>
         </template>
         <slot>
             <BaseTable>
@@ -32,35 +32,54 @@
                             ></span>
                         </td>
                         <td>{{ custodian.description?.slice(0, 50) }}</td>
-                        <CommandsCell :can-edit="false" :can-delete="true" @delete="remove(custodian.id)" />
+                        <CommandsCell can-edit can-delete @edit="edit(custodian.id)" @delete="remove(custodian.id)" />
                     </tr>
                 </tbody>
             </BaseTable>
         </slot>
     </TableLayout>
 
-    <NewCustodianModal :is-open="showAddCustodianModal" @created="handleCreated" @cancel="showAddCustodianModal = false" />
+    <CustodianModal 
+        :is-open="custodianModalIsOpen"
+        :form-mode=custodianModalMode
+        @cancel="custodianModalIsOpen = false" 
+        @created="handleCreated" 
+        />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import CommandsCell from "@/components/Table/CommandsCell.vue"
 import AppCustodian from "@/components/Custodian/AppCustodian.vue"
-import NewCustodianModal from "@/components/Custodian/NewCustodianModal.vue"
+import CustodianModal from "@/components/Custodian/CustodianModal.vue"
 import type Custodian from "@/entities/Custodian"
 import { useCustodianStore } from "@/stores/custodian.store"
 import InlineError from "@/components/InlineError.vue"
 import TableLayout from "@/components/TableLayout.vue"
 import BaseTable from "@/components/Table/BaseTable.vue"
+import type { FormMode } from "@/components/Form/AppForm.vue"
 
 const error = ref<unknown>()
 const custodians = ref<Custodian[]>([])
 const custodianStore = useCustodianStore()
-const showAddCustodianModal = ref(false)
+const custodianModalIsOpen = ref(false)
+const custodianModalMode = ref<FormMode>({ mode: "new" })
 
 onMounted(async () => {
     custodians.value = custodianStore.custodians
 })
+
+const handleAddNewCustodian = () => {
+    error.value = null    
+    custodianModalMode.value = { mode: "new"}
+    custodianModalIsOpen.value = true
+}
+
+const edit = (id:number) => {
+    error.value = null    
+    custodianModalMode.value = { mode: "update", id}
+    custodianModalIsOpen.value = true
+}
 
 const remove = async (id: number) => {
     error.value = null
@@ -74,6 +93,6 @@ const remove = async (id: number) => {
 const handleCreated = (_newId: number) => {
     error.value = null
     custodians.value = custodianStore.custodians
-    showAddCustodianModal.value = false
+    custodianModalIsOpen.value = false
 }
 </script>

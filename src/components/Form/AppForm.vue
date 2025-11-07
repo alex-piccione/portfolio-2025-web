@@ -28,7 +28,7 @@ const listId = computed(() => `${props.id}-list`)
 </template>
 
 <script lang="ts">
-export type FormAction = { kind: "new" } | { kind: "update"; id: number }
+export type FormMode = { mode: "new" } | { mode: "update"; id: number }
 </script>
 
 <script setup lang="ts">
@@ -36,7 +36,13 @@ import { ref } from "vue"
 import InlineError from "@/components/InlineError.vue"
 
 defineProps<{
-    submitButtonText: string
+    mode: FormMode
+    submitButtonText: string,    
+}>()
+
+const emit = defineEmits<{
+    created: [number]
+    updated: []
 }>()
 
 const loadError = ref<unknown>(null)

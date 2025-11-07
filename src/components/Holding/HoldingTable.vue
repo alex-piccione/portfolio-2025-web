@@ -31,7 +31,12 @@
         </table>
     </TableLayout>
 
-    <HoldingModal :action="holdingModalAction" :is-open="holdingModalIsOpen" @cancel="holdingModalIsOpen = false" @created="handleCreated" @updated="handleUpdated" />
+    <HoldingModal 
+        :formMode="holdingModalMode" 
+        :is-open="holdingModalIsOpen" 
+        @cancel="holdingModalIsOpen = false" 
+        @created="handleCreated" 
+        @updated="handleUpdated" />
 </template>
 
 <script setup lang="ts">
@@ -46,14 +51,14 @@ import CommandsCell from "@/components/Table/CommandsCell.vue"
 import AppCustodian from "@/components/Custodian/AppCustodian.vue"
 import AppCurrency from "@/components/Currency/AppCurrency.vue"
 import HoldingModal from "@/components/Holding/HoldingModal.vue"
-import type { FormAction } from "@/components/Form/AppForm.vue"
+import type { FormMode } from "@/components/Form/AppForm.vue"
 import TableLayout from "../TableLayout.vue"
 
 const error = ref<unknown>(null)
 const holdings = ref<Holding[]>([])
 const authStore = useAuthStore()
 const holdingModalIsOpen = ref(false)
-const holdingModalAction = ref<FormAction>({ kind: "new" })
+const holdingModalMode = ref<FormMode>({ mode: "new" })
 
 onMounted(async () => {
     if (authStore.isLoggedIn === false) {
@@ -76,12 +81,12 @@ const loadHoldings = async () => {
 }
 
 const handleAddNewHolding = () => {
-    holdingModalAction.value = { kind: "new" }
+    holdingModalMode.value = { mode: "new" }
     holdingModalIsOpen.value = true
 }
 
 const handleEdit = (id: number) => {
-    holdingModalAction.value = { kind: "update", id }
+    holdingModalMode.value = { mode: "update", id }
     holdingModalIsOpen.value = true
 }
 

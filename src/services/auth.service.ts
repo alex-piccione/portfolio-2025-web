@@ -32,7 +32,6 @@ export default class AuthService {
             if (apiResult.isSuccess) {
                 // Store tokens
                 CookieUtils.setCookie("AuthToken", apiResult.data.accessToken, apiResult.data.accessTokenExpiresAt)
-
                 CookieUtils.setCookie("RefreshToken", apiResult.data.refreshToken, apiResult.data.refreshTokenExpiresAt)
 
                 // Update store state
@@ -95,21 +94,34 @@ export default class AuthService {
     static async checkSessionValidity(): Promise<Result<boolean>> {
         // check Auth token
         const authToken = CookieUtils.getCookie("AuthToken")
+
+        debug(`AuthService - checkSessionValidity - authToken: ${authToken}`) // debug because browser had a cookie but db cookie was expired 10 minutes before!
+
         if (!authToken) {
             // try to refresh
             const refreshToken = CookieUtils.getCookie("RefreshToken")
+
+            debug(`AuthService - checkSessionValidity - refresh. refreshToken: ${refreshToken}`) 
+
             if (!refreshToken) {
                 debug("(checkSessionValidity) Session is expired")
                 return Result.success(false)
             }
 
+            return await AuthService.refreshToken()
+
+            /*
             const refreshResult = await AuthApi.refreshToken(refreshToken)
             if (!refreshResult.isSuccess) {
                 debug(`(checkSessionValidity) refreshResult error: ${refreshResult.getError()}`)
                 return Result.failed(refreshResult.getError())
             }
 
+            CookieUtils
+            refreshResult.data.accessToken
+
             debug("(checkSessionValidity) refreshResult OK")
+            */
         }
 
         debug("(checkSessionValidity) Session is ok")

@@ -38,10 +38,8 @@ export default class AuthApi {
             const parseResult = refresh.ResponseSchema.safeParse(response.data)
 
             if (!parseResult.success) {
-                const errorMessage =
-                    "Response validation failed. " +
-                    parseResult.error.message +
-                    ". " +
+                const errorMessage = "Response validation failed. " +
+                    parseResult.error.message +  ". " +
                     parseResult.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ")
 
                 throw Error(errorMessage)

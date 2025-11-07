@@ -55,12 +55,15 @@
         </div>
     </form>
 
-    <!-- Modal for new custodian -->
-    <NewCustodianModal :isOpen="showNewCustodianModal" title="Add New Custodian" @cancel="showNewCustodianModal = false" @created="handleNewCustodian"> </NewCustodianModal>
+    <CustodianModal 
+        :form-mode="{mode: 'new'}" 
+        :isOpen="showNewCustodianModal"
+        @cancel="showNewCustodianModal = false" 
+        @created="handleNewCustodian" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive, watch } from "vue"
+import { ref, onMounted, reactive, watch, computed } from "vue"
 import type Currency from "@/entities/Currency"
 import type Custodian from "@/entities/Custodian"
 import HoldingService from "@/services/holding.service"
@@ -68,7 +71,7 @@ import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
 import InlineError from "@/components/InlineError.vue"
 import { goTo } from "@/utils/router"
-import NewCustodianModal from "@/components/Custodian/NewCustodianModal.vue"
+import CustodianModal from "@/components/Custodian/CustodianModal.vue"
 import AddNewRecordButton from "../Form/AddNewRecordButton.vue"
 import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/holding.schema"
@@ -77,11 +80,11 @@ import { useCustodianStore } from "@/stores/custodian.store"
 import FormGroup from "../Form/FormGroup.vue"
 import AppCurrency from "../Currency/AppCurrency.vue"
 import type { ApiSuccess } from "@/services/api/helper"
-import { type FormAction } from "@/components/Form/AppForm.vue"
-import AppCustodian from "../Custodian/AppCustodian.vue"
-import AppSelect from "../Form/AppSelect.vue"
+import { type FormMode } from "@/components/Form/AppForm.vue"
+import AppCustodian from "@/components/Custodian/AppCustodian.vue"
+import AppSelect from "@/components/Form/AppSelect.vue"
 
-const props = defineProps<{ action: FormAction }>()
+const props = defineProps<{ formMode: FormMode }>()
 const emit = defineEmits<{
     created: [number]
     updated: []
@@ -94,9 +97,9 @@ const custodians = ref<Custodian[]>([])
 const currencies = ref<Currency[]>([])
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
-const submitButtonText = ref("")
 const selectedCurrency = ref<Currency | null>(null)
 const showNewCustodianModal = ref(false)
+const submitButtonText = computed(() => props.formMode.mode == "new" ? "Create" : "Update")
 
 const formData = reactive({
     date: new Date().toISOString().slice(0, 10), //.split("T")[0] as string,
@@ -110,8 +113,7 @@ const formData = reactive({
 const initializeFormData = async () => {
     loadError.value = undefined
 
-    if (props.action.kind === "new") {
-        submitButtonText.value = "Create"
+    if (props.formMode.mode === "new") {
         Object.assign(formData, {
             date: new Date().toISOString().slice(0, 10), // .split("T")[0] as string, // TODO: use a helper/format
             action: "Balance", // FIXED
@@ -121,8 +123,7 @@ const initializeFormData = async () => {
             note: "",
         })
     } else {
-        submitButtonText.value = "Update"
-        const result = await HoldingService.get(props.action.id)
+        const result = await HoldingService.get(props.formMode.id)
         if (result.isSuccess) {
             const item = result.data
             Object.assign(formData, {
@@ -152,7 +153,7 @@ onMounted(async () => {
     }
 })
 
-watch(props.action, async () => await initializeFormData())
+watch(props.formMode, async () => await initializeFormData())
 watch(formData, () => {
     selectedCurrency.value = currencyStore.get(parseInt(formData.currencyId))
 })
@@ -179,15 +180,15 @@ const submitForm = async () => {
 
     try {
         const result =
-            props.action.kind === "new"
+            props.formMode.mode === "new"
                 ? await HoldingService.create(holdingData)
                 : await HoldingService.update({
                       ...holdingData,
-                      id: props.action.id,
+                      id: props.formMode.id,
                   })
 
         if (result.isSuccess) {
-            if (props.action.kind === "new") emit("created", (result as ApiSuccess<number>).data)
+            if (props.formMode.mode === "new") emit("created", (result as ApiSuccess<number>).data)
             else emit("updated")
         } else submitError.value = result.apiError
     } catch (error) {

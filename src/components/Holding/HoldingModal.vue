@@ -1,6 +1,6 @@
 <template>
     <AppModal :is-open="isOpen" :title @close="$emit('cancel')" :show-cancel-button="false" :show-confirm-button="false">
-        <HoldingForm ref="form" :action @created="handleCreated" @updated="handleUpdated" />
+        <HoldingForm ref="form" :form-mode @created="handleCreated" @updated="handleUpdated" />
     </AppModal>
 </template>
 
@@ -8,11 +8,11 @@
 import AppModal from "@/components/AppModal.vue"
 import { computed, ref } from "vue"
 import HoldingForm from "@/components/Holding/HoldingForm.vue"
-import { type FormAction } from "@/components/Form/AppForm.vue"
+import { type FormMode } from "@/components/Form/AppForm.vue"
 
 const props = defineProps<{
     isOpen: boolean
-    action: FormAction
+    formMode: FormMode
 }>()
 
 const emit = defineEmits<{
@@ -21,7 +21,7 @@ const emit = defineEmits<{
     updated: []
 }>()
 
-const title = computed(() => (props.action.kind === "new" ? "Add New Holding" : "Update Holding"))
+const title = computed(() => (props.formMode.mode === "new" ? "Add New Holding" : "Update Holding"))
 
 const form = ref<typeof HoldingForm | null>(null)
 
