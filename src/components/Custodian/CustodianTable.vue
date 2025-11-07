@@ -31,7 +31,7 @@
                                 }"
                             ></span>
                         </td>
-                        <td>{{ custodian.description?.slice(0, 50) }}</td>                        
+                        <td>{{ custodian.description?.slice(0, 50) }}</td>
                         <CommandsCell :can-edit="false" :can-delete="true" @delete="remove(custodian.id)" />
                     </tr>
                 </tbody>
@@ -43,15 +43,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import CommandsCell from '@/components/Table/CommandsCell.vue'
-import AppCustodian from '@/components/Custodian/AppCustodian.vue'
-import NewCustodianModal from '@/components/Custodian/NewCustodianModal.vue'
-import type Custodian from '@/entities/Custodian'
-import { useCustodianStore } from '@/stores/custodian.store'
-import InlineError from '@/components/InlineError.vue'
-import TableLayout from '@/components/TableLayout.vue'
-import BaseTable from '@/components/Table/BaseTable.vue'
+import { onMounted, ref } from "vue"
+import CommandsCell from "@/components/Table/CommandsCell.vue"
+import AppCustodian from "@/components/Custodian/AppCustodian.vue"
+import NewCustodianModal from "@/components/Custodian/NewCustodianModal.vue"
+import type Custodian from "@/entities/Custodian"
+import { useCustodianStore } from "@/stores/custodian.store"
+import InlineError from "@/components/InlineError.vue"
+import TableLayout from "@/components/TableLayout.vue"
+import BaseTable from "@/components/Table/BaseTable.vue"
 
 const error = ref<unknown>()
 const custodians = ref<Custodian[]>([])
@@ -76,5 +76,4 @@ const handleCreated = (_newId: number) => {
     custodians.value = custodianStore.custodians
     showAddCustodianModal.value = false
 }
-
 </script>
