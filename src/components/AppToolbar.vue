@@ -87,22 +87,24 @@ const handleLogout = async () => await AuthService.logout()
 
     &-nav {
         display: flex;
-        gap: 20px;
+        gap: 2px;
 
         &-item {
             color: theme.$text-color;
             text-decoration: none;
-            /*padding: 8px 12px;*/
+            padding: 4px 10px;
             border-radius: theme.$border-radius;
             transition: all 0.3s ease;
-            /*
-      &:hover {
-        color: #ecf0f1;
-        background-color: theme;
-      }
-*/
-            &:active {
+
+            &:hover {
                 background-color: theme.$background-color-emphasis;
+            }
+            &:active {
+                color: theme.$primary-color;
+                background-color: theme.$background-color-emphasis;
+            }
+            &.router-link-active {
+                color: theme.$primary-color;
             }
         }
     }
