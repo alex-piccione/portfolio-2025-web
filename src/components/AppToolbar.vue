@@ -69,20 +69,20 @@ const handleLogout = async () => await AuthService.logout()
     &-left {
         display: flex;
         align-items: center;
-        gap: 30px;
+        gap: 1rem;
         padding-left: theme.$padding;
     }
 
     &-right {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 1rem;
         padding-right: theme.$padding;
     }
 
     &-title {
         font-size: 110%;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     &-nav {
@@ -92,7 +92,8 @@ const handleLogout = async () => await AuthService.logout()
         &-item {
             color: theme.$text-color;
             text-decoration: none;
-            padding: 4px 10px;
+            padding: 0.2rem 0.5rem;
+            height: 25px;
             border-radius: theme.$border-radius;
             transition: all 0.3s ease;
 
