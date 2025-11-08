@@ -1,5 +1,5 @@
 <template>
-    <img v-if="!isLoggedIn" src="/logo.png" class="logo" alt="Portfolio logo" />
+    <img v-if="!isLoggedIn" src="/logo.png" class="logo" alt="logo" />
     <AppToolbar v-if="isLoggedIn" />
     <router-view />
 </template>
@@ -8,10 +8,11 @@
 @use "styles/theme" as theme;
 
 .logo {
-    height: 12rem;
+    height: 10rem;
     padding: 1.5rem;
+    margin-bottom: theme.$margin-big;
     will-change: filter;
-    transition: filter 300ms;
+    transition: filter 0.5s;
 
     &:hover {
         filter: drop-shadow(0 0 2rem theme.$primary-color);

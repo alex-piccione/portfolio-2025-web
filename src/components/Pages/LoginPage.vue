@@ -69,6 +69,15 @@ const handleLogin = async () => {
 
 .panel {
     box-shadow: theme.$box-shadow-diffuse;
+    border-radius: theme.$border-radius-big;
+    box-shadow: 0 0 500px 5px theme.$primary-color;
+
+    will-change: filter;
+    transition: filter 3.5s;    
+
+    &:hover {
+        filter: drop-shadow(0 0 2rem red);
+    }
 }
 
 .login-form {
@@ -80,7 +89,7 @@ const handleLogin = async () => {
         label {
             display: block;
             font-weight: 500;
-            margin-bottom: theme.$margin-small;
+            margin-bottom: 3px;
         }
 
         input {
