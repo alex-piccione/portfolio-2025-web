@@ -101,7 +101,7 @@ export default class AuthService {
             // try to refresh
             const refreshToken = CookieUtils.getCookie("RefreshToken")
 
-            debug(`AuthService - checkSessionValidity - refresh. refreshToken: ${refreshToken}`) 
+            debug(`AuthService - checkSessionValidity - refresh. refreshToken: ${refreshToken}`)
 
             if (!refreshToken) {
                 debug("(checkSessionValidity) Session is expired")

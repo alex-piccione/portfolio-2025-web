@@ -2,33 +2,31 @@
     <div class="panel">
         <form class="login-form" @submit.prevent="handleLogin">
             <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="username">Username</label>
                 <input v-model="email" type="text" id="username" placeholder="Username" autocomplete="username" />
             </div>
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">Password</label>
                 <input v-model="password" type="password" id="password" placeholder="Password" />
             </div>
             <div class="button-group">
                 <button type="submit" class="submit" :disabled="isLoading">
                     {{ isLoading ? "Logging in..." : "Login" }}
                 </button>
-                <button type="button" class="cancel" @click="goBack">Return Back</button>
+                <button type="button" class="cancel" :disabled="isLoading" @click="goTo('Landing')">Cancel</button>
             </div>
-            <InlineError :error="loginError" position="center" />
+            <InlineError :error="loginError" position="center" autoclose />
         </form>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router"
 import { ref } from "vue"
 import AuthService from "@/services/auth.service"
 import { goTo } from "@/utils/router"
 import InlineError from "@/components/InlineError.vue"
 import { debug } from "@/utils/utils"
 
-const router = useRouter()
 const email = ref<string>("")
 const password = ref<string>("")
 const loginError = ref<string | null>(null)
@@ -46,7 +44,6 @@ const handleLogin = async () => {
 
         //const [result] = await
         //it Promise.all([
-        //
         //    new Promise((resolve) => setTimeout(() => resolve(), 500)), // Minimum 500ms
         //])
         //const result = await AuthService.login(email.value, password.value)
@@ -65,9 +62,6 @@ const handleLogin = async () => {
     }
 }
 
-const goBack = () => {
-    router.go(-1) // Navigate back to the previous page
-}
 </script>
 
 <style scoped lang="scss">
@@ -105,7 +99,13 @@ const goBack = () => {
     .button-group {
         margin-top: theme.$margin;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        /*justify-content: space-between;*/
+        gap: theme.$space;
+
+        button {
+            flex-grow: 1;
+        }
 
         button:disabled {
             opacity: 0.6;

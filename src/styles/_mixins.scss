@@ -25,19 +25,15 @@
         border-color: color.scale(theme.$secondary-color, $lightness: 20%);
     }
 
-    &:focus,
-    &:focus-visible {
-        outline: 0.3rem auto -webkit-focus-ring-color;
+    &:focus { outline: none } // Remove default focus outline (for click)
+    &:focus-visible {  // = when navigate with keyboard
+        //box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.6); /* nice bluish glow */
+        box-shadow: 0 0 3px 3px rgba(theme.$primary-color, 1);
     }
-
-    /*&:active {
-
-    }*/
 
     &.submit,
     &[type="submit"] {
         background-color: theme.$info-color;
-
         &:hover {
             border-color: color.scale(theme.$info-color, $lightness: 20%);
         }
@@ -45,7 +41,6 @@
 
     &.cancel {
         background-color: theme.$cancel-color;
-
         &:hover {
             border-color: color.scale(theme.$cancel-color, $lightness: 20%);
         }
@@ -53,7 +48,6 @@
 
     &.ok {
         background-color: theme.$ok-color;
-
         &:hover {
             border-color: color.scale(theme.$ok-color, $lightness: 10%);
         }
