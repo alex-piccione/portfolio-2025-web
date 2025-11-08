@@ -73,7 +73,7 @@ const handleLogin = async () => {
     box-shadow: 0 0 500px 5px theme.$primary-color;
 
     will-change: filter;
-    transition: filter 3.5s;    
+    transition: filter 3.5s;
 
     &:hover {
         filter: drop-shadow(0 0 2rem red);

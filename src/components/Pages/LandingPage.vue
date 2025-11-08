@@ -11,7 +11,7 @@
     <div class="buttons">
         <button @click="tryGuest" class="try">&star; Try the application &star;</button>
         <button @click="createAccount" class="signup">&checkmark; Create an account &checkmark;</button>
-        <button @click="goToLogin" class="login">&hearts; Log in with your account &hearts;</button>    
+        <button @click="goToLogin" class="login">&hearts; Log in with your account &hearts;</button>
     </div>
 </template>
 
@@ -60,7 +60,6 @@ p {
     //border : solid 1px theme.$primary-color;
 }
 
-
 button {
     margin: theme.$margin;
 }
@@ -76,5 +75,4 @@ button {
 .signup {
     color: greenyellow;
 }
-
 </style>
