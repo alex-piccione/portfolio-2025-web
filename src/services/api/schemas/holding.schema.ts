@@ -40,6 +40,10 @@ export namespace single {
 }
 
 export namespace list {
+    export interface Params {
+        onlyLatestBalance: boolean
+    }
+
     export const ResponseSchema = z.array(readSchema)
     export type Response = z.infer<typeof list.ResponseSchema>
 }

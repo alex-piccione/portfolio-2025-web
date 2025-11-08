@@ -42,8 +42,18 @@ export default class HoldingApi {
         }
     }
 
-    static async list() /*: Promise<ApiResult<HoldingRecord>> */ {
-        debug("HoldingApi - list")
+    static async list_last_balance() {
+        try {
+            const params: list.Params = { onlyLatestBalance: true }
+            const response = await api.client.get(`/holding`, { params })
+            const parseResult = list.ResponseSchema.safeParse(response.data)
+            return api.getResult(parseResult)
+        } catch (error) {
+            return api.handleError(error)
+        }
+    }
+
+    static async list_all() /*: Promise<ApiResult<HoldingRecord>> */ {
         try {
             const response = await api.client.get("/holding")
             const parseResult = list.ResponseSchema.safeParse(response.data)
