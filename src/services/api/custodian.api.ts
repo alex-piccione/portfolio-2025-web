@@ -22,7 +22,7 @@ export default class CustodianApi {
             return api.handleError(error)
         }
     }
-    
+
     static async update(request: update.Request): Promise<ApiResult<void>> {
         try {
             await api.client.put(`/custodian/${request.id}`, request)

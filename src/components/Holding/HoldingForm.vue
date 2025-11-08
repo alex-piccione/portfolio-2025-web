@@ -45,7 +45,7 @@
             </AppSelect>
         </div>
         <FormGroup id="amount" v-model="formData.amount" type="currency amount" required :decimals="selectedCurrency?.precision" />
-        <FormGroup id="note" v-model="formData.note" type="textarea" required :rows="3" />
+        <FormGroup id="note" v-model="formData.note" type="textarea" :rows="3" />
 
         <div class="form-footer">
             <div class="buttons">
@@ -55,11 +55,7 @@
         </div>
     </form>
 
-    <CustodianModal 
-        :form-mode="{mode: 'new'}" 
-        :isOpen="showNewCustodianModal"
-        @cancel="showNewCustodianModal = false" 
-        @created="handleNewCustodian" />
+    <CustodianModal :form-mode="{ mode: 'new' }" :isOpen="showNewCustodianModal" @cancel="showNewCustodianModal = false" @created="handleNewCustodian" />
 </template>
 
 <script setup lang="ts">
@@ -99,7 +95,7 @@ const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
 const selectedCurrency = ref<Currency | null>(null)
 const showNewCustodianModal = ref(false)
-const submitButtonText = computed(() => props.formMode.mode == "new" ? "Create" : "Update")
+const submitButtonText = computed(() => (props.formMode.mode == "new" ? "Create" : "Update"))
 
 const formData = reactive({
     date: new Date().toISOString().slice(0, 10), //.split("T")[0] as string,
@@ -161,11 +157,11 @@ watch(formData, () => {
 const submitForm = async () => {
     debug(`HoldingForm - submitForm`)
     submitError.value = null
-
+    /*
     if (!authStore.userId) {
         submitError.value = "User not authenticated"
         return await goTo("Login")
-    }
+    }*/
 
     const { date, currencyId, custodianId, action, amount, note } = formData
 

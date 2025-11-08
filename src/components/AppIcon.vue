@@ -85,15 +85,13 @@ const iconColor = computed(() => colorMap[props.color])
     --icon-color-ok: #{theme.$ok-color};
     --icon-color-red: red;
 
-
-
     :deep(svg) {
         fill: theme.$text-color; // Use fill instead of color
     }
 
     &:hover:deep(svg) {
         fill: var(--icon-fill-color); // Use fill instead of color
-        transition: all .3s ease;
+        transition: all 0.3s ease;
     }
 
     &.small {

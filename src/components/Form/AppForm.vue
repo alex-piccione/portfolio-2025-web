@@ -37,7 +37,7 @@ import InlineError from "@/components/InlineError.vue"
 
 defineProps<{
     mode: FormMode
-    submitButtonText: string,    
+    submitButtonText: string
 }>()
 
 const emit = defineEmits<{

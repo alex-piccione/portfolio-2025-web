@@ -25,8 +25,11 @@
         border-color: color.scale(theme.$secondary-color, $lightness: 20%);
     }
 
-    &:focus { outline: none } // Remove default focus outline (for click)
-    &:focus-visible {  // = when navigate with keyboard
+    &:focus {
+        outline: none;
+    } // Remove default focus outline (for click)
+    &:focus-visible {
+        // = when navigate with keyboard
         //box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.6); /* nice bluish glow */
         box-shadow: 0 0 3px 3px rgba(theme.$primary-color, 1);
     }
@@ -133,3 +136,8 @@ $controls-border-color: color.scale(theme.$secondary-color, $lightness: 25%);
     border-radius: calc(theme.$border-radius * 2);
     box-shadow: theme.$box-shadow;
 }
+
+// Custodian pill
+/*@mixin pill {
+    background: color-mix(in srgb, $error-color, transparent 90%);
+}*/

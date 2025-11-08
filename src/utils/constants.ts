@@ -1,16 +1,21 @@
 export const colors = [
-    "#FFD700FF", // Gold
-    "#C99720FF",
-    "#FF7F00FF", // Orange
-    "#DC143CFF", // Crimson Red
-    "#97C920FF",
-    "#20C997FF", // Teal
-    "#6C757DFF", // Slate Gray
-    //"#6F42C1FF", // Purple too dark on dark background
-    "#7F52D1FF", // Purple
-    "#9720C9FF",
-    "#2097C9FF",
-    "#3C34DDFF",
+    //"#FFD700", // Gold
+    "#FFC800", // AVIVA
+    "#C99720",
+    //"#FF7F00", // Orange
+    "#F7931A", // Bitcoin
+    //"#DC143C", // Crimson Red
+    "#DB0011", // HSBC
+    "#97C920",
+    "#20C997", // Teal
+    "#6C757D", // Slate Gray
+    "#6E41E2", // Ethereum
+    //"#6F42C1", // Purple
+    "#9720C9",
+    "#674172", // Kraken
+    "#2097C9",
+    "#3C34DD",
+    "#004A9B", // Fineco
 ]
 
 export default { colors }

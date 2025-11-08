@@ -15,6 +15,7 @@
                         <th>Color</th>
                         <th>Description</th>
                         <th></th>
+                        s
                     </tr>
                 </thead>
                 <tbody>
@@ -39,12 +40,7 @@
         </slot>
     </TableLayout>
 
-    <CustodianModal 
-        :is-open="custodianModalIsOpen"
-        :form-mode=custodianModalMode
-        @cancel="custodianModalIsOpen = false" 
-        @created="handleCreated" 
-        />
+    <CustodianModal :is-open="custodianModalIsOpen" :form-mode="custodianModalMode" @cancel="custodianModalIsOpen = false" @created="handleCreated" @updated="handleUpdated" />
 </template>
 
 <script setup lang="ts">
@@ -70,14 +66,14 @@ onMounted(async () => {
 })
 
 const handleAddNewCustodian = () => {
-    error.value = null    
-    custodianModalMode.value = { mode: "new"}
+    error.value = null
+    custodianModalMode.value = { mode: "new" }
     custodianModalIsOpen.value = true
 }
 
-const edit = (id:number) => {
-    error.value = null    
-    custodianModalMode.value = { mode: "update", id}
+const edit = (id: number) => {
+    error.value = null
+    custodianModalMode.value = { mode: "update", id }
     custodianModalIsOpen.value = true
 }
 
@@ -91,6 +87,12 @@ const remove = async (id: number) => {
 }
 
 const handleCreated = (_newId: number) => {
+    error.value = null
+    custodians.value = custodianStore.custodians
+    custodianModalIsOpen.value = false
+}
+
+const handleUpdated = () => {
     error.value = null
     custodians.value = custodianStore.custodians
     custodianModalIsOpen.value = false

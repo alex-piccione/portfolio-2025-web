@@ -31,12 +31,7 @@
         </table>
     </TableLayout>
 
-    <HoldingModal 
-        :formMode="holdingModalMode" 
-        :is-open="holdingModalIsOpen" 
-        @cancel="holdingModalIsOpen = false" 
-        @created="handleCreated" 
-        @updated="handleUpdated" />
+    <HoldingModal :formMode="holdingModalMode" :is-open="holdingModalIsOpen" @cancel="holdingModalIsOpen = false" @created="handleCreated" @updated="handleUpdated" />
 </template>
 
 <script setup lang="ts">

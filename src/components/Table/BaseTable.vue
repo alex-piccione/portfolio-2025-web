@@ -3,4 +3,3 @@
         <slot></slot>
     </table>
 </template>
-

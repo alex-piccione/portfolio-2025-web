@@ -36,18 +36,14 @@
 import { computed, onMounted, reactive, ref } from "vue"
 import InlineError from "@/components/InlineError.vue"
 import { useAuthStore } from "@/stores/auth.store"
-import { parseKindFromString } from "@/entities/Custodian"
-import { debug } from "@/utils/utils"
-import type { create } from "@/services/api/schemas/custodian.schema"
 import FormGroup from "@/components/Form/FormGroup.vue"
 import ColorPicker from "@/components/Form/ColorPicker.vue"
 import { useCustodianStore } from "@/stores/custodian.store"
 import type { FormMode } from "@/components/Form/AppForm.vue"
 import CustodianService from "@/services/custodian.service"
+import type { ApiSuccess } from "@/services/api/helper"
 
-const props = defineProps<{
-    formMode: FormMode
-}>()
+const props = defineProps<{ formMode: FormMode }>()
 
 const emit = defineEmits<{
     created: [number]
@@ -59,7 +55,7 @@ const custodianStore = useCustodianStore()
 const loadError = ref<unknown>(null)
 const submitError = ref<unknown>(null)
 //const autofocus = ref<HTMLInputElement | null>(null)
-const submitButtonText = computed(() => props.formMode.mode == "new" ? "Create" : "Update")
+const submitButtonText = computed(() => (props.formMode.mode == "new" ? "Create" : "Update"))
 
 const form = reactive({
     name: "",
@@ -80,8 +76,8 @@ const initializeFormData = async () => {
             account: "",
             description: "",
             kind: "",
-            colorCode: ""
-        })        
+            colorCode: "",
+        })
     } else {
         const result = await CustodianService.get(props.formMode.id)
         if (result.isSuccess) {
@@ -91,8 +87,8 @@ const initializeFormData = async () => {
                 account: result.data.account,
                 description: result.data.description,
                 kind: result.data.kind,
-                colorCode: result.data.colorCode
-            })   
+                colorCode: result.data.colorCode,
+            })
         } else loadError.value = result.getError()
     }
 }
@@ -109,19 +105,27 @@ onMounted(async () => {
 })
 
 const submitForm = async () => {
-    debug("NewCustodianModal - submitForm")
-
     submitError.value = null
-    try {
-        const data: create.Request = {
+
+    /*if (!authStore.userId) {
+        submitError.value = "User not authenticated"
+        return await goTo("Login")
+    }*/
+
+    /*const data: create.Request = {
             ...form,
             kind: parseKindFromString(form.kind),
-        }
+        }*/
 
-        const result = await custodianStore.createCustodian(data)
+    try {
+        const data = { ...form }
 
-        if (result.isSuccess) emit("created", result.data)
-        else submitError.value = result.apiError
+        const result = props.formMode.mode == "new" ? await custodianStore.createCustodian(data) : await custodianStore.updateCustodian({ ...data, id: props.formMode.id })
+
+        if (result.isSuccess) {
+            if (props.formMode.mode === "new") emit("created", (result as ApiSuccess<number>).data)
+            else emit("updated")
+        } else submitError.value = result.apiError
     } catch (error: unknown) {
         submitError.value = error
     }

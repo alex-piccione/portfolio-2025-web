@@ -1,9 +1,5 @@
 <template>
-    <AppModal :is-open :title 
-        :show-cancel-button="false" 
-        :show-confirm-button="false" 
-        @close="$emit('cancel')" 
-        @confirm="handleConfirm">
+    <AppModal :is-open :title :show-cancel-button="false" :show-confirm-button="false" @close="$emit('cancel')" @confirm="handleConfirm">
         <CustodianForm ref="form" :form-mode @created="handleCreated" @updated="handleUpdated" />
     </AppModal>
 </template>
@@ -23,6 +19,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: "cancel"): void
     (e: "created", newId: number): void
+    (e: "updated"): void
 }>()
 
 const title = computed(() => (props.formMode.mode === "new" ? "Add New Custodian" : "Update Custodian"))
@@ -34,17 +31,14 @@ const handleConfirm = () => {
 }
 
 const handleCreated = (newId: number) => emit("created", newId)
-
-const handleUpdated = () => {
-
-}
+const handleUpdated = () => emit("updated")
 
 watch(
     () => props.isOpen,
     async (open) => {
         if (open) {
             await nextTick()
-            form.value?.focusFirstField()
+            //form.value?.focusFirstField()
         }
     },
 )
