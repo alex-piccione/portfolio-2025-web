@@ -10,5 +10,6 @@ export default interface Holding {
     date: Date
     action: string // enum
     amount: number
+    amountInMainCurrency: number | null
     note?: string | null
 }

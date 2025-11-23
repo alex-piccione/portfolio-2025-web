@@ -18,6 +18,9 @@
                 Notifications
             </button>
             -->
+            <span>
+                <CurrencySelect v-model="mainCurrencyId" only-major class="toolbar-select" />
+            </span>
             <div class="toolbar-user"><AppIcon name="account" /> {{ username }}</div>
             <button class="toolbar-button delete" @click="handleLogout">Logout</button>
         </div>
@@ -25,30 +28,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref, onMounted, watch } from "vue"
 import { useAuthStore } from "@/stores/auth.store"
 import AppIcon from "@/components/AppIcon.vue"
 import AuthService from "@/services/auth.service"
+import CurrencySelect from "@/components/Currency/CurrencySelect.vue"
 
 const ui_version = import.meta.env.VITE_UI_VERSION || "unknown version"
 
 const authStore = useAuthStore()
-
-// Reactive data
 const username = ref<string | undefined>(undefined)
+const mainCurrencyId = ref<string>("")
 
 onMounted(() => {
     username.value = authStore.username
+    //authStore.mainCurrency
+    mainCurrencyId.value = authStore.mainCurrency?.id.toString() ?? ""
 })
 
 // Methods
 const handleLogout = async () => await AuthService.logout()
+
+watch(mainCurrencyId, (newVal) => {
+    const currencyId = newVal ? parseInt(newVal) : null
+    authStore.setMainCurrencyById(currencyId)
+})
 
 /*const handleNotifications = (): void => {
   console.log("Notifications clicked")
   // Add your notification logic here
 }*/
 </script>
+
+<style lang="scss" module>
+// use a module script because the select is wrapped inside a component
+@use "@/styles/_theme.scss" as theme;
+select {
+    line-height: 25px;
+    padding: 0.1em theme.$padding-small;
+    height: 30px;
+    border: none;
+    color: theme.$text-color;
+}
+</style>
 
 <style lang="scss" scoped>
 @use "@/styles/_theme.scss" as theme;

@@ -40,6 +40,7 @@ export default class HoldingService {
                 date: holding.date,
                 action: holding.action,
                 amount: parseFloat(holding.amount),
+                amountInMainCurrency: parseFloat(holding.amountInMainCurrency || "0") || null,
                 note: holding.note,
             }
         })

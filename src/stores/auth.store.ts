@@ -5,8 +5,11 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import AuthService from "@/services/auth.service"
+import UserService from "@/services/user.service"
 import { goTo } from "@/utils/router"
 import { debug } from "@/utils/utils"
+import type Currency from "@/entities/Currency"
+import { useCurrencyStore } from "@/stores/currency.store"
 
 const STORAGE_NAME = "auth"
 
@@ -16,14 +19,17 @@ export const useAuthStore = defineStore(
         const isLoggedIn = ref(false)
         const userId = ref<string | undefined>(undefined)
         const username = ref<string | undefined>(undefined)
+        const mainCurrency = ref<Currency | undefined>(undefined)
+        const currencyStore = useCurrencyStore()
 
         /**
          * Set user as authenticated with username
          */
-        function setAuthenticated(user: { id: string; username: string }) {
+        function setAuthenticated(user: { id: string; username: string; mainCurrency: Currency }) {
             isLoggedIn.value = true
             userId.value = user.id
             username.value = user.username
+            mainCurrency.value = user.mainCurrency
         }
 
         /**
@@ -33,6 +39,7 @@ export const useAuthStore = defineStore(
             isLoggedIn.value = false
             userId.value = undefined
             username.value = undefined
+            mainCurrency.value = undefined
         }
 
         /**
@@ -43,6 +50,7 @@ export const useAuthStore = defineStore(
                 isLoggedIn: isLoggedIn.value,
                 userId: userId.value,
                 username: username.value,
+                mainCurrency: mainCurrency.value,
             }
         }
 
@@ -78,17 +86,29 @@ export const useAuthStore = defineStore(
             return "SessionOk"
         }
 
+        async function setMainCurrencyById(currencyId: number | null) {
+            if (currencyId !== null) {
+                await UserService.updateCurrency({ currencyId: currencyId })
+                mainCurrency.value = currencyStore.get(currencyId)
+                return
+            } else {
+                mainCurrency.value = undefined
+            }
+        }
+
         return {
             STORAGE_NAME,
             // State
             isLoggedIn,
             userId,
             username,
+            mainCurrency,
             // Actions
             setAuthenticated,
             clearAuthentication,
             getAuthState,
             checkSessionValidity,
+            setMainCurrencyById,
         }
     },
     {

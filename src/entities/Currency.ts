@@ -8,6 +8,7 @@ export interface CurrencyBase {
 export default interface Currency extends CurrencyBase {
     isActive: boolean
     precision: number
+    isMajor: boolean
 }
 
 export interface UserCurrency extends CurrencyBase {

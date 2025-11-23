@@ -27,6 +27,8 @@
         </div>
         <div class="form-group">
             <label for="currency">Currency</label>
+            <CurrencySelect id="currency" v-model="formData.currencyId" />
+            <!--
             <AppSelect
                 id="currency"
                 v-model="formData.currencyId"
@@ -43,7 +45,7 @@
                     <AppCurrency :symbol="(option.item as Currency).symbol" />
                 </template>
             </AppSelect>
-        </div>
+        --></div>
         <FormGroup id="amount" v-model="formData.amount" type="currency amount" required :decimals="selectedCurrency?.precision" />
         <FormGroup id="note" v-model="formData.note" type="textarea" :rows="3" />
 
@@ -66,19 +68,18 @@ import HoldingService from "@/services/holding.service"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCurrencyStore } from "@/stores/currency.store"
 import InlineError from "@/components/InlineError.vue"
-import { goTo } from "@/utils/router"
 import CustodianModal from "@/components/Custodian/CustodianModal.vue"
-import AddNewRecordButton from "../Form/AddNewRecordButton.vue"
+import AddNewRecordButton from "@/components/Form/AddNewRecordButton.vue"
 import { debug } from "@/utils/utils"
 import type { create } from "@/services/api/schemas/holding.schema"
-import { createDatetime } from "../format.helper"
+import { createDatetime } from "@/components/format.helper"
 import { useCustodianStore } from "@/stores/custodian.store"
-import FormGroup from "../Form/FormGroup.vue"
-import AppCurrency from "../Currency/AppCurrency.vue"
+import FormGroup from "@/components/Form/FormGroup.vue"
 import type { ApiSuccess } from "@/services/api/helper"
 import { type FormMode } from "@/components/Form/AppForm.vue"
 import AppCustodian from "@/components/Custodian/AppCustodian.vue"
 import AppSelect from "@/components/Form/AppSelect.vue"
+import CurrencySelect from "@/components/Currency/CurrencySelect.vue"
 
 const props = defineProps<{ formMode: FormMode }>()
 const emit = defineEmits<{

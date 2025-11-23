@@ -31,6 +31,7 @@ const readSchema = z.object({
     currencyId: z.int32(),
     action: z.string().min(1),
     amount: z.string(),
+    amountInMainCurrency: z.string().nullish(),
     note: z.string().nullable(),
 })
 

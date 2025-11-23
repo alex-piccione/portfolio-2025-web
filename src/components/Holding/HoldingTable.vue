@@ -10,9 +10,10 @@
                 <tr>
                     <th>Custodian</th>
                     <th>Currency</th>
-                    <th>Date</th>
                     <!--<th>Action</th>-->
                     <th>Amount</th>
+                    <th>Amount in {{ authStore.mainCurrency?.symbol }}</th>
+                    <th>Date</th>
                     <th style="min-width: 150px">Note</th>
                     <th></th>
                 </tr>
@@ -21,13 +22,23 @@
                 <tr v-for="holding in holdings" :key="holding.id">
                     <td><AppCustodian :custodian="holding.custodian" /></td>
                     <td><AppCurrency :symbol="holding.currency.symbol" /></td>
-                    <td>{{ formatDate(holding.date) }}</td>
                     <!--<td>{{ holding.action }}</td>-->
                     <td style="text-align: right">{{ holding.amount }}</td>
+                    <td style="text-align: right">{{ holding.amountInMainCurrency }}</td>
+                    <td>{{ formatDate(holding.date) }}</td>
                     <td>{{ holding.note }}</td>
                     <CommandsCell :can-edit="true" :can-delete="true" @edit="handleEdit(holding.id)" @delete="handleDelete(holding.id)" />
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align: right">Total:</th>
+                    <th style="text-align: right">{{ holdings.reduce((sum, h) => sum + (h.amountInMainCurrency || 0), 0) }}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
     </TableLayout>
 
@@ -35,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 import HoldingService from "@/services/holding.service"
 import type Holding from "@/entities/Holding"
 import { useAuthStore } from "@/stores/auth.store"
@@ -63,6 +74,13 @@ onMounted(async () => {
 
     await loadHoldings()
 })
+
+watch(
+    () => authStore.mainCurrency,
+    async (_) => {
+        await loadHoldings()
+    },
+)
 
 const loadHoldings = async () => {
     debug("load holdings")

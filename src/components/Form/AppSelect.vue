@@ -14,7 +14,7 @@
             @keydown.escape.prevent="toggleDropdown(false)"
         >
             <!-- 
-            mousedown.preven: avoid show the default options panel to become visible 
+            mousedown.prevent: avoid show the default options panel to become visible 
             blur/focusout: Be careful. showOptions = false breaks the click on the option!
         -->
             <!-- value is required to have the select rendering the label-->
@@ -38,7 +38,7 @@ import { onMounted, onUnmounted, ref } from "vue"
 type Option = { label: string; value: string; item: object }
 
 const props = defineProps<{
-    id: string
+    //id: string
     options: Array<Option>
     modelValue: string
 }>()
@@ -67,6 +67,7 @@ function handleOptionClick(option: Option) {
 
     focusedIndex.value = props.options.findIndex((o) => o.value == option.value)
 
+    // this is a special event detected by Vue
     emit("update:modelValue", option.value)
 
     showOptions.value = false

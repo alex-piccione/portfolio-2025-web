@@ -14,6 +14,7 @@ export const useCurrencyStore = defineStore(
     () => {
         // ---------- State ----------
         const currencies = ref<Currency[]>([]) // user currencies
+        const majorCurrencies = ref<Currency[]>([]) // user currencies
         const isLoading = ref(false)
         const error = ref<string | null>(null)
 
@@ -25,7 +26,10 @@ export const useCurrencyStore = defineStore(
 
             // TODO: add retry
             const result = await CurrencyService.listAll()
-            const _ = result.isSuccess ? (currencies.value = result.data) : (error.value = result.getError())
+            if (result.isSuccess) {
+                currencies.value = result.data
+                majorCurrencies.value = result.data.filter((c) => c.isMajor)
+            } else error.value = result.getError()
 
             isLoading.value = false
         }
@@ -38,6 +42,7 @@ export const useCurrencyStore = defineStore(
         /** Optional: clear state (e.g. on logout) */
         function clear() {
             currencies.value = []
+            majorCurrencies.value = []
             error.value = null
             isLoading.value = false
         }
@@ -49,6 +54,7 @@ export const useCurrencyStore = defineStore(
         return {
             // state
             currencies,
+            majorCurrencies,
             isLoading,
             error,
             // actions

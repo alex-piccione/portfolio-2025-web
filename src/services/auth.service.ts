@@ -8,6 +8,7 @@ import { Result } from "@/utils/result"
 import { useAuthStore } from "@/stores/auth.store"
 import { goTo } from "@/utils/router"
 import { debug } from "@/utils/utils"
+import { useCurrencyStore } from "@/stores/currency.store"
 
 const resultFailed = (operation: string, error: unknown) => Result.failed(operation + ". " + (error instanceof Error ? error.message : `${error}`))
 
@@ -36,7 +37,9 @@ export default class AuthService {
 
                 // Update store state
                 const authStore = useAuthStore()
-                authStore.setAuthenticated(apiResult.data.user)
+                // TODO: fixed value
+                const mainCurrency = useCurrencyStore().currencies.filter((c) => c.symbol === "EUR")[0]!
+                authStore.setAuthenticated({ ...apiResult.data.user, mainCurrency })
 
                 return Result.success(true)
             } else {
